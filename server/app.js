@@ -11,13 +11,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/IMS")
-  .catch((err) => {
-    console.log(err);
-  })
-  .then(() => {
-    console.log(`connected to db in Dev environment`);
-  });
+	.connect(`${process.env.MONGO_URI_LOCAL}`)
+	.catch((err) => {
+		console.log(err);
+	})
+	.then(() => {
+		console.log(`connected to db in Dev environment`);
+	});
 
 // mongoose.set('debug',true);
 
@@ -27,5 +27,5 @@ app.use(router);
 app.use(httpResponse.Middleware);
 
 app.listen(PORT, () => {
-  console.log(`Listening at port ${PORT}.`);
+	console.log(`Listening at port ${PORT}.`);
 });
