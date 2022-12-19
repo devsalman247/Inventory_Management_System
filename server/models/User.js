@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema(
 				1, // Admin
 			],
 		},
-		hash: {
+		designation: {
 			type: String,
 		},
 		requests: [
@@ -43,6 +43,9 @@ const UserSchema = new mongoose.Schema(
 				},
 			},
 		],
+		hash: {
+			type: String,
+		},
 		salt: {
 			type: String,
 		},
@@ -79,6 +82,7 @@ UserSchema.methods.toAuthJSON = function () {
 		name: this.name,
 		email: this.email,
 		role: this.role,
+		designation: this.designation,
 		token: this.generateJWT(),
 	};
 };
