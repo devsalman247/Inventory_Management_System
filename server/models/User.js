@@ -28,7 +28,6 @@ const UserSchema = new mongoose.Schema(
 		},
 		hash: {
 			type: String,
-			required: [true, "is required"],
 		},
 		requests: [
 			{
@@ -46,7 +45,6 @@ const UserSchema = new mongoose.Schema(
 		],
 		salt: {
 			type: String,
-			required: true,
 		},
 	},
 	{ timestamps: true }
