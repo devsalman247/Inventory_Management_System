@@ -1,8 +1,4 @@
 import User from "../models/User.js";
-import passport from "passport";
-import strategy from "../config/passport.js";
-
-passport.use(strategy);
 
 const addUser = (name, email, password) => {
 	try {
@@ -40,7 +36,7 @@ const authenticateUser = (email, password) => {
 			} else if (!user.validPassword(password)) {
 				return new Error("Invalid password");
 			}
-			return user;
+			return user.toAuthJSON();
 		})
 		.catch((err) => {
 			console.log(err);
