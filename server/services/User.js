@@ -4,40 +4,46 @@ import strategy from "../config/passport.js";
 
 passport.use(strategy);
 
-const newUser = (name, email, password) => {
-	const user = new User({
-		name,
-		email,
-		password,
-		requests: [],
-	});
-	user.hash = password;
-	user.setPassword();
-	user
-		.save()
-		.then((data) => {
-			if (!data) {
-				throw new Error("Failed to create user");
-			}
-			return user.toAuthJSON();
-		})
-		.catch((err) => {
-			console.log(err);
-			throw err;
+const addUser = (name, email, password) => {
+	try {
+		const user = new User({
+			name,
+			email,
+			password,
+			requests: [],
 		});
+		user.hash = password;
+		user.setPassword();
+		return user
+			.save()
+			.then((data) => {
+				if (!data) {
+					return new Error("Failed to create user");
+				}
+				return user.toAuthJSON();
+			})
+			.catch((err) => {
+				console.log(err);
+				return new Error(err);
+			});
+	} catch (err) {
+		console.log(err);
+		return new Error(err);
+	}
 };
 
-const authenticateUser = () => {
-	passport.authenticate("local", { session: false }, (err, user, info) => {
+const authenticateUser = (req, res, next) => {
+	return passport.authenticate("local", { session: false }, (err, user, info) => {
 		if (err) {
 			console.log(err);
-			throw err;
+			return new Error(err);
 		} else if (user) {
-			return user.toAuthJSON();
+			console.log(user);
+			return user;
 		}
 	})(req, res, next);
 };
 
-const UserService = { newUser, authenticateUser };
+const UserService = { addUser, authenticateUser };
 
 export default UserService;
