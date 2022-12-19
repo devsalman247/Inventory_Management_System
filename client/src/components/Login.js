@@ -1,6 +1,7 @@
 // import logo from src folder
-import logo from '../logo.png'; 
+import logo from "../logo.png";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login()
 {
@@ -17,10 +18,13 @@ function Login()
         }
     }
 
+    // useHistory hook for redirecting to another page
+    const history = useNavigate();
+
     return (
         // main container
         <div className=" bg-[#F7F7F7] main_container  w-screen h-screen flex flex-col items-center justify-center ">
-            <img src={logo} className="App-logo absolute top-8 " alt="logo" />
+            <img src={logo} className="w-40 App-logo absolute top-8 " alt="logo" />
             {/* Div For Login Form */}
             <div className=" shadow-md login_form w-[500px] h-[450px] mt-32 flex flex-col items-center justify-center bg-white">
                 <h1 className=" relative bottom-6 text-2xl font-semibold ">Login</h1>
@@ -38,12 +42,14 @@ function Login()
 
                     {/* don't have an account */}
                     <div className="relative top-10 text-md text-slate-600 ">
-                        <p>Don't have an account? <span className="text-blue-500 font-semibold">Sign Up</span></p>
+                        <p>Don't have an account? <span className="text-blue-500 font-semibold cursor-pointer"
+                            onClick={() => history('/signup')}
+                        >Sign Up</span></p>
                     </div>
                 </div>
             </div>
         </div>
-    );
+    ); 
 }
 
 export default Login;

@@ -1,6 +1,6 @@
-// import logo from src folder
 import logo from "../logo.png";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
 	const [password, setPassword] = useState("password");
@@ -14,12 +14,16 @@ function Signup() {
 			setPassword("password");
 			setPassIcon("fa-eye-slash");
 		}
-	};
+    };
+    
+    // useHistory hook for redirecting to another page
+    const history = useNavigate();
+
 
 	return (
 		// main container
 		<div className=" bg-[#F7F7F7] main_container  w-screen h-screen flex flex-col items-center justify-center ">
-			<img src={logo} className="App-logo absolute top-2" alt="logo" />
+			<img src={logo} className=" w-40 App-logo absolute top-2" alt="logo" />
 			{/* Div For Login Form */}
 			<div className=" shadow-md login_form w-[500px] h-[500px] mt-24 flex flex-col items-center justify-center bg-white">
 				<h1 className=" relative bottom-6 text-2xl font-semibold ">Register</h1>
@@ -63,12 +67,6 @@ function Signup() {
 						required
 					/>
 
-					<span
-						className=" password_span cursor-pointer relative left-[180px] bottom-8 text-slate-600 "
-						onClick={() => showPassword()}>
-						<i className={`fas ${passIcon}`}></i>
-					</span>
-
 					<button className=" py-3 text-lg font-semibold bg-blue-500 text-white rounded-md w-[90%] relative top-2">
 						Register
 					</button>
@@ -76,7 +74,9 @@ function Signup() {
 					{/* Have an account */}
 					<div className="relative top-4 text-md text-slate-600">
 						<p>
-							Already have an account? <span className="text-blue-500 font-semibold">Login</span>
+                            Already have an account? <span className="text-blue-500 font-semibold cursor-pointer"
+                                // on Click Login go to Login page
+                                onClick={() => history('/')} >Login</span>
 						</p>
 					</div>
 				</div>
