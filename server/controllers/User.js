@@ -26,9 +26,8 @@ const UserLogin = (req, res, next) => {
 	if (!email || !password) {
 		return next(new BadRequestResponse("Please provide all input fields!"));
 	}
-	authenticateUser(req, res, next)
+	authenticateUser(email, password)
 		.then((user) => {
-			console.log("login successful");
 			if (user) {
 				return next(new OkResponse(user));
 			} else {

@@ -32,16 +32,20 @@ const addUser = (name, email, password) => {
 	}
 };
 
-const authenticateUser = (req, res, next) => {
-	return passport.authenticate("local", { session: false }, (err, user, info) => {
-		if (err) {
+const authenticateUser = (email, password) => {
+	return User.findOne({ email })
+		.then((user) => {
+			if (!user) {
+				return new Error("User not found!");
+			} else if (!user.validPassword(password)) {
+				return new Error("Invalid password");
+			}
+			return user;
+		})
+		.catch((err) => {
 			console.log(err);
 			return new Error(err);
-		} else if (user) {
-			console.log(user);
-			return user;
-		}
-	})(req, res, next);
+		});
 };
 
 const UserService = { addUser, authenticateUser };
