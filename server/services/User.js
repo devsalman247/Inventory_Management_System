@@ -45,6 +45,17 @@ const authenticateUser = (email, password) => {
 		});
 };
 
+const fetchUsers = () => {
+	return User.find({ role: 0 })
+		.then((users) => {
+			return users;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
+};
+
 const updateUser = (id, user) => {
 	return User.findByIdAndUpdate(id, user, { new: true })
 		.exec()
@@ -74,6 +85,6 @@ const deleteUser = (id) => {
 		});
 };
 
-const UserService = { addUser, authenticateUser, updateUser, deleteUser };
+const UserService = { addUser, authenticateUser, fetchUsers, updateUser, deleteUser };
 
 export default UserService;
