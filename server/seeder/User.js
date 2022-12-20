@@ -4,41 +4,37 @@ async function seedUsers() {
 	const admin = new User({
 		name: "Admin",
 		email: "admin@gmail.com",
-		password: "admin",
+		hash: "admin",
 		role: 1,
 		designation: "Administrator",
 	});
-	admin.hash = password;
 	admin.setPassword();
 
 	const salman = new User({
 		name: "Salman",
 		email: "salman@gmail.com",
-		password: "salman",
+		hash: "salman",
 		role: 0,
 		designation: "Professor",
 	});
-	salman.hash = password;
 	salman.setPassword();
 
 	const ahmad = new User({
 		name: "Ahmad",
 		email: "ahmad@gmail.com",
-		password: "ahmad",
+		hash: "ahmad",
 		role: 0,
 		designation: "Professor",
 	});
-	ahmad.hash = password;
 	ahmad.setPassword();
 
 	const mansoor = new User({
 		name: "Mansoor",
 		email: "mansoor@gmail.com",
-		password: "mansoor",
+		hash: "mansoor",
 		role: 0,
 		designation: "Professor",
 	});
-	mansoor.hash = password;
 	mansoor.setPassword();
 
 	await admin.save().then(async (user) => {
