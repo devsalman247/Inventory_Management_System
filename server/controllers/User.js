@@ -1,14 +1,14 @@
 import UserService from "../services/User.js";
 import { OkResponse, BadRequestResponse, UnauthorizedResponse } from "express-http-response";
 
-const { addUser, authenticateUser, deleteUser } = UserService;
+const { addUser, authenticateUser, updateUser, deleteUser } = UserService;
 
 const UserSignUp = (req, res, next) => {
-	const { name, email, password } = req.body;
-	if (!email || !password || !name) {
+	const { name, email, password, designation } = req.body;
+	if (!email || !password || !name || !designation) {
 		return next(new BadRequestResponse("Please provide all input fields!"));
 	}
-	addUser(name, email, password)
+	addUser(name, email, password, designation)
 		.then((user) => {
 			if (user) {
 				return next(new OkResponse(user));
@@ -28,10 +28,28 @@ const UserLogin = (req, res, next) => {
 	}
 	authenticateUser(email, password)
 		.then((user) => {
+			console.log(user, "auhorized");
 			if (user) {
 				return next(new OkResponse(user));
 			} else {
 				return next(new UnauthorizedResponse("User not found!"));
+			}
+		})
+		.catch((err) => {
+			console.log("Not authorized error occured");
+			return next(new BadRequestResponse(err));
+		});
+};
+
+const UserUpdate = (req, res, next) => {
+	const { id } = req.params;
+	const user = req.body;
+	updateUser(id, user)
+		.then((user) => {
+			if (user) {
+				return next(new OkResponse(user));
+			} else {
+				return next(new BadRequestResponse("User not found!"));
 			}
 		})
 		.catch((err) => {
@@ -57,6 +75,7 @@ const UserDelete = (req, res, next) => {
 const UserController = {
 	UserSignUp,
 	UserLogin,
+	UserUpdate,
 	UserDelete,
 };
 

@@ -1,11 +1,12 @@
 import User from "../models/User.js";
 
-const addUser = (name, email, password) => {
+const addUser = (name, email, password, designation) => {
 	try {
 		const user = new User({
 			name,
 			email,
 			password,
+			designation,
 			requests: [],
 		});
 		user.hash = password;
@@ -14,17 +15,17 @@ const addUser = (name, email, password) => {
 			.save()
 			.then((data) => {
 				if (!data) {
-					return new Error("Failed to create user");
+					throw "Failed to create user";
 				}
 				return user.toAuthJSON();
 			})
 			.catch((err) => {
 				console.log(err);
-				return new Error(err);
+				throw err;
 			});
 	} catch (err) {
 		console.log(err);
-		return new Error(err);
+		throw err;
 	}
 };
 
@@ -32,15 +33,31 @@ const authenticateUser = (email, password) => {
 	return User.findOne({ email })
 		.then((user) => {
 			if (!user) {
-				return new Error("User not found!");
+				throw "User not found!";
 			} else if (!user.validPassword(password)) {
-				return new Error("Invalid password");
+				throw "Invalid password";
 			}
 			return user.toAuthJSON();
 		})
 		.catch((err) => {
 			console.log(err);
-			return new Error(err);
+			throw err;
+		});
+};
+
+const updateUser = (id, user) => {
+	return User.findByIdAndUpdate(id, user, { new: true })
+		.exec()
+		.then((user) => {
+			console.log(user);
+			if (!user) {
+				throw "User not found";
+			}
+			return user;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
 		});
 };
 
@@ -48,16 +65,16 @@ const deleteUser = (id) => {
 	return User.findByIdAndDelete(id)
 		.then((user) => {
 			if (!user) {
-				return new Error("User not found");
+				throw "User not found";
 			}
 			return user;
 		})
 		.catch((err) => {
 			console.log(err);
-			return new Error(err);
+			throw err;
 		});
 };
 
-const UserService = { addUser, authenticateUser, deleteUser };
+const UserService = { addUser, authenticateUser, updateUser, deleteUser };
 
 export default UserService;
