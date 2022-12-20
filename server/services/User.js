@@ -44,6 +44,20 @@ const authenticateUser = (email, password) => {
 		});
 };
 
-const UserService = { addUser, authenticateUser };
+const deleteUser = (id) => {
+	return User.findByIdAndDelete(id)
+		.then((user) => {
+			if (!user) {
+				return new Error("User not found");
+			}
+			return user;
+		})
+		.catch((err) => {
+			console.log(err);
+			return new Error(err);
+		});
+};
+
+const UserService = { addUser, authenticateUser, deleteUser };
 
 export default UserService;
