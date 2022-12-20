@@ -49,7 +49,6 @@ const updateUser = (id, user) => {
 	return User.findByIdAndUpdate(id, user, { new: true })
 		.exec()
 		.then((user) => {
-			console.log(user);
 			if (!user) {
 				throw "User not found";
 			}

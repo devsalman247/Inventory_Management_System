@@ -8,6 +8,9 @@ async function seedUsers() {
 		role: 1,
 		designation: "Administrator",
 	});
+	admin.hash = password;
+	admin.setPassword();
+
 	const salman = new User({
 		name: "Salman",
 		email: "salman@gmail.com",
@@ -15,6 +18,9 @@ async function seedUsers() {
 		role: 0,
 		designation: "Professor",
 	});
+	salman.hash = password;
+	salman.setPassword();
+
 	const ahmad = new User({
 		name: "Ahmad",
 		email: "ahmad@gmail.com",
@@ -22,6 +28,9 @@ async function seedUsers() {
 		role: 0,
 		designation: "Professor",
 	});
+	ahmad.hash = password;
+	ahmad.setPassword();
+
 	const mansoor = new User({
 		name: "Mansoor",
 		email: "mansoor@gmail.com",
@@ -29,6 +38,9 @@ async function seedUsers() {
 		role: 0,
 		designation: "Professor",
 	});
+	mansoor.hash = password;
+	mansoor.setPassword();
+
 	await admin.save().then(async (user) => {
 		if (user) {
 			await salman.save();

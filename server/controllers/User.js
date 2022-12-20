@@ -28,7 +28,6 @@ const UserLogin = (req, res, next) => {
 	}
 	authenticateUser(email, password)
 		.then((user) => {
-			console.log(user, "auhorized");
 			if (user) {
 				return next(new OkResponse(user));
 			} else {
@@ -36,7 +35,6 @@ const UserLogin = (req, res, next) => {
 			}
 		})
 		.catch((err) => {
-			console.log("Not authorized error occured");
 			return next(new BadRequestResponse(err));
 		});
 };
