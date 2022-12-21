@@ -1,7 +1,7 @@
 // import logo from src folder
 import logo from "../logo.png";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -62,7 +62,7 @@ function Login({ setIsLoggedIn }) {
 				.post("http://localhost:5000/user/login", { email, password })
 				.then((res) => {
 					if (res.status === 200) {
-						localStorage.setItem("user", res.data.data.token);
+						localStorage.setItem("user", JSON.stringify(res.data.data));
 						showMessage("Login successful!", "success");
 						setIsLoggedIn(true);
 						return navigateTo("/admin");
@@ -76,6 +76,25 @@ function Login({ setIsLoggedIn }) {
 				});
 		}
 	};
+
+	useEffect(() => {
+		const { token } = JSON.parse(localStorage.getItem("user"));
+		if (token) {
+			axios
+				.get("http://localhost:5000/user/authenticate", {
+					headers: { Authorization: `Token ${token}` },
+				})
+				.then((res) => {
+					if (res.status === 200) {
+						setIsLoggedIn(true);
+						navigateTo("/admin");
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, []);
 
 	return (
 		// main container

@@ -1,9 +1,8 @@
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Admin from "./components/Admin";
-import NoMatch from "./components/NoMatch";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
