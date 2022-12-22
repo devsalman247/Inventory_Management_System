@@ -47,6 +47,7 @@ const authenticateUser = (email, password) => {
 
 const fetchUsers = () => {
 	return User.find({ role: 0 })
+		.select("-hash -salt")
 		.then((users) => {
 			return users;
 		})

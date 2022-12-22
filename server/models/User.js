@@ -70,6 +70,7 @@ UserSchema.methods.generateJWT = function () {
 			id: this.id,
 			name: this.name,
 			designation: this.designation,
+			role: this.role,
 			email: this.email,
 		},
 		secret,
