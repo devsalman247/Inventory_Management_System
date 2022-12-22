@@ -6,15 +6,19 @@ import { useState } from "react";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const token = JSON.parse(localStorage.getItem("user"))?.token;
 
 	return (
 		// main container
 		<div className=" bg-[#F7F7F7] main_container  w-screen h-screen">
 			<Router>
 				<Routes>
-					<Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+					<Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} token={token} />} />
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/admin" element={isLoggedIn ? <Admin setIsLoggedIn={setIsLoggedIn} /> : <Navigate to={"/"} />} />
+					<Route
+						path="/admin"
+						element={isLoggedIn ? <Admin setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+					/>
 					<Route path="*" element={<Navigate to={"/admin"} />} />
 				</Routes>
 			</Router>

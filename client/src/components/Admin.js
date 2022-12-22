@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../logo.png";
 import admin from "..//images/admin.jpg";
+import axios from "axios";
 
-const Admin = ({ setIsLoggedIn }) => {
+const Admin = ({ setIsLoggedIn, token }) => {
+	const [users, setUsers] = useState([]);
+
 	const handleChange = (e) => {
-		console.log(e.target.value);
 		if (e.target.value === "logout") {
 			localStorage.removeItem("user");
 			setIsLoggedIn(false);
 		}
 	};
+
+	const getAllUsers = () => {
+		axios
+			.get("http://localhost:5000/user", {
+				headers: { Authorization: `Token ${token}` },
+			})
+			.then((res) => {
+				console.log(res);
+				setUsers(res.data.data);
+				// setUsers([]);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	useEffect(() => {
+		getAllUsers();
+	}, []);
+
 	return (
 		<div className="w-full h-full bg-[#F7F7F7]">
 			{/* Navbar */}
@@ -132,33 +154,19 @@ const Admin = ({ setIsLoggedIn }) => {
 								</tr>
 							</thead>
 							<tbody>
-								<tr className="text-left">
-									<td className="p-4">Ahmad Shakeel</td>
-									<td className="p-4">Professor</td>
-									<td className="p-4">ahmad123@gmail.com</td>
-								</tr>
-
-								<tr className="text-left">
-									<td className="p-4">Muhammad Salman</td>
-									<td className="p-4">Lecturer</td>
-									<td className="p-4">salman247@gmail.com</td>
-								</tr>
-
-								<tr className="text-left">
-									<td className="p-4">Mansoor Ahmad</td>
-									<td className="p-4">Assistant Professor</td>
-									<td className="p-4">mansoor123@gmail.com</td>
-								</tr>
-								<tr className="text-left">
-									<td className="p-4">Muhammad Idrees</td>
-									<td className="p-4">Professor</td>
-									<td className="p-4">idrees@pucit.edu.pk</td>
-								</tr>
-								<tr className="text-left">
-									<td className="p-4">Ejaz Ashraf</td>
-									<td className="p-4">Assistant Professor</td>
-									<td className="p-4">ejaz@pucit.edu.com</td>
-								</tr>
+								{users.length > 0 ? (
+									users.map((user, index) => {
+										return (
+											<tr className="text-left" key={index}>
+												<td className="p-4">{user.name}</td>
+												<td className="p-4">{user.designation}</td>
+												<td className="p-4">{user.email}</td>
+											</tr>
+										);
+									})
+								) : (
+									<tr className="text-center">No users found!</tr>
+								)}
 							</tbody>
 						</table>
 					</div>

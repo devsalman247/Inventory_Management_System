@@ -5,7 +5,7 @@ import { json, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, token }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordType, setPasswordType] = useState("password");
@@ -78,7 +78,6 @@ function Login({ setIsLoggedIn }) {
 	};
 
 	useEffect(() => {
-		const { token } = JSON.parse(localStorage.getItem("user"));
 		if (token) {
 			axios
 				.get("http://localhost:5000/user/authenticate", {
