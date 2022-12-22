@@ -2,7 +2,14 @@ import React from "react";
 import logo from "../logo.png";
 import admin from "..//images/admin.jpg";
 
-const Admin = () => {
+const Admin = ({ setIsLoggedIn }) => {
+	const handleChange = (e) => {
+		console.log(e.target.value);
+		if (e.target.value === "logout") {
+			localStorage.removeItem("user");
+			setIsLoggedIn(false);
+		}
+	};
 	return (
 		<div className="w-full h-full bg-[#F7F7F7]">
 			{/* Navbar */}
@@ -37,6 +44,7 @@ const Admin = () => {
 						<select
 							name="admin_options"
 							id="admin_options"
+							onChange={(e) => handleChange(e)}
 							className="ml-4 text-white text-md outline-none bg-[#00B4F4]">
 							<option value="Select">Select</option>
 							<option value="profile">Profile</option>
