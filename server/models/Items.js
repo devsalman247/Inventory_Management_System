@@ -12,31 +12,15 @@ const ItemSchema = new mongoose.Schema(
 			required: [true, "is required"],
 			unique: true,
 		},
-		quantity: {
+		stock: {
 			type: Number,
 			default: 0,
 		},
 		issued: [
 			{
-				issuedId: {
-					type: Number,
-					required: [true, "is required."],
-				},
-				quantity: {
-					type: Number,
-				},
-				issuedTo: {
+				id: {
 					type: mongoose.Schema.Types.ObjectId,
-				},
-				issuedDate: {
-					type: String,
-				},
-			},
-		],
-		requests: [
-			{
-				requestedBy: {
-					type: mongoose.Schema.Types.ObjectId,
+					ref: "IssuedItem",
 				},
 				quantity: {
 					type: Number,
@@ -47,6 +31,6 @@ const ItemSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-UserSchema.plugin(uniqueValidator, { message: "is already taken." });
+ItemSchema.plugin(uniqueValidator, { message: "is already taken." });
 
 export default mongoose.model("Item", ItemSchema);

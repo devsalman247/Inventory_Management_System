@@ -31,9 +31,12 @@ const UserSchema = new mongoose.Schema(
 		},
 		requests: [
 			{
-				requestId: {
-					type: mongoose.Schema.Types.ObjectId,
-				},
+				items: [
+					{
+						id: { type: mongoose.Schema.Types.ObjectId },
+						count: { type: Number },
+					},
+				],
 				status: {
 					type: Number,
 					enum: [
