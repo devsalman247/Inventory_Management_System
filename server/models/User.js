@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema(
 					enum: [
 						0, //requested
 						1, //pending
+						2, //filled
 					],
 				},
 			},
