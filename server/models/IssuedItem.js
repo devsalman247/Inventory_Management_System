@@ -5,6 +5,7 @@ const IssuedItem = new mongoose.Schema(
 		issuedId: {
 			type: Number,
 			required: [true, "is required."],
+			unique: true,
 		},
 		issuedTo: {
 			type: mongoose.Schema.Types.ObjectId,

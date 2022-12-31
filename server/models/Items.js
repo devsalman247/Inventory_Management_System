@@ -8,7 +8,7 @@ const ItemSchema = new mongoose.Schema(
 			required: [true, "is required."],
 		},
 		itemId: {
-			type: Number,
+			type: String,
 			required: [true, "is required"],
 			unique: true,
 		},
