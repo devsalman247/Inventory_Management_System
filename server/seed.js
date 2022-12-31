@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import userSeeder from "./seeder/User.js";
+import itemSeeder from "./seeder/Item.js";
+import issueSeeder from "./seeder/Issue.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,6 +20,8 @@ async function init() {
 	console.log("dropping DB");
 	await mongoose.connection.db.dropDatabase();
 	await userSeeder();
+	await itemSeeder();
+	await issueSeeder();
 	exit();
 }
 function exit() {
