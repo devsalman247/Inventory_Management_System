@@ -15,6 +15,7 @@ const IssuedItem = new mongoose.Schema(
 			{
 				id: {
 					type: mongoose.Schema.Types.ObjectId,
+					ref: "Item",
 				},
 				quantity: {
 					type: Number,
