@@ -37,11 +37,21 @@ async function seedUsers() {
 	});
 	mansoor.setPassword();
 
+	const idrees = new User({
+		name: "Idrees",
+		email: "idrees@pucit.edu.com",
+		hash: "idrees",
+		role: 0,
+		designation: "Professor",
+	});
+	idrees.setPassword();
+
 	await admin.save().then(async (user) => {
 		if (user) {
 			await salman.save();
 			await ahmad.save();
 			await mansoor.save();
+			await idrees.save();
 		}
 	});
 }
