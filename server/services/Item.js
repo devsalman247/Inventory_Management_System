@@ -1,4 +1,4 @@
-import Item from "../models/Item.js";
+import Item from "../models/Items.js";
 import IssuedItem from "../models/IssuedItem.js";
 
 // Items Service
