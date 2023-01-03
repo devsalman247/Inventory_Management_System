@@ -2,9 +2,13 @@ import Item from "../models/Items.js";
 import IssuedItem from "../models/IssuedItem.js";
 
 // Items Service
-const createItem = (item) => {
+const createItem = async (item) => {
 	try {
+		let { itemId } = await Item.findOne().sort({ _id: -1 }).select("itemId");
+		itemId = (parseInt(itemId.slice(4)) + 1).toString().padStart(4, "0");
+
 		const newItem = new Item({ ...item });
+		newItem.itemId = `ITM-${itemId}`;
 		return newItem
 			.save()
 			.then((data) => {
@@ -21,6 +25,30 @@ const createItem = (item) => {
 		console.log(err);
 		throw err;
 	}
+};
+
+const updateItem = (id, item) => {
+	return Item.findByIdAndUpdate(id, item, { new: true })
+		.then((item) => {
+			if (!item) throw "Item not found";
+			return item;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
+};
+
+const deleteItem = (id) => {
+	return Item.findByIdAndDelete(id)
+		.then((item) => {
+			if (!item) throw "Item not found";
+			return item;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
 };
 
 const getAllItems = () => {
@@ -106,9 +134,13 @@ const updateIssuedItem = (id, item) => {
 };
 
 const ItemService = {
+	// Items Service
 	createItem,
+	updateItem,
+	deleteItem,
 	getAllItems,
 	getItemById,
+	// Issued Items Service
 	issueItem,
 	getAllIssuedItems,
 	getIssuedItemById,
