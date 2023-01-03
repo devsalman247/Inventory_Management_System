@@ -1,4 +1,5 @@
 import Item from "../models/Items.js";
+import User from "../models/User.js";
 import IssuedItem from "../models/IssuedItem.js";
 import updateItems from "../utils/updateItems.js";
 
@@ -70,6 +71,23 @@ const getItemById = (id) => {
 		.then((item) => {
 			if (!item) throw "Item not found";
 			return item;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
+};
+
+const requestItems = (id, items) => {
+	return User.findById(id)
+		.then(async (user) => {
+			if (!user) throw "User not found";
+			items = items.map((item) => (item.status = 0));
+			user.requests = [...user.requests, { items, filled: 0 }];
+			return await user.save().then((data) => {
+				if (!data) throw "Failed to request items";
+				return data;
+			});
 		})
 		.catch((err) => {
 			console.log(err);
@@ -149,6 +167,7 @@ const ItemService = {
 	deleteItem,
 	getAllItems,
 	getItemById,
+	requestItems,
 	// Issued Items Service
 	issueItem,
 	getAllIssuedItems,

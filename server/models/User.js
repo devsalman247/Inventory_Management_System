@@ -35,16 +35,23 @@ const UserSchema = new mongoose.Schema(
 					{
 						id: { type: mongoose.Schema.Types.ObjectId },
 						count: { type: Number },
+						status: {
+							type: Number,
+							enum: [
+								0, //pending
+								1, //approved
+							],
+						},
 					},
 				],
-				status: {
+				filled: {
 					type: Number,
 					enum: [
-						0, //requested
-						1, //pending
-						2, //filled
+						0, // Not filled
+						1, // Filled
 					],
 				},
+				requestDate: { type: Date },
 			},
 		],
 		hash: {

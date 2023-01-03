@@ -7,6 +7,7 @@ const {
 	deleteItem,
 	getAllItems,
 	getItemById,
+	requestItems,
 	issueItem,
 	getAllIssuedItems,
 	getIssuedItemById,
@@ -71,6 +72,17 @@ const ItemDelete = async (req, res, next) => {
 		});
 };
 
+const ItemRequest = async (req, res, next) => {
+	const items = req.body;
+	requestItems(req.user.id, items)
+		.then((isRequestSent) => {
+			if (isRequestSent) return next(new OkResponse("Request sent successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
 const ItemIssue = async (req, res, next) => {
 	const item = req.body;
 	issueItem(item)
@@ -112,6 +124,7 @@ const ItemController = {
 	ItemCreate,
 	ItemUpdate,
 	ItemDelete,
+	ItemRequest,
 	// Issued Items Controller
 	ItemIssue,
 	ItemGetAllIssued,

@@ -1,7 +1,7 @@
 import UserService from "../services/User.js";
 import { OkResponse, BadRequestResponse, UnauthorizedResponse } from "express-http-response";
 
-const { addUser, authenticateUser, fetchUsers, updateUser, deleteUser } = UserService;
+const { addUser, authenticateUser, getUserById, fetchUsers, updateUser, deleteUser } = UserService;
 
 const UserSignUp = (req, res, next) => {
 	const { name, email, password, designation } = req.body;
@@ -45,6 +45,20 @@ const UserProfile = (req, res, next) => {
 	} else {
 		return next(new UnauthorizedResponse("User not authorized!"));
 	}
+};
+
+const UserGetById = (req, res, next) => {
+	getUserById(req.params.id)
+		.then((user) => {
+			if (user) {
+				return next(new OkResponse(user));
+			} else {
+				return next(new BadRequestResponse("User not found!"));
+			}
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
 };
 
 const UserFetchAll = (req, res, next) => {
@@ -92,6 +106,7 @@ const UserController = {
 	UserSignUp,
 	UserLogin,
 	UserProfile,
+	UserGetById,
 	UserFetchAll,
 	UserUpdate,
 	UserDelete,

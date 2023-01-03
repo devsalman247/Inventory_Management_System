@@ -57,6 +57,21 @@ const fetchUsers = () => {
 		});
 };
 
+const getUserById = (id) => {
+	return User.findById(id)
+		.select("-hash -salt")
+		.then((user) => {
+			if (!user) {
+				throw "User not found";
+			}
+			return user;
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
+};
+
 const updateUser = (id, user) => {
 	return User.findByIdAndUpdate(id, user, { new: true })
 		.exec()
@@ -86,6 +101,6 @@ const deleteUser = (id) => {
 		});
 };
 
-const UserService = { addUser, authenticateUser, fetchUsers, updateUser, deleteUser };
+const UserService = { addUser, authenticateUser, fetchUsers, getUserById, updateUser, deleteUser };
 
 export default UserService;

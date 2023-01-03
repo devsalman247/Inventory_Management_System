@@ -9,6 +9,7 @@ const {
 	ItemCreate,
 	ItemUpdate,
 	ItemDelete,
+	ItemRequest,
 	ItemIssue,
 	ItemGetAllIssued,
 	ItemGetIssuedById,
@@ -28,6 +29,7 @@ router.put("/issued/:id", isAdmin, ItemUpdateIssued);
 router.get("/", ItemGetAll);
 router.get("/:id", ItemGetById);
 router.post("/", isAdmin, ItemCreate);
+router.post("/request", ItemRequest);
 router.put("/:id", isAdmin, ItemUpdate);
 router.delete("/:id", isAdmin, ItemDelete);
 
