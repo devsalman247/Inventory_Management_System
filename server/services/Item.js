@@ -82,7 +82,9 @@ const requestItems = (id, items) => {
 	return User.findById(id)
 		.then(async (user) => {
 			if (!user) throw "User not found";
-			items = items.map((item) => (item.status = 0));
+			items = items.map((item) => {
+				return { ...item, status: 0 };
+			});
 			user.requests = [...user.requests, { items, filled: 0 }];
 			return await user.save().then((data) => {
 				if (!data) throw "Failed to request items";
