@@ -1,7 +1,7 @@
 import UserService from "../services/User.js";
 import { OkResponse, BadRequestResponse, UnauthorizedResponse } from "express-http-response";
 
-const { addUser, authenticateUser, updateUser, deleteUser } = UserService;
+const { addUser, authenticateUser, fetchUsers, updateUser, deleteUser } = UserService;
 
 const UserSignUp = (req, res, next) => {
 	const { name, email, password, designation } = req.body;
@@ -33,6 +33,16 @@ const UserLogin = (req, res, next) => {
 			} else {
 				return next(new UnauthorizedResponse("User not found!"));
 			}
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
+const UserFetchAll = (req, res, next) => {
+	fetchUsers()
+		.then((users) => {
+			return next(new OkResponse(users));
 		})
 		.catch((err) => {
 			return next(new BadRequestResponse(err));
@@ -73,6 +83,7 @@ const UserDelete = (req, res, next) => {
 const UserController = {
 	UserSignUp,
 	UserLogin,
+	UserFetchAll,
 	UserUpdate,
 	UserDelete,
 };

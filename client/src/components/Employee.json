@@ -1,0 +1,32 @@
+[
+  {
+    "first name": "Ahmad",
+    "last name": "Shakeel",
+    "designation": "Professor",
+    "email": "ahmad123@gmail.com"
+  },
+  {
+    "first name": "Muhammad",
+    "last name": "Salman",
+    "designation": "Lecturer",
+    "email": "salman247@gmail.com"
+  },
+  {
+    "first name": "Mansoor",
+    "last name": "Ahmad",
+    "designation": "Assistant Professor",
+    "email": "mansoor123@gmail.com"
+  },
+  {
+    "first name": "Muhammad",
+    "last name": "Idrees",
+    "designation": "Professor",
+    "email": "idrees@pucit.edu.pk"
+  },
+  {
+    "first name": "Ejaz",
+    "last name": "Ashraf",
+    "designation": "Assistant Professor",
+    "email": "ejaz@pucit.edu.pk"
+  }
+]
