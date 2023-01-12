@@ -98,7 +98,7 @@ const requestItems = (id, items) => {
 };
 
 // Issued Items Service
-const issueItem = async (item) => {
+const issueItem = async (item, reqId) => {
 	try {
 		// get the last item in the database and increment the issuedId
 		let { issuedId } = await IssuedItem.findOne().sort({ _id: -1 }).select("issuedId");
@@ -111,7 +111,7 @@ const issueItem = async (item) => {
 					throw "Failed to create item";
 				}
 				// update the items in the database
-				await updateItems.borrowItem(data.id, data.items);
+				await updateItems.borrowItem(data, reqId);
 				return data;
 			})
 			.catch((err) => {

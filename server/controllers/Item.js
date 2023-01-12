@@ -84,8 +84,8 @@ const ItemRequest = async (req, res, next) => {
 };
 
 const ItemIssue = async (req, res, next) => {
-	const item = req.body;
-	issueItem(item)
+	const { reqId, item } = req.body;
+	issueItem(item, reqId)
 		.then((item) => {
 			return next(new OkResponse(item));
 		})
