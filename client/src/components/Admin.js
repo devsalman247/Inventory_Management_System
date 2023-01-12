@@ -69,7 +69,6 @@ export const Admin = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* Check if the filteredData is empty,display the whole array else display only filtered Data */}
                                 {dataItem.length === 0 ? data.map((item) => {
                                     return (
                                         <tr className='text-left'>
