@@ -31,16 +31,27 @@ const UserSchema = new mongoose.Schema(
 		},
 		requests: [
 			{
-				requestId: {
-					type: mongoose.Schema.Types.ObjectId,
-				},
-				status: {
+				items: [
+					{
+						id: { type: mongoose.Schema.Types.ObjectId },
+						count: { type: Number },
+						status: {
+							type: Number,
+							enum: [
+								0, //pending
+								1, //approved
+							],
+						},
+					},
+				],
+				filled: {
 					type: Number,
 					enum: [
-						0, //requested
-						1, //pending
+						0, // Not filled
+						1, // Filled
 					],
 				},
+				requestDate: { type: Date },
 			},
 		],
 		hash: {
@@ -69,6 +80,8 @@ UserSchema.methods.generateJWT = function () {
 		{
 			id: this.id,
 			name: this.name,
+			designation: this.designation,
+			role: this.role,
 			email: this.email,
 		},
 		secret,

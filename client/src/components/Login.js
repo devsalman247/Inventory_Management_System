@@ -1,12 +1,15 @@
 // import logo from src folder
 import logo from "../logo.png";
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { json, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-function Login()
-{
-    const [password, setPassword] = useState('password');
-    const [passIcon, setPassIcon] = useState('fa-eye-slash');
+function Login({ setIsLoggedIn, token }) {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordType, setPasswordType] = useState("password");
+	const [passIcon, setPassIcon] = useState("fa-eye-slash");
 
     const showPassword = () => {
         if (password === 'password') {
@@ -35,22 +38,33 @@ function Login()
                     <input type={password} placeholder="Password" className="password p-4 outline-none w-[90%] h-[40px] border-2 border-gray-300 rounded-md" required
                     />
 
-                    <span className=" password_span cursor-pointer absolute top-[415px] right-[470px] text-slate-600 " onClick={() => showPassword()}><i className={`fas ${passIcon}`}></i></span>
+					<span
+						className=" password_span cursor-pointer absolute top-[415px] right-[470px] text-slate-600 "
+						onClick={() => showPassword()}>
+						<i className={`fas ${passIcon}`}></i>
+					</span>
 
-                    <button className="h-1/4 text-lg font-semibold bg-blue-500 text-white rounded-md w-[90%] relative top-8 "
+					<button
+						className="h-1/4 text-lg font-semibold bg-blue-500 text-white rounded-md w-[90%] relative top-8 "
                         onClick={() => history('/admin')}
-                    >Login</button>
+                    
+						onClick={handleLogin}>
+						Login
+					</button>
 
-                    {/* don't have an account */}
-                    <div className="relative top-10 text-md text-slate-600 ">
-                        <p>Don't have an account? <span className="text-blue-500 font-semibold cursor-pointer"
-                            onClick={() => history('/signup')}
-                        >Sign Up</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ); 
+					{/* don't have an account */}
+					<div className="relative top-10 text-md text-slate-600 ">
+						<p>
+							Don't have an account?{" "}
+							<span className="text-blue-500 font-semibold cursor-pointer" onClick={() => navigateTo("/signup")}>
+								Sign Up
+							</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default Login;
