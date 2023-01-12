@@ -46,9 +46,9 @@ function Login({ setIsLoggedIn, token }) {
 
 					<button
 						className="h-1/4 text-lg font-semibold bg-blue-500 text-white rounded-md w-[90%] relative top-8 "
-                        onClick={() => history('/admin')}
+                        onClick={() => history('/admin')}>
                     
-						onClick={handleLogin}>
+						{/* // onClick={handleLogin}> */}
 						Login
 					</button>
 
@@ -56,7 +56,9 @@ function Login({ setIsLoggedIn, token }) {
 					<div className="relative top-10 text-md text-slate-600 ">
 						<p>
 							Don't have an account?{" "}
-							<span className="text-blue-500 font-semibold cursor-pointer" onClick={() => navigateTo("/signup")}>
+							<span className="text-blue-500 font-semibold cursor-pointer"
+								// onClick={() => navigateTo("/signup")}
+							>
 								Sign Up
 							</span>
 						</p>
