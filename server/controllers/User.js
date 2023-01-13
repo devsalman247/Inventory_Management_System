@@ -39,6 +39,14 @@ const UserLogin = (req, res, next) => {
 		});
 };
 
+const UserProfile = (req, res, next) => {
+	if (req.user) {
+		return next(new OkResponse(req.user));
+	} else {
+		return next(new UnauthorizedResponse("User not authorized!"));
+	}
+};
+
 const UserFetchAll = (req, res, next) => {
 	fetchUsers()
 		.then((users) => {
@@ -83,6 +91,7 @@ const UserDelete = (req, res, next) => {
 const UserController = {
 	UserSignUp,
 	UserLogin,
+	UserProfile,
 	UserFetchAll,
 	UserUpdate,
 	UserDelete,
