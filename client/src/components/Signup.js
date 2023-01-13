@@ -1,6 +1,6 @@
 import logo from "../logo.png";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
 	const [password, setPassword] = useState("password");
@@ -14,11 +14,10 @@ function Signup() {
 			setPassword("password");
 			setPassIcon("fa-eye-slash");
 		}
-    };
-    
-    // useHistory hook for redirecting to another page
-    const history = useNavigate();
+	};
 
+	// useHistory hook for redirecting to another page
+	const history = useNavigate();
 
 	return (
 		// main container
@@ -74,9 +73,13 @@ function Signup() {
 					{/* Have an account */}
 					<div className="relative top-4 text-md text-slate-600">
 						<p>
-                            Already have an account? <span className="text-blue-500 font-semibold cursor-pointer"
-                                // on Click Login go to Login page
-                                onClick={() => history('/')} >Login</span>
+							Already have an account?
+							<span
+								className="text-blue-500 font-semibold cursor-pointer"
+								// on Click Login go to Login page
+								onClick={() => history("/")}>
+								Login
+							</span>
 						</p>
 					</div>
 				</div>
