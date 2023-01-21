@@ -7,9 +7,9 @@ export const Navbar = () => {
         <>
 
             {/* Navbar */}
-            <div className='navbar flex items-center   w-full h-16 bg-[#00B4F4] shadow-md'>
+            <div className='navbar flex items-center   w-screen h-16 bg-[#00B4F4] shadow-md'>
                 {/* left */}
-                <div className='w-1/4 h-full flex items-center justify-center ml-20'>
+                <div className='w-1/4 h-full flex items-center justify-center ml-12'>
                     <img src={logo} className="w-12 App-logo" alt="logo" />
                     <h4 className=' ml-8' >
                         <span className='text-white text-xl'>
