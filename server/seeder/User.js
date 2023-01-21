@@ -3,7 +3,7 @@ import User from "../models/User.js";
 async function seedUsers() {
 	const admin = new User({
 		name: "Admin",
-		email: "admin@gmail.com",
+		email: "admin@pucit.edu.pk",
 		hash: "admin",
 		role: 1,
 		designation: "Administrator",
@@ -12,16 +12,16 @@ async function seedUsers() {
 
 	const salman = new User({
 		name: "Salman",
-		email: "salman@gmail.com",
+		email: "salman@pucit.edu.pk",
 		hash: "salman",
 		role: 0,
-		designation: "Professor",
+		designation: "Lecturer",
 	});
 	salman.setPassword();
 
 	const ahmad = new User({
 		name: "Ahmad",
-		email: "ahmad@gmail.com",
+		email: "ahmad@pucit.edu.pk",
 		hash: "ahmad",
 		role: 0,
 		designation: "Professor",
@@ -30,16 +30,16 @@ async function seedUsers() {
 
 	const mansoor = new User({
 		name: "Mansoor",
-		email: "mansoor@gmail.com",
+		email: "mansoor@pucit.edu.pk",
 		hash: "mansoor",
 		role: 0,
-		designation: "Professor",
+		designation: "Lecturer",
 	});
 	mansoor.setPassword();
 
 	const idrees = new User({
 		name: "Idrees",
-		email: "idrees@pucit.edu.com",
+		email: "idrees@pucit.edu.pk",
 		hash: "idrees",
 		role: 0,
 		designation: "Professor",
