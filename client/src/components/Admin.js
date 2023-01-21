@@ -7,13 +7,13 @@ import axios from "axios";
 const { REACT_APP_SERVER_URL } = process.env;
 
 export const Admin = () => {
-	const [dataItem, setDataItem] = useState(data);
+	const [filteredUsers, setFilteredUsers] = useState(data);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
 	const [users, setUsers] = useState([]);
 
 	// get Checked filters
-	const getCheckedFilters = () => {
+	const filterUsers = () => {
 		const checkedFilters = [];
 		const filters = document.querySelectorAll('input[type="checkbox"]');
 		filters.forEach((filter) => {
@@ -21,27 +21,23 @@ export const Admin = () => {
 				checkedFilters.push(filter.value);
 			}
 		});
-		console.log(checkedFilters);
 		// Now filter the data and set accordng to the checked boxes
 		if (checkedFilters.length > 0) {
-			const filteredData = data.filter((item) => {
-				if (checkedFilters.includes(item.designation)) {
-					return item;
-				}
-			});
-			setDataItem(filteredData);
+			const filteredData = users.filter((user) => checkedFilters.includes(user.designation));
+			setFilteredUsers(filteredData);
+		} else {
+			setFilteredUsers([]);
 		}
 		return checkedFilters;
 	};
 
-	const showData = () => {
-		const filteredData = data.filter((item) => {
-			if (item.fname + " " + item.lname === searchItem && item.designation === designation) {
-				return item;
+	const searchUser = () => {
+		const filteredData = users.filter((user) => {
+			if (user.name.toLowerCase() === searchItem.toLowerCase() && user.designation === designation) {
+				return user;
 			}
 		});
-		console.log(filteredData);
-		setDataItem(filteredData);
+		filteredData.length > 0 ? setFilteredUsers(filteredData) : setFilteredUsers([]);
 	};
 
 	const fetchUsers = () => {
@@ -92,7 +88,7 @@ export const Admin = () => {
 							<option value="Lecturer">Lecturer</option>
 						</select>
 
-						<button className="bg-[#00B4F4] text-white py-4 px-32 mt-8 ml-4 rounded-lg" onClick={showData}>
+						<button className="bg-[#00B4F4] text-white py-4 px-32 mt-8 ml-4 rounded-lg" onClick={searchUser}>
 							Search
 						</button>
 					</div>
@@ -121,7 +117,7 @@ export const Admin = () => {
 					<button
 						className="bg-[#00B4F4] absolute top-[265px] right-[460px] text-white py-2 px-4 mt-8 ml-12 rounded-lg"
 						onClick={() => {
-							getCheckedFilters();
+							filterUsers();
 						}}>
 						Apply
 					</button>
@@ -137,16 +133,25 @@ export const Admin = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{users.length > 0 &&
-									users.map((user) => {
-										return (
-											<tr className="text-left">
-												<td className="px-4 py-3">{user.name}</td>
-												<td className="px-4 py-3">{user.designation}</td>
-												<td className="px-4 py-3">{user.email}</td>
-											</tr>
-										);
-									})}
+								{filteredUsers.length === 0
+									? users.map((user) => {
+											return (
+												<tr className="text-left">
+													<td className="px-4 py-3">{user.name}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">{user.email}</td>
+												</tr>
+											);
+									  })
+									: filteredUsers.map((user) => {
+											return (
+												<tr className="text-left">
+													<td className="px-4 py-3">{user.name}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">{user.email}</td>
+												</tr>
+											);
+									  })}
 							</tbody>
 						</table>
 					</div>
