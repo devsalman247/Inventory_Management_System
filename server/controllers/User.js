@@ -39,6 +39,24 @@ const UserLogin = (req, res, next) => {
 		});
 };
 
+const UserAdd = (req, res, next) => {
+	const { name, email, password, designation } = req.body;
+	if (!email || !password || !name || !designation) {
+		return next(new BadRequestResponse("Please provide all input fields!"));
+	}
+	addUser(name, email, password, designation)
+		.then((user) => {
+			if (user) {
+				return next(new OkResponse(user));
+			} else {
+				return next(new BadRequestResponse("Something went wrong.Try again!!"));
+			}
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
 const UserProfile = (req, res, next) => {
 	if (req.user) {
 		return next(new OkResponse(req.user));
@@ -91,6 +109,7 @@ const UserDelete = (req, res, next) => {
 const UserController = {
 	UserSignUp,
 	UserLogin,
+	UserAdd,
 	UserProfile,
 	UserFetchAll,
 	UserUpdate,
