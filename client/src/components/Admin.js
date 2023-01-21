@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
-import data from "./Employee.json";
-import { getToken } from "../context_store";
 import axios from "axios";
 const { REACT_APP_SERVER_URL } = process.env;
 
 export const Admin = () => {
-	const [filteredUsers, setFilteredUsers] = useState(data);
+	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
 	const [users, setUsers] = useState([]);
@@ -133,25 +131,26 @@ export const Admin = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{filteredUsers.length === 0
-									? users.map((user) => {
-											return (
-												<tr className="text-left">
-													<td className="px-4 py-3">{user.name}</td>
-													<td className="px-4 py-3">{user.designation}</td>
-													<td className="px-4 py-3">{user.email}</td>
-												</tr>
-											);
-									  })
-									: filteredUsers.map((user) => {
-											return (
-												<tr className="text-left">
-													<td className="px-4 py-3">{user.name}</td>
-													<td className="px-4 py-3">{user.designation}</td>
-													<td className="px-4 py-3">{user.email}</td>
-												</tr>
-											);
-									  })}
+								{users.length > 0 &&
+									(filteredUsers.length === 0
+										? users.map((user) => {
+												return (
+													<tr className="text-left">
+														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3">{user.designation}</td>
+														<td className="px-4 py-3">{user.email}</td>
+													</tr>
+												);
+										  })
+										: filteredUsers.map((user) => {
+												return (
+													<tr className="text-left">
+														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3">{user.designation}</td>
+														<td className="px-4 py-3">{user.email}</td>
+													</tr>
+												);
+										  }))}
 							</tbody>
 						</table>
 					</div>
