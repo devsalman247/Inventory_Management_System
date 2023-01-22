@@ -78,7 +78,7 @@ export const AddEmployee = () => {
 						</label>
 						<input
 							type="text"
-							placeholder="Muhammad Salman"
+							placeholder="Enter your name"
 							onChange={(e) => changeEmployeeInfo(e)}
 							className="px-2 py-2 mx-4 outline-none rounded-lg "
 						/>
