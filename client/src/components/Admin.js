@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import axios from "axios";
-const { REACT_APP_SERVER_URL } = process.env;
+const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 export const Admin = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);

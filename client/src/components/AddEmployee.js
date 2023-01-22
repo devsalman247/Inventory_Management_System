@@ -3,7 +3,7 @@ import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import axios from "axios";
 import Swal from "sweetalert2";
-const { REACT_APP_SERVER_URL } = process.env;
+const { REACT_APP_SERVER_URL } = "http://localhost:5000";
 
 export const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });

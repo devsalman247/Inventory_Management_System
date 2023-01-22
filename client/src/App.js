@@ -4,6 +4,7 @@ import Signup from "./components/Signup";
 import { Admin } from "./components/Admin";
 import { AddEmployee } from "./components/AddEmployee";
 import { UpdateEmployee } from "./components/UpdateEmployee";
+import { DeleteEmployee } from "./components/DeleteEmployee";
 import { AddItem } from "./components/AddItem";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context_store";
@@ -41,6 +42,7 @@ function App() {
 						/>
 						<Route path="/add_employee" element={<AddEmployee />} />
 						<Route path="/update_employee" element={<UpdateEmployee />} />
+						<Route path="/delete_employee" element={<DeleteEmployee />} />
 						<Route path="/add_item" element={<AddItem />} />
 					</Routes>
 				</Router>
