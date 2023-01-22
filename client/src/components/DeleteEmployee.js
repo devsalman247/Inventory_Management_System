@@ -133,8 +133,8 @@ export const DeleteEmployee = () => {
 
           {/* Display data in the form of table*/}
           <div className="main_table flex flex-col  mt-8">
-            <table className="w-[800px] bg-white shadow-md rounded-lg">
-              <thead className="bg-[#00B4F4] w-[800px] text-white text-center ">
+            <table className="w-[780px] bg-white shadow-md rounded-lg mr-40 ">
+              <thead className="bg-[#00B4F4] w-[240px] text-white text-center ">
                 <tr className="text-left">
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Designation</th>
