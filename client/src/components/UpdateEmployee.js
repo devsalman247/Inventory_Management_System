@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
+import Modal from "./Modal"
 import axios from "axios";
 const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 export const UpdateEmployee = () => {
 
-
+  const [userId, setUserId] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchItem, setSearchItem] = useState("");
   const [designation, setDesignation] = useState("");
   const [users, setUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   // get Checked filters
   const filterUsers = () => {
@@ -54,13 +56,9 @@ export const UpdateEmployee = () => {
   }, []);
 
 
-  const updateUser = (id) => {
-    alert(id);
-  };
-
   const editUser = (e) => {
     e.preventDefault();
-    alert("Edit Button Clicked");
+    setShowModal(true);
   }
 
   return (
@@ -156,16 +154,10 @@ export const UpdateEmployee = () => {
 
                             {/* Edit */}
                             <button className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4"
-                              onClick={editUser}
-                            >
-                              Edit
-                            </button>
-
-                            {/* Update */}
-                            <button className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg"
-
-                              onClick={() => {
-                                updateUser(user._id);
+                              // fat arrow function to pass the id of the user to be edited
+                              onClick={(e) => {
+                                editUser(e);
+                                setUserId(user._id);
                               }}
                             >
                               Update
@@ -186,24 +178,16 @@ export const UpdateEmployee = () => {
                             <button className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4"
                               onClick={editUser}
                             >
-                              Edit
-                            </button>
-
-                            {/* Update */}
-                            <button className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg"
-
-                              onClick={() => {
-                                updateUser(user._id);
-                              }}
-                            >
                               Update
                             </button>
+
                           </td>
                         </tr>
                       );
                     }))}
               </tbody>
             </table>
+            {showModal && <Modal setShowModal={setShowModal} users={users} userId={userId}  />}
           </div>
         </div>
       </div>
