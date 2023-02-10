@@ -46,13 +46,13 @@ export const UpdateItem = () => {
                         onClick={updateItem}
                         className="hover:text-[#00B4F4]"
                       >
-                        <i className="fas fa-edit">Update</i>
+                        Update
+                        <i className=" pl-3 fas fa-edit"></i>
                       </button>
                     </td>
                   </tr>
                 );
               })}
-
             </tbody>
           </table>
 
