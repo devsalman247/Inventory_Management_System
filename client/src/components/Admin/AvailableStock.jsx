@@ -13,7 +13,7 @@ export const AvailableStock = () => {
 
 
   return (
-    <div>
+    <div className='flex flex-col' >
       <Navbar />
       <div className="flex w-full h-full">
         <Sidebar />
