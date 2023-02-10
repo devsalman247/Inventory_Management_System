@@ -1,28 +1,22 @@
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-// <<<<<<< HEAD
-// import { Admin } from "./components/Admin";
-// import { AddEmployee } from "./components/AddEmployee";
-// import { UpdateEmployee } from "./components/UpdateEmployee";
-// import { DeleteEmployee } from "./components/DeleteEmployee";
-// import { AddItem } from "./components/AddItem";
-// import { AvailableStock } from "./components/AvailableStock";
-// import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-// =======
+
 import { Admin } from "./components/Admin/Admin";
 import { AddEmployee } from "./components/Admin/AddEmployee";
 import { UpdateEmployee } from "./components/Admin/UpdateEmployee";
 import { DeleteEmployee } from "./components/Admin/DeleteEmployee";
 import { AddItem } from "./components/Admin/AddItem";
 import { AvailableStock } from "./components/Admin/AvailableStock";
+import { UpdateItem } from "./components/Admin/UpdateItem";
+import DeleteItem from "./components/Admin/DeleteItem";
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-// >>>>>>> ca28007e35a5d5fa36d494e212a234573ad65c95
 import { AuthContext } from "./context_store";
 import axios from "axios";
 
@@ -37,14 +31,10 @@ function App() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       } else {
         axios.defaults.headers.common["Authorization"] = null;
-        /*if setting null does not remove `Authorization` header then try     
-				delete axios.defaults.headers.common['Authorization'];
-				*/
       }
     })();
   }, []);
 
-// <<<<<<< HEAD
 	return (
 		// main container
 		<div className=" bg-[#F7F7F7] main_container  w-screen h-screen">
@@ -62,6 +52,8 @@ function App() {
 						<Route path="/delete_employee" element={<DeleteEmployee />} />
 						<Route path="/add_item" element={<AddItem />} />
 						<Route path="/available_stock" element={<AvailableStock />} />
+						<Route path="/update_item" element={<UpdateItem />} />
+						<Route path="/delete_item" element={<DeleteItem />} />
 					</Routes>
 				</Router>
 			</AuthContext.Provider>

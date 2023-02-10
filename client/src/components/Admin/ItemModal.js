@@ -1,0 +1,90 @@
+import React from 'react'
+
+const ItemModal = ({ setShowModal }) => {
+    const onCancle = () => {
+        setShowModal(false);
+    }
+
+
+    return (
+        <div className="modal-overlay   bg-slate-300 rounded-md absolute left-72 top-[82px] shadow-lg
+        border-2 border-gray-300
+        transition-all duration-800 ease-in-out
+        
+        ">
+            <div className="modal-content">
+                <form className='w-[1020px] h-[550px] flex flex-col' >
+                    {/* Item ID */}
+                    <input
+                        type="number"
+                        placeholder="Enter Item ID"
+                        autoComplete="off"
+                        className="py-4 p-2 outline-none mt-12
+                        focus:outline-blue-400
+                        rounded-md
+                        bg-white
+                        ml-8
+                        mr-8
+                        "
+                    />
+
+                    {/* Item name */}
+                    <input
+                        type="text"
+                        placeholder="Enter Item Name"
+                        autoComplete="off"
+                        className="py-4 p-2 outline-none mt-12
+                        focus:outline-blue-400
+                        rounded-md
+                        bg-white
+                        ml-8
+                        mr-8
+                        "
+                    />
+
+                    {/* Item ID */}
+                    <input
+                        type="number"
+                        placeholder="Enter Item Quantity"
+                        autoComplete="off"
+                        className="py-4 p-2 outline-none mt-12
+                        focus:outline-blue-400
+                        rounded-md
+                        bg-white
+                        ml-8
+                        mr-8
+                        "
+                    />
+
+
+
+                    <button type="submit"
+                        className='py-4 p-2 outline-none mt-12 
+                        text-black 
+                        border-2 border-blue-100
+                        rounded-md
+                        ml-8
+                        mr-8
+                        w-[200px] self-center
+                        hover:bg-blue-400
+                        transition-all duration-300 ease-in-out
+                        hover:text-white
+                        '
+                    >Update</button>
+
+                    <div className="absolute top-0 right-0 mt-2 mr-4 cursor-pointer "
+                        onClick={onCancle}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    );
+
+}
+
+export default ItemModal
