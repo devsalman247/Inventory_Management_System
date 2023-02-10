@@ -10,8 +10,6 @@ function Modal({ setShowModal, users, userId }) {
         setShowModal(false);
     }
 
-    // now we need to get the user data from the users array
-    // and set the values of the input fields
     
     useEffect(() => {
         const user = users.find(user => user._id === userId);

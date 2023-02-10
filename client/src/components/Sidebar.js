@@ -12,7 +12,7 @@ export const Sidebar = () => {
                     >
                         {/* show all employees */}
                         <i className="fas fa-users mr-4"></i>
-                        <span>All Employees</span>
+                        <span> All Employees</span>
                     </li>
 
                     <li className='mt-10 cursor-pointer '
@@ -40,12 +40,21 @@ export const Sidebar = () => {
                         <span>Delete Employee</span>
                     </li>
 
-                    {/* Add Item */}
+                    {/* Available Stock */}
                     <li className='mt-10 cursor-pointer '
-                    onClick={() => navigate('/add_item')}
+                    onClick={() => navigate('/available_stock')}
                     >
+                        <i className="fas fa-box-open mr-4"></i>
+                        <span>Available Stock</span>
+                    </li>
+
+                    {/* Available Stock */}
+                    <li className='mt-10 cursor-pointer '
+                        onClick={() => navigate('/add_item')}
+                    >
+                        {/* class for available stock */}
                         <i className="fas fa-plus mr-4"></i>
-                        <span>Add Item</span>
+                        <span> Add Item</span>
                     </li>
 
                     {/* Update Item */}

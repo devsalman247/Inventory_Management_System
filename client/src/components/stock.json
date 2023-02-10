@@ -1,0 +1,52 @@
+[
+    {
+        "id" : "1",
+        "name" : "Chair",
+        "quantity" : "100"
+    },
+    {
+        "id" : "2",
+        "name" : "Table",
+        "quantity" : "50"
+    },
+    {
+        "id" : "3",
+        "name" : "Board Marker",
+        "quantity" : "20"
+    },
+    {
+        "id" : "4",
+        "name" : "Pen",
+        "quantity" : "100"
+    },
+    {
+        "id" : "5",
+        "name" : "Pencil",
+        "quantity" : "100"
+    },
+    {
+        "id" : "6",
+        "name" : "Stapler",
+        "quantity" : "100"
+    },
+    {
+        "id" : "7",
+        "name" : "Staples",
+        "quantity" : "100"
+    },
+    {
+        "id" : "8",
+        "name" : "Tape",
+        "quantity" : "100"
+    },
+    {
+        "id" : "9",
+        "name" : "Notebook",
+        "quantity" : "100"
+    },
+    {
+        "id" : "10",
+        "name" : "Paper",
+        "quantity" : "100"
+    }
+]

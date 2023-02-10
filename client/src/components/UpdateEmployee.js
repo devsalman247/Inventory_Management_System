@@ -34,12 +34,11 @@ export const UpdateEmployee = () => {
   };
 
   const searchUser = () => {
-    const filteredData = users.filter((user) => {
-      if (user.name.toLowerCase() === searchItem.toLowerCase() && user.designation === designation) {
-        return user;
-      }
-    });
-    filteredData.length > 0 ? setFilteredUsers(filteredData) : setFilteredUsers([]);
+    const filteredData = users.filter((user) =>
+      user.name.toLowerCase().includes(searchItem.toLowerCase())
+    );
+    setFilteredUsers(filteredData);
+    return filteredData;
   };
 
   const fetchUsers = () => {

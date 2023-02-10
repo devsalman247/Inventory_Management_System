@@ -6,6 +6,7 @@ import { AddEmployee } from "./components/AddEmployee";
 import { UpdateEmployee } from "./components/UpdateEmployee";
 import { DeleteEmployee } from "./components/DeleteEmployee";
 import { AddItem } from "./components/AddItem";
+import { AvailableStock } from "./components/AvailableStock";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context_store";
 import axios from "axios";
@@ -44,6 +45,7 @@ function App() {
 						<Route path="/update_employee" element={<UpdateEmployee />} />
 						<Route path="/delete_employee" element={<DeleteEmployee />} />
 						<Route path="/add_item" element={<AddItem />} />
+						<Route path="/available_stock" element={<AvailableStock />} />
 					</Routes>
 				</Router>
 			</AuthContext.Provider>

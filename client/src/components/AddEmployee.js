@@ -67,11 +67,13 @@ export const AddEmployee = () => {
 			<Navbar />
 
 			<div className="flex">
-				<Sidebar />
+				<div>
+					<Sidebar />
+				</div>
 
 				{/* Add Employee */}
 				<div className="flex flex-col items-center justify-center w-full h-full">
-					<form className=" flex flex-col mt-8 w-[900px] h-[530px] bg-slate-200 rounded-md shadow-md">
+					<form className=" flex flex-col mt-8 w-[1000px] h-[500px] bg-slate-200 rounded-md shadow-md">
 						{/* first name */}
 						<label htmlFor="firstname" className="w-full px-4 py-2 font-semibold ">
 							Full Name
@@ -80,32 +82,39 @@ export const AddEmployee = () => {
 							type="text"
 							placeholder="Enter your name"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg "
+							className="px-2 py-2 mx-4 outline-none rounded-lg
+							focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
+							"
 						/>
 
 						{/* email */}
-						<label htmlFor="email" className="w-full px-4 py-2 font-semibold">
+						<label htmlFor="email" className="w-full mt-4 px-4 py-2 font-semibold">
 							Email
 						</label>
 						<input
 							type="email"
 							placeholder="Enter your mail"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg "
+							className="px-2 py-2 mx-4 outline-none rounded-lg 
+														focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
+
+							"
 						/>
 
-						<label htmlFor="email" className="w-full px-4 py-2 font-semibold">
+						<label htmlFor="email" className="w-full mt-4 px-4 py-2 font-semibold">
 							Password
 						</label>
 						<input
 							type="password"
 							placeholder="Set password"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg "
+							className="px-2 py-2 mx-4 outline-none rounded-lg 
+														focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
+"
 						/>
 
 						{/* address */}
-						<label htmlFor="address" className="w-full px-4 py-2 font-semibold">
+						<label htmlFor="address" className="w-full mt-4 px-4 py-2 font-semibold">
 							Designation
 						</label>
 						<select
@@ -121,7 +130,7 @@ export const AddEmployee = () => {
 						{/* Submit Button */}
 						<button
 							onClick={(e) => addEmployee(e)}
-							className="w-1/4 px-4 py-2 mx-auto mt-4 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600">
+							className="w-1/4 px-4 py-2 mx-auto mt-12 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600">
 							Add Employee
 						</button>
 					</form>
