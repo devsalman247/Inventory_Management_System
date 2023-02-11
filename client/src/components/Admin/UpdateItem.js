@@ -4,17 +4,34 @@ import { useState, useEffect } from 'react'
 import { Navbar } from './Navbar'
 import Stock from './stock.json'
 import  ItemModal  from './ItemModal'
-
+import axios from "axios";
+const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 export const UpdateItem = () => {
-  const [data, setData] = useState(Stock);
-  const [id, setId] = useState("");
+  const [stock, setStock] = useState([])
+  const [selectedItem, setSelectedItem] = useState(null)
   const [showModal, setShowModal] = useState(false);
 
-
-  function updateItem() {
-    setShowModal(true);
+  const getItems = () => {
+    axios
+			.get(`${REACT_APP_SERVER_URL}/item`)
+			.then((res) => {
+				if (res.status === 200) {
+          // console.log(res.data.data)
+          setStock(res.data.data)
+        };
+			})
+			.catch((err) => console.log(err));
   }
+
+  function updateItem(item) {
+    setShowModal(true);
+    setSelectedItem(item)
+  }
+
+  useEffect(() => {
+    getItems()
+  }, [])
 
   return (
     <div className='flex flex-col' >
@@ -35,15 +52,15 @@ export const UpdateItem = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => {
+              {stock.map((item) => {
                 return (
                   <tr className="text-left">
-                    <td className="px-4 py-3" id="name" >{item.id}</td>
+                    <td className="px-4 py-3" id="name" >{parseInt(item.itemId.split("-")[1])}</td>
                     <td className="px-4 py-3">{item.name}</td>
-                    <td className="px-4 py-3">{item.quantity}</td>
+                    <td className="px-4 py-3">{item.stock}</td>
                     <td className="px-4 py-3">
                       <button
-                        onClick={updateItem}
+                        onClick={() => updateItem(item)}
                         className="hover:text-[#00B4F4]"
                       >
                         Update
@@ -56,9 +73,7 @@ export const UpdateItem = () => {
             </tbody>
           </table>
 
-          {showModal && <ItemModal setShowModal={setShowModal} />}
-
-
+          {showModal && <ItemModal setShowModal={setShowModal} item={selectedItem} getItems={getItems}/>}
         </div>
       </div>
     </div>

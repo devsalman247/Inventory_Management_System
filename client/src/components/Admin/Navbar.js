@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import logo from "../../logo.png";
-import admin from "../../images/admin.jpg";
+import admin from "../../images/admin.jpeg";
 import { AuthContext } from "../../context_store";
 
 export const Navbar = () => {
