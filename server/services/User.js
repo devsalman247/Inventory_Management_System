@@ -57,13 +57,25 @@ const fetchUsers = () => {
 };
 
 const updateUser = (id, user) => {
-	return User.findByIdAndUpdate(id, user, { new: true })
-		.exec()
-		.then((user) => {
-			if (!user) {
+	return User.findById(id)
+		.then((userToUpdate) => {
+			if (!userToUpdate) {
 				throw "User not found";
 			}
-			return user;
+			if(user.name) userToUpdate.name = user.name
+			if(user.email) userToUpdate.email = user.email
+			if(user.designation) userToUpdate.designation = user.designation
+			if(user.password) {
+				userToUpdate.hash = user.password
+				userToUpdate.setPassword() 
+			}
+			return userToUpdate.save().then(user => {
+				if(!user) throw "User cannot be updated!!"
+				return user
+			}).catch((err) => {
+				console.log(err);
+				throw err;
+			}) 
 		})
 		.catch((err) => {
 			console.log(err);

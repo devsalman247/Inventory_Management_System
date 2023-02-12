@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import axios from "axios";
+import Swal from "sweetalert2";
 const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 export const DeleteEmployee = () => {
@@ -48,20 +49,51 @@ export const DeleteEmployee = () => {
       .catch((err) => console.log(err));
   };
 
+  const showMessage = (message, type) => {
+		Swal.fire({
+			toast: true,
+			icon: type,
+			title: message,
+			position: "bottom",
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.addEventListener("mouseenter", Swal.stopTimer);
+				toast.addEventListener("mouseleave", Swal.resumeTimer);
+			},
+		});
+	};
+  
+  const deleteUser = (id) => {
+    Swal.fire({
+      title: `Are you sure to delete this user?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${REACT_APP_SERVER_URL}/user/${id}`)
+          .then((res) => {
+            if (res.status === 200) {
+              showMessage("User has been deleted successfully!", "success");
+              fetchUsers();
+            }
+          })
+          .catch((err) => {
+            showMessage("Failed to delete user!", "error");
+            console.log(err)
+        });
+      }
+    });
+    
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
-
-
-  const deleteUser = (id) => {
-    axios.delete(`${REACT_APP_SERVER_URL}/user/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          fetchUsers();
-        }
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div className="w-full h-full bg-[#F7F7F7]">

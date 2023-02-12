@@ -3,12 +3,26 @@ import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 import Stock from './stock.json'
 import { useState, useEffect } from 'react'
+import axios from "axios";
+const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 export const AvailableStock = () => {
-  // console.log(Stock)
   const [stock, setStock] = useState([])
+
+  const getItems = () => {
+    axios
+			.get(`${REACT_APP_SERVER_URL}/item`)
+			.then((res) => {
+				if (res.status === 200) {
+          // console.log(res.data.data)
+          setStock(res.data.data)
+        };
+			})
+			.catch((err) => console.log(err));
+  }
+
   useEffect(() => {
-    setStock(Stock)
+    getItems()
   }, [])
 
 
@@ -32,9 +46,9 @@ export const AvailableStock = () => {
               {stock.map((item) => {
                 return (
                   <tr className="text-left">
-                    <td className="px-4 py-3" id="name" >{item.id}</td>
+                    <td className="px-4 py-3" id="name" >{parseInt(item.itemId.split("-")[1])}</td>
                     <td className="px-4 py-3">{item.name}</td>
-                    <td className="px-4 py-3">{item.quantity}</td>
+                    <td className="px-4 py-3">{item.stock}</td>
                   </tr>
                 );
               })}

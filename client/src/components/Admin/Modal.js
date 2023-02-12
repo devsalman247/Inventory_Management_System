@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import axios from "axios";
+import Swal from "sweetalert2";
+const REACT_APP_SERVER_URL = "http://localhost:5000";
 
 function Modal({ setShowModal, users, userId }) {
     const [inputValue, setInputValue] = useState('');
@@ -8,6 +11,47 @@ function Modal({ setShowModal, users, userId }) {
 
     const onCancle = () => {
         setShowModal(false);
+    }
+
+    const showMessage = (message, type) => {
+		Swal.fire({
+			toast: true,
+			icon: type,
+			title: message,
+			position: "bottom",
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			didOpen: (toast) => {
+				toast.addEventListener("mouseenter", Swal.stopTimer);
+				toast.addEventListener("mouseleave", Swal.resumeTimer);
+			},
+		});
+	};
+
+    const updateEmployee = (e) => {
+        e.preventDefault();
+        axios
+            .put(`${REACT_APP_SERVER_URL}/user/${userId}`, {
+                name: inputValue,
+                email: emailValue,
+                password: passwordValue,
+                designation: designationValue,
+            })
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res.data.data);
+                    showMessage("User has been updated successfully!", "success");
+                }
+            })
+            .catch((err) => {
+                // if (err.response?.data?.message === "ValidationError: email: is already taken.") {
+                //     showMessage("User already exists with same email address!", "error");
+                // } else {
+                    showMessage("Failed to update user!", "error");
+                // }
+                console.log(err);
+            });
     }
 
     
@@ -86,7 +130,7 @@ function Modal({ setShowModal, users, userId }) {
                         <option value="Assistant Professor">Assistant Professor</option>
                         <option value="Lecturer">Lecturer</option>
                     </select>
-                    <button type="submit"
+                    <button onClick={(e) => updateEmployee(e)} type="submit"
                         className='py-4 p-2 outline-none mt-12 
                         bg-slate-300
                         text-black 
