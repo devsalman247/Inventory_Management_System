@@ -59,6 +59,15 @@ export const Sidebar = () => {
 
                     {/* Update Item */}
                     <li className='mt-10 cursor-pointer'
+                        onClick={() => navigate('/assign_item')}
+                    >
+                        <i className="fas fa-clipboard-list mr-4"></i>
+                        <span>Assign Items</span>
+                    </li>
+
+
+                    {/* Update Item */}
+                    <li className='mt-10 cursor-pointer'
                     onClick={() => navigate('/update_item')}
                     >
                         <i className="fas fa-edit mr-4"></i>

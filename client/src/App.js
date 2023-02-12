@@ -15,6 +15,7 @@ import User from "./components/User/User";
 import AllItems from "./components/User/AllItems";
 import SendRequest from "./components/User/SendRequest";
 import PrintReport from "./components/User/PrintReport";
+import AssignItem from "./components/Admin/AssignItem";
 
 import {
   BrowserRouter as Router,
@@ -64,6 +65,7 @@ function App() {
 						<Route path="/all_items" element={<AllItems />} />
 						<Route path="/send_request" element={<SendRequest />} />
 						<Route path="/print_report" element={<PrintReport />} />
+						<Route path="/assign_item" element={<AssignItem />} />
 					</Routes>
 				</Router>
 			</AuthContext.Provider>
