@@ -10,6 +10,11 @@ import { AddItem } from "./components/Admin/AddItem";
 import { AvailableStock } from "./components/Admin/AvailableStock";
 import { UpdateItem } from "./components/Admin/UpdateItem";
 import DeleteItem from "./components/Admin/DeleteItem";
+import Profile from "./components/Admin/Profile";
+import User from "./components/User/User";
+import AllItems from "./components/User/AllItems";
+import SendRequest from "./components/User/SendRequest";
+import PrintReport from "./components/User/PrintReport";
 
 import {
   BrowserRouter as Router,
@@ -54,6 +59,11 @@ function App() {
 						<Route path="/available_stock" element={<AvailableStock />} />
 						<Route path="/update_item" element={<UpdateItem />} />
 						<Route path="/delete_item" element={<DeleteItem />} />
+						<Route path="/profile" element={<Profile />} />
+						<Route path="/user" element={<User />} />
+						<Route path="/all_items" element={<AllItems />} />
+						<Route path="/send_request" element={<SendRequest />} />
+						<Route path="/print_report" element={<PrintReport />} />
 					</Routes>
 				</Router>
 			</AuthContext.Provider>

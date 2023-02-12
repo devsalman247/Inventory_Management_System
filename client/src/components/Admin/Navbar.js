@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import logo from "../../logo.png";
 import admin from "../../images/admin.jpg";
 import { AuthContext } from "../../context_store";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  let navigate = useNavigate(); 
   const { setIsLoggedIn } = useContext(AuthContext);
 
   const logout = () => {
@@ -13,6 +15,9 @@ export const Navbar = () => {
 
   const handleChange = (e) => {
     if (e.target.value === "logout") logout();
+    else if (e.target.value === "Home") navigate("/admin");
+    else if (e.target.value === "profile") navigate("/profile");
+    else if (e.target.value === "setting") navigate("/setting");
   };
 
   return (
@@ -56,7 +61,7 @@ export const Navbar = () => {
               onChange={(e) => handleChange(e)}
               className="ml-4 text-white text-md outline-none bg-[#00B4F4]"
             >
-              <option value="Select">Select</option>
+              <option value="Home">Home</option>
               <option value="profile">Profile</option>
               <option value="setting">Setting</option>
               <option value="logout">Logout</option>
