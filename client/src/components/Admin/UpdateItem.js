@@ -2,7 +2,6 @@ import React from 'react'
 import { Sidebar } from './Sidebar'
 import { useState, useEffect } from 'react'
 import { Navbar } from './Navbar'
-import Stock from './stock.json'
 import  ItemModal  from './ItemModal'
 import axios from "axios";
 const REACT_APP_SERVER_URL = "http://localhost:5000";

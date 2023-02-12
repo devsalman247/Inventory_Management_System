@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from "axios";
 import Swal from "sweetalert2";
 const REACT_APP_SERVER_URL = "http://localhost:5000";
