@@ -41,6 +41,11 @@ export const UpdateItem = () => {
 
         {/* Display data in the form of table*/}
         <div className="main_table flex flex-col mt-4 ">
+          <div className="main_top relative left-12 mb-10 ">
+            <h1 className=" mt-8  font-semibold text-xl">Update Items</h1>
+            <p className="">Dashboard</p>
+          </div>
+
           <table className="w-[780px] bg-white shadow-md rounded-lg ml-12 ">
             <thead className="bg-[#00B4F4] w-[240px] text-white text-center ">
               <tr className="text-left">
@@ -55,7 +60,23 @@ export const UpdateItem = () => {
                 return (
                   <tr className="text-left">
                     <td className="px-4 py-3" id="name" >{parseInt(item.itemId.split("-")[1])}</td>
-                    <td className="px-4 py-3">{item.name}</td>
+                    <td className="px-4 py-3">
+                      {
+                        item.name === "Chair" ? <i className="fas fa-chair mr-4 text-2xl "></i> : null
+                      }
+                      {
+                        item.name === "Table" ? <i className="fas fa-table mr-4 text-2xl "></i> : null
+                      }
+                      {
+                        item.name === "PC" ? <i className="fas fa-desktop mr-4 text-2xl "></i> : null
+                      }
+                      {
+                        item.name === "Printer" ? <i className="fas fa-print mr-4 text-2xl "></i> : null
+                      }
+                      {
+                        item.name === "Sofa" ? <i className="fas fa-couch mr-4 text-2xl "></i> : null
+                      }
+                      {item.name}</td>
                     <td className="px-4 py-3">{item.stock}</td>
                     <td className="px-4 py-3">
                       <button

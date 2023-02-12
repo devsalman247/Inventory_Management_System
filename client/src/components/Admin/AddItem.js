@@ -65,9 +65,16 @@ export const AddItem = () => {
                     <Sidebar />
                 </div>
 
+                
+
                 {/* Add Item */}
                 <div className="flex flex-col items-center justify-center w-full h-full">
-                    <form className=" flex flex-col mt-8 w-[1000px] h-[400px] bg-slate-200 rounded-md shadow-md">
+                    <div className="main_top relative left-[-430px] mb-1  ">
+                        <h1 className=" mt-8  font-semibold text-xl">Avaiable Stock</h1>
+                        <p className="">Dashboard</p>
+                    </div>
+
+                    <form className=" flex flex-col mt-8 w-[1000px] h-[330px] bg-slate-200 rounded-md shadow-md">
                         {/* item id */}
                         {/* <label htmlFor="itemID" className="w-full px-4 py-2 font-semibold ">
                             Item ID
