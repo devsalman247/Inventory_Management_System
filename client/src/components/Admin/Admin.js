@@ -39,8 +39,13 @@ export const Admin = () => {
 	};
 
 	const fetchUsers = () => {
+		const token = JSON.parse(localStorage.getItem("user"))?.token;
 		axios
-			.get(`${REACT_APP_SERVER_URL}/user`)
+			.get(`${REACT_APP_SERVER_URL}/user`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
 			.then((res) => {
 				if (res.status === 200) setUsers(res.data.data);
 			})
