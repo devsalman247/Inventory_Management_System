@@ -17,29 +17,24 @@ import SendRequest from "./components/User/SendRequest";
 import PrintReport from "./components/User/PrintReport";
 import AssignItem from "./components/Admin/AssignItem";
 
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context_store";
 import axios from "axios";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const token = JSON.parse(localStorage.getItem("user"))?.token;
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const token = JSON.parse(localStorage.getItem("user"))?.token;
 
-  useEffect(() => {
-    (function () {
-      const token = JSON.parse(localStorage.getItem("user"))?.token;
-      if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      } else {
-        axios.defaults.headers.common["Authorization"] = null;
-      }
-    })();
-  }, []);
+	useEffect(() => {
+		(function () {
+			const token = JSON.parse(localStorage.getItem("user"))?.token;
+			if (token) {
+				axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+			} else {
+				axios.defaults.headers.common["Authorization"] = null;
+			}
+		})();
+	}, []);
 
 	return (
 		// main container
@@ -53,19 +48,64 @@ function App() {
 							path="/admin"
 							element={isLoggedIn ? <Admin setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
 						/>
-						<Route path="/add_employee" element={<AddEmployee />} />
-						<Route path="/update_employee" element={<UpdateEmployee />} />
-						<Route path="/delete_employee" element={<DeleteEmployee />} />
-						<Route path="/add_item" element={<AddItem />} />
-						<Route path="/available_stock" element={<AvailableStock />} />
-						<Route path="/update_item" element={<UpdateItem />} />
-						<Route path="/delete_item" element={<DeleteItem />} />
-						<Route path="/profile" element={<Profile />} />
-						<Route path="/user" element={<User />} />
-						<Route path="/all_items" element={<AllItems />} />
-						<Route path="/send_request" element={<SendRequest />} />
-						<Route path="/print_report" element={<PrintReport />} />
-						<Route path="/assign_item" element={<AssignItem />} />
+						<Route
+							path="/add_employee"
+							element={isLoggedIn ? <AddEmployee setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/update_employee"
+							element={
+								isLoggedIn ? <UpdateEmployee setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />
+							}
+						/>
+						<Route
+							path="/delete_employee"
+							element={
+								isLoggedIn ? <DeleteEmployee setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />
+							}
+						/>
+						<Route
+							path="/add_item"
+							element={isLoggedIn ? <AddItem setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/available_stock"
+							element={
+								isLoggedIn ? <AvailableStock setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />
+							}
+						/>
+						<Route
+							path="/update_item"
+							element={isLoggedIn ? <UpdateItem setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/delete_item"
+							element={isLoggedIn ? <DeleteItem setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/profile"
+							element={isLoggedIn ? <Profile setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/user"
+							element={isLoggedIn ? <User setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/all_items"
+							element={isLoggedIn ? <AllItems setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/send_request"
+							element={isLoggedIn ? <SendRequest setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/print_report"
+							element={isLoggedIn ? <PrintReport setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
+						<Route
+							path="/assign_item"
+							element={isLoggedIn ? <AssignItem setIsLoggedIn={setIsLoggedIn} token={token} /> : <Navigate to={"/"} />}
+						/>
 					</Routes>
 				</Router>
 			</AuthContext.Provider>
