@@ -16,9 +16,9 @@ export const Navbar = () => {
 
 	const handleChange = (e) => {
 		if (e.target.value === "logout") logout();
-		else if (e.target.value === "Home") navigate("/admin");
-		else if (e.target.value === "profile") navigate("/profile");
-		else if (e.target.value === "setting") navigate("/setting");
+		// else if (e.target.value === "Home") navigate("/admin");
+		// else if (e.target.value === "profile") navigate("/profile");
+		// else if (e.target.value === "setting") navigate("/setting");
 	};
 
 	return (
