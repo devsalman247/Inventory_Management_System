@@ -1,6 +1,6 @@
 import { Router } from "express";
-import UserConroller from "../controllers/User.js";
-import UserAuth from "../middlewares/Auth.js";
+import UserConroller from "../../controllers/User.js";
+import UserAuth from "../../middlewares/Auth.js";
 
 const router = Router();
 const { UserSignUp, UserLogin, UserAdd, UserProfile, UserFetchAll, UserDelete, UserUpdate } = UserConroller;

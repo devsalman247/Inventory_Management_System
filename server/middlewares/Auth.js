@@ -23,7 +23,7 @@ const verifyToken = function (req, res, next) {
 };
 
 const isAdmin = function (req, res, next) {
-	if (req.user.role === 1) {
+	if (req.user.role === "admin") {
 		next();
 	} else {
 		res.status(400).send({ error: { message: "Only admin has this permission." } });

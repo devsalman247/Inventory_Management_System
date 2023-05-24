@@ -1,11 +1,15 @@
 // import logo from src folder
 import logo from "../logo.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Swal from "sweetalert2";
+import http from "../api";
+import { AuthContext, setAuth } from "../context_store";
 
-function Login({ setIsLoggedIn, token }) {
+function Login() {
+	const authContext = useContext(AuthContext);
+	const { setIsLoggedIn, setLoggedInUser } = authContext;
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordType, setPasswordType] = useState("password");
@@ -58,14 +62,13 @@ function Login({ setIsLoggedIn, token }) {
 			showMessage("Please enter password...!", "error");
 			return;
 		} else {
-			axios
-				.post("http://localhost:5000/user/login", { email, password })
+			http
+				.post("/user/login", { email, password })
 				.then((res) => {
 					if (res.status === 200) {
-						localStorage.setItem("user", JSON.stringify(res.data.data));
+						setAuth(res.data.data, { setIsLoggedIn, setLoggedInUser });
 						showMessage("Login successful!", "success");
-						setIsLoggedIn(true);
-						if (res.data.data?.role === 1) return navigateTo("/admin");
+						if (res.data.data?.role === "admin") return navigateTo("/admin");
 						return navigateTo("/all_items");
 					} else {
 						showMessage("Login failed...!", "error");
@@ -79,23 +82,8 @@ function Login({ setIsLoggedIn, token }) {
 		}
 	};
 
-	useEffect(() => {
-		if (token) {
-			axios
-				.get("http://localhost:5000/user/authenticate", {
-					headers: { Authorization: `Token ${token}` },
-				})
-				.then((res) => {
-					if (res.status === 200) {
-						setIsLoggedIn(true);
-						navigateTo("/admin");
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		}
-	}, []);
+	// useEffect(() => {
+	// }, []);
 
 	return (
 		// main container
