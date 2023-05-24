@@ -97,4 +97,15 @@ UserSchema.methods.toAuthJSON = function () {
 	};
 };
 
+UserSchema.methods.toJSON = function () {
+	return {
+		_id: this._id,
+		name: this.name,
+		email: this.email,
+		role: this.role,
+		designation: this.designation,
+		requests: this.requests,
+	};
+};
+
 export default mongoose.model("User", UserSchema);

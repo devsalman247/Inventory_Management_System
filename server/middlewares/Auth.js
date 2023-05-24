@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import env from "../config/env/index.js";
 import { OkResponse, BadRequestResponse, UnauthorizedResponse } from "express-http-response";
+import User from "../models/User.js";
 
 const verifyToken = function (req, res, next) {
 	const { authorization } = req.headers;
@@ -13,8 +14,12 @@ const verifyToken = function (req, res, next) {
 			if (error) {
 				next(new UnauthorizedResponse("Invalid Token"));
 			} else {
-				req.user = data;
-				next();
+				User.findById(data.id)
+					.then((user) => {
+						req.user = user;
+						next();
+					})
+					.catch((err) => next(new UnauthorizedResponse("Something went wrong while authenticating user!")));
 			}
 		});
 	} else {

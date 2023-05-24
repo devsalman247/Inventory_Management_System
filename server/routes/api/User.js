@@ -10,7 +10,7 @@ router.post("/signup", UserSignUp);
 router.post("/login", UserLogin);
 router.post("/add", verifyToken, isAdmin, UserAdd);
 router.get("/", verifyToken, isAdmin, UserFetchAll);
-router.get("/authenticate", verifyToken, UserProfile);
+router.get("/context", verifyToken, UserProfile);
 router.delete("/:id", verifyToken, isAdmin, UserDelete);
 router.put("/:id", verifyToken, isAdmin, UserUpdate);
 

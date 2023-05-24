@@ -33,14 +33,13 @@ function App() {
 				.get("/user/context")
 				.then((res) => {
 					setAuth(res.data.data, { setIsLoggedIn, setLoggedInUser });
-					// if (res.data.data?.role === "admin") {
-					// 	console.log(location.pathname);
-					// 	if (location.pathname === "/") {
-					// 		navigate("/admin/drops");
-					// 	} else {
-					// 		navigate(location.pathname);
-					// 	}
-					// }
+					if (res.data.data?.role === "admin") {
+						if (location.pathname === "/") {
+							navigate("/admin");
+						} else {
+							navigate(location.pathname);
+						}
+					}
 				})
 				.catch((err) => purgeAuth({ setIsLoggedIn, setLoggedInUser }));
 		}
