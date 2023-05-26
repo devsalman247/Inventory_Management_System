@@ -73,6 +73,7 @@ function App() {
 							<Route path="/delete_employee" element={<DeleteEmployee />} />
 						</>
 					)}
+					{/* User Routes */}
 					{loggedInUser && loggedInUser.role === "user" && (
 						<>
 							<Route path="/profile" element={<Profile />} />
@@ -80,6 +81,7 @@ function App() {
 							<Route path="/user/request" element={<Request />} />
 						</>
 					)}
+					{/* Store Keeper Routes */}
 					{loggedInUser && loggedInUser.role === "store-keeper" && (
 						<>
 							<Route path="/store" element={<Store />} />
