@@ -5,7 +5,7 @@ import { Navbar } from "./Navbar";
 import ItemModal from "./ItemModal";
 import http from "../../api";
 
-export const UpdateItem = () => {
+const UpdateItem = () => {
 	const [stock, setStock] = useState([]);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -87,3 +87,5 @@ export const UpdateItem = () => {
 		</div>
 	);
 };
+
+export default UpdateItem;

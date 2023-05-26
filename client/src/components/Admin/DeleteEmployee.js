@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
 
-export const DeleteEmployee = () => {
+const DeleteEmployee = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
@@ -217,3 +217,5 @@ export const DeleteEmployee = () => {
 		</div>
 	);
 };
+
+export default DeleteEmployee;

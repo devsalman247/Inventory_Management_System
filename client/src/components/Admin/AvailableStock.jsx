@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 import { useState, useEffect } from "react";
 import http from "../../api";
 
-export const AvailableStock = () => {
+const AvailableStock = () => {
 	const [stock, setStock] = useState([]);
 
 	const getItems = () => {
@@ -70,3 +70,5 @@ export const AvailableStock = () => {
 		</div>
 	);
 };
+
+export default AvailableStock;

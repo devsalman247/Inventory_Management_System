@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 import Modal from "./Modal";
 import http from "../../api";
 
-export const UpdateEmployee = () => {
+const UpdateEmployee = () => {
 	const [userId, setUserId] = useState("");
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
@@ -185,3 +185,5 @@ export const UpdateEmployee = () => {
 		</div>
 	);
 };
+
+export default UpdateEmployee;

@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
 
-export const AddEmployee = () => {
+const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });
 
 	const showMessage = (message, type) => {
@@ -138,3 +138,5 @@ export const AddEmployee = () => {
 		</div>
 	);
 };
+
+export default AddEmployee;

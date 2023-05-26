@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
 
-export const AddItem = () => {
+const AddItem = () => {
 	const [itemName, setItemName] = useState("");
 	const [itemQuantity, setItemQuantity] = useState(0);
 
@@ -128,3 +128,5 @@ export const AddItem = () => {
 		</div>
 	);
 };
+
+export default AddItem;

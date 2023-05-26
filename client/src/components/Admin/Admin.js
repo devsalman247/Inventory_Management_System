@@ -3,7 +3,7 @@ import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import http from "../../api";
 
-export const Admin = () => {
+const Admin = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
@@ -159,3 +159,5 @@ export const Admin = () => {
 		</div>
 	);
 };
+
+export default Admin;

@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-
-import { Admin } from "./components/Admin/Admin";
-import { AddEmployee } from "./components/Admin/AddEmployee";
-import { UpdateEmployee } from "./components/Admin/UpdateEmployee";
-import { DeleteEmployee } from "./components/Admin/DeleteEmployee";
-import { AddItem } from "./components/Admin/AddItem";
-import { AvailableStock } from "./components/Admin/AvailableStock";
-import { UpdateItem } from "./components/Admin/UpdateItem";
-import DeleteItem from "./components/Admin/DeleteItem";
-import Profile from "./components/Admin/Profile";
-import User from "./components/User/User";
-import AllItems from "./components/User/AllItems";
-import SendRequest from "./components/User/SendRequest";
-import PrintReport from "./components/User/PrintReport";
-import AssignItem from "./components/Admin/AssignItem";
+import {
+	Login,
+	Admin,
+	AddEmployee,
+	UpdateEmployee,
+	DeleteEmployee,
+	User,
+	Profile,
+	AvailableStock,
+	AllItems,
+	AddItem,
+	UpdateItem,
+	DeleteItem,
+	AssignItem,
+	SendRequest,
+	PrintReport,
+} from "./components";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext, purgeAuth, setAuth } from "./context_store";
@@ -51,7 +51,6 @@ function App() {
 			<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }}>
 				<Routes>
 					<Route path="/" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
 					{/* Admin Routes */}
 					{loggedInUser && loggedInUser.role === "admin" && (
 						<>

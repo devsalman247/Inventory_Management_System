@@ -14,6 +14,7 @@ async function seedUsers() {
 		name: "Salman",
 		email: "salman@pucit.edu.pk",
 		hash: "salman",
+		role: "store-keeper",
 		designation: "Lecturer",
 	});
 	salman.setPassword();
