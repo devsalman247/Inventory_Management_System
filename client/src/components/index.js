@@ -1,5 +1,19 @@
 export { default as Login } from "./Login";
+
 export { default as Admin } from "./Admin/Admin";
+
+export { default as AdminDashboard } from "./Admin";
+export { default as ManageUsers } from "./Admin/ManageUsers";
+export { default as Requests } from "./Admin/Requests";
+export { default as Settings } from "./Admin/Settings";
+
+export { default as UserDashboard } from "./User";
+export { default as Request } from "./User/Request";
+
+export { default as Store } from "./StoreKeeper";
+export { default as Inventory } from "./StoreKeeper/Inventory";
+export { default as RequestsStore } from "./StoreKeeper/Requests";
+
 export { default as AddEmployee } from "./Admin/AddEmployee";
 export { default as UpdateEmployee } from "./Admin/UpdateEmployee";
 export { default as DeleteEmployee } from "./Admin/DeleteEmployee";
