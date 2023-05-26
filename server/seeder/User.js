@@ -5,7 +5,7 @@ async function seedUsers() {
 		name: "Admin",
 		email: "admin@pucit.edu.pk",
 		hash: "admin",
-		role: 1,
+		role: "admin",
 		designation: "Administrator",
 	});
 	admin.setPassword();
@@ -14,7 +14,7 @@ async function seedUsers() {
 		name: "Salman",
 		email: "salman@pucit.edu.pk",
 		hash: "salman",
-		role: 0,
+		role: "store-keeper",
 		designation: "Lecturer",
 	});
 	salman.setPassword();
@@ -23,7 +23,6 @@ async function seedUsers() {
 		name: "Ahmad",
 		email: "ahmad@pucit.edu.pk",
 		hash: "ahmad",
-		role: 0,
 		designation: "Professor",
 	});
 	ahmad.setPassword();
@@ -32,7 +31,6 @@ async function seedUsers() {
 		name: "Mansoor",
 		email: "mansoor@pucit.edu.pk",
 		hash: "mansoor",
-		role: 0,
 		designation: "Lecturer",
 	});
 	mansoor.setPassword();
@@ -41,7 +39,6 @@ async function seedUsers() {
 		name: "Idrees",
 		email: "idrees@pucit.edu.pk",
 		hash: "idrees",
-		role: 0,
 		designation: "Professor",
 	});
 	idrees.setPassword();

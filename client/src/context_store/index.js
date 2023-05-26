@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import http from "../api";
 
 const AuthContext = createContext();
 
@@ -10,15 +11,11 @@ const removeToken = () => {
 	window.localStorage.removeItem("token");
 };
 
-const getToken = () => {
-	const user = window.localStorage.getItem("user");
-	return user?.token;
-};
-
 const setAuth = (user, context) => {
 	setToken(user.token);
 	context.setIsLoggedIn(true);
 	context.setLoggedInUser(user);
+	http.refreshToken();
 };
 
 const purgeAuth = (context) => {
@@ -27,4 +24,4 @@ const purgeAuth = (context) => {
 	context.setLoggedInUser(null);
 };
 
-export { AuthContext, setAuth, purgeAuth, getToken };
+export { AuthContext, setAuth, purgeAuth };

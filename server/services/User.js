@@ -46,7 +46,7 @@ const authenticateUser = (email, password) => {
 };
 
 const fetchUsers = () => {
-	return User.find({ role: 0 })
+	return User.find({ role: "user" })
 		.then((users) => {
 			return users;
 		})
@@ -62,20 +62,23 @@ const updateUser = (id, user) => {
 			if (!userToUpdate) {
 				throw "User not found";
 			}
-			if(user.name) userToUpdate.name = user.name
-			if(user.email) userToUpdate.email = user.email
-			if(user.designation) userToUpdate.designation = user.designation
-			if(user.password) {
-				userToUpdate.hash = user.password
-				userToUpdate.setPassword() 
+			if (user.name) userToUpdate.name = user.name;
+			if (user.email) userToUpdate.email = user.email;
+			if (user.designation) userToUpdate.designation = user.designation;
+			if (user.password) {
+				userToUpdate.hash = user.password;
+				userToUpdate.setPassword();
 			}
-			return userToUpdate.save().then(user => {
-				if(!user) throw "User cannot be updated!!"
-				return user
-			}).catch((err) => {
-				console.log(err);
-				throw err;
-			}) 
+			return userToUpdate
+				.save()
+				.then((user) => {
+					if (!user) throw "User cannot be updated!!";
+					return user;
+				})
+				.catch((err) => {
+					console.log(err);
+					throw err;
+				});
 		})
 		.catch((err) => {
 			console.log(err);

@@ -19,12 +19,9 @@ const UserSchema = new mongoose.Schema(
 			match: [/\S+@\S+\.\S+/, "is invalid"],
 		},
 		role: {
-			type: Number,
-			default: 0,
-			enum: [
-				0, // User
-				1, // Admin
-			],
+			type: String,
+			enum: ["admin", "store-keeper", "user"],
+			default: "user",
 		},
 		designation: {
 			type: String,
@@ -97,6 +94,17 @@ UserSchema.methods.toAuthJSON = function () {
 		role: this.role,
 		designation: this.designation,
 		token: this.generateJWT(),
+	};
+};
+
+UserSchema.methods.toJSON = function () {
+	return {
+		_id: this._id,
+		name: this.name,
+		email: this.email,
+		role: this.role,
+		designation: this.designation,
+		requests: this.requests,
 	};
 };
 

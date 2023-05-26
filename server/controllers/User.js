@@ -59,7 +59,7 @@ const UserAdd = (req, res, next) => {
 
 const UserProfile = (req, res, next) => {
 	if (req.user) {
-		return next(new OkResponse(req.user));
+		return next(new OkResponse(req.user.toAuthJSON()));
 	} else {
 		return next(new UnauthorizedResponse("User not authorized!"));
 	}

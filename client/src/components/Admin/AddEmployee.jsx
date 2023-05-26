@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
-import axios from "axios";
 import Swal from "sweetalert2";
-const REACT_APP_SERVER_URL = "http://localhost:5000";
+import http from "../../api";
 
-export const AddEmployee = () => {
+const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });
 
 	const showMessage = (message, type) => {
@@ -43,8 +42,8 @@ export const AddEmployee = () => {
 			showMessage("Please fill all required fields", "error");
 			return;
 		} else {
-			axios
-				.post(`${REACT_APP_SERVER_URL}/user/add`, employee.current)
+			http
+				.post(`/user/add`, employee.current)
 				.then((res) => {
 					if (res.status === 200) {
 						console.log(res.data.data);
@@ -139,3 +138,5 @@ export const AddEmployee = () => {
 		</div>
 	);
 };
+
+export default AddEmployee;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
-import axios from "axios";
-const REACT_APP_SERVER_URL = "http://localhost:5000";
+import http from "../../api";
 
-export const Admin = () => {
+const Admin = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
@@ -40,12 +39,8 @@ export const Admin = () => {
 
 	const fetchUsers = () => {
 		const token = JSON.parse(localStorage.getItem("user"))?.token;
-		axios
-			.get(`${REACT_APP_SERVER_URL}/user`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
+		http
+			.get(`/user`)
 			.then((res) => {
 				if (res.status === 200) setUsers(res.data.data);
 			})
@@ -164,3 +159,5 @@ export const Admin = () => {
 		</div>
 	);
 };
+
+export default Admin;
