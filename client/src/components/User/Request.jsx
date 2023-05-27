@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import ReactPaginate from "react-paginate";
+import Swal from "sweetalert2";
 
 const Request = () => {
 	const [selectedItem, setSelectedItem] = useState("");
@@ -46,7 +47,18 @@ const Request = () => {
 		setSelectedQuantity(event.target.value);
 	};
 
+
 	const handleRequest = () => {
+		if (!selectedItem || !selectedQuantity) {
+			Swal.fire({
+				title: "Error!",
+				text: "Please select an item and quantity",
+				icon: "error",
+				confirmButtonText: "OK",
+			});
+			return;
+		}
+
 		const currentDate = new Date().toLocaleDateString(); // Get the current date
 		const selectedItemData = allocatedItems.find((item) => item.id === parseInt(selectedItem));
 		const requestedItem = {
@@ -59,6 +71,12 @@ const Request = () => {
 		setRequestItems([...requestItems, requestedItem]);
 		setSelectedItem("");
 		setSelectedQuantity("");
+		Swal.fire({
+			title: "Success!",
+			text: "Request sent successfully",
+			icon: "success",
+			confirmButtonText: "OK",
+		});
 	};
 
 	const handleCancel = (itemId) => {
