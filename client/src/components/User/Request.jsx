@@ -1,88 +1,204 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
+import ReactPaginate from "react-paginate";
 
 const Request = () => {
+	const [selectedItem, setSelectedItem] = useState("");
+	const [selectedQuantity, setSelectedQuantity] = useState("");
+	const [requestItems, setRequestItems] = useState([]);
+	const [currentPage, setCurrentPage] = useState(0);
+
+	const itemsPerPage = 2;
+	const allocatedItems = [
+		{
+			id: 1,
+			name: "Chair",
+			quantity: 5,
+		},
+		{
+			id: 2,
+			name: "Board Marker",
+			quantity: 10,
+		},
+		{
+			id: 3,
+			name: "Pen",
+			quantity: 3,
+		},
+		{
+			id: 4,
+			name: "Computer",
+			quantity: 2,
+		},
+		{
+			id: 5,
+			name: "Pointer",
+			quantity: 7,
+		},
+	];
+
+	const handleItemChange = (event) => {
+		setSelectedItem(event.target.value);
+	};
+
+	const handleQuantityChange = (event) => {
+		setSelectedQuantity(event.target.value);
+	};
+
+	const handleRequest = () => {
+		const currentDate = new Date().toLocaleDateString(); // Get the current date
+		const selectedItemData = allocatedItems.find((item) => item.id === parseInt(selectedItem));
+		const requestedItem = {
+			id: selectedItemData.id,
+			name: selectedItemData.name,
+			quantity: parseInt(selectedQuantity),
+			date: currentDate,
+			status: "Pending",
+		};
+		setRequestItems([...requestItems, requestedItem]);
+		setSelectedItem("");
+		setSelectedQuantity("");
+	};
+
+	const handleCancel = (itemId) => {
+		const updatedRequestItems = requestItems.filter((item) => item.id !== itemId);
+		setRequestItems(updatedRequestItems);
+	};
+
+	const handlePageChange = ({ selected }) => {
+		setCurrentPage(selected);
+	};
+
+	const offset = currentPage * itemsPerPage;
+	const paginatedItems = requestItems.slice(offset, offset + itemsPerPage);
+
 	return (
-		<div className="flex flex-col w-full h-full ">
+		<div className="flex flex-col w-full h-full">
 			<Navbar />
-			{/* Div for sidebar and main content */}
 			<div className="flex">
 				<Sidebar />
-				<div className="w-[700px]">
-					<form className=" ml-10 mt-10 flex flex-col w-[1000px] h-[480px] border-2 border-gray-300 rounded-md shadow-md">
-						<label
-							htmlFor="itemId"
-							className="
-                            text-gray-700 text-sm font-bold
-                            mt-4 ml-4">
-							Item ID
-						</label>
-						<input
-							type="number"
-							name="itemId"
-							id="itemId"
-							placeholder="Item ID"
-							className="
-                            px-4 py-2 mt-2 
-                            focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
-                          "
+				<div className="w-full px-10 mt-10">
+					<div className="mb-4">
+						<h2 className="text-lg font-semibold mb-4">Select Items</h2>
+						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
+							<table className="w-full">
+								<thead>
+									<tr>
+										<th className="py-2 px-4 border-b">Item</th>
+										<th className="py-2 px-4 border-b">Quantity</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td className="py-2 px-4 border-b text-center">
+											<select
+												value={selectedItem}
+												onChange={handleItemChange}
+												className="py-2 px-4 border  border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+											>
+												<option value="">Select Item</option>
+												{allocatedItems.map((item) => (
+													<option key={item.id} value={item.id}>
+														{item.id} - {item.name}
+													</option>
+												))}
+											</select>
+										</td>
+										<td className="py-2 px-4 border-b text-center">
+											<select
+												value={selectedQuantity}
+												onChange={handleQuantityChange}
+												className="py-2 px-4 text-center border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+											>
+												<option value="">Select Quantity</option>
+												{selectedItem &&
+													Array.from(
+														{ length: allocatedItems.find((item) => item.id === parseInt(selectedItem)).quantity },
+														(_, i) => (
+															<option key={i + 1} value={i + 1}>
+																{i + 1}
+															</option>
+														)
+													)}
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<button
+						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 mb-2 relative left-3/4 transform -translate-x-1/2 ml-48"
+						onClick={handleRequest}
+					>
+						Send Request
+					</button>
+
+					{/* Second Table */}
+					<div>
+						<h2 className="text-lg font-semibold mb-4">Requested Items</h2>
+						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
+							{requestItems.length > 0 ? (
+								<table className="w-full">
+									<thead>
+										<tr>
+											<th className="py-2 px-4 border-b">Item ID</th>
+											<th className="py-2 px-4 border-b">Item Name</th>
+											<th className="py-2 px-4 border-b">Quantity</th>
+											<th className="py-2 px-4 border-b">Requested Date</th>
+											<th className="py-2 px-4 border-b">Status</th>
+											<th className="py-2 px-4 border-b">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										{paginatedItems.map((item) => (
+											<tr key={item.id}>
+												<td className="py-2 px-4 border-b text-center">{item.id}</td>
+												<td className="py-2 px-4 border-b text-center">{item.name}</td>
+												<td className="py-2 px-4 border-b text-center">{item.quantity}</td>
+												<td className="py-2 px-4 border-b text-center">{item.date}</td>
+												<td className="py-2 px-4 border-b text-center">{item.status}</td>
+												<td className="py-2 px-4 border-b text-center">
+													<button
+														className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
+														onClick={() => handleCancel(item.id)}
+													>
+														Cancel
+													</button>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							) : (
+								<p>No items requested.</p>
+							)}
+						</div>
+					</div>
+
+					<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
+						<ReactPaginate
+							previousLabel={"Previous"}
+							nextLabel={"Next"}
+							breakLabel={"..."}
+							breakClassName="text-gray-500 px-2 cursor-pointer"
+							containerClassName="flex justify-center"
+							pageClassName="mx-4"
+							pageCount={Math.ceil(requestItems.length / itemsPerPage)}
+							marginPagesDisplayed={2}
+							pageRangeDisplayed={5}
+							onPageChange={handlePageChange}
+							activeClassName="bg-blue-500 text-white px-2 py-1 rounded"
+							activeLinkClassName="cursor-pointer"
+							previousClassName="mx-1"
+							nextClassName="mx-1"
+							disabledClassName="opacity-50 cursor-not-allowed"
+
 						/>
-						<label
-							htmlFor="itemName"
-							className="
-                            text-gray-700 text-sm font-bold
-                            mt-4 ml-4">
-							Item Name
-						</label>
-						<input
-							type="text"
-							name="itemName"
-							id="itemName"
-							placeholder="Item Name"
-							className="
-                            px-4 py-2 mt-2
-                            focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
-                          "
-						/>
-						<label
-							htmlFor="quantity"
-							className="
-                            text-gray-700 text-sm font-bold
-                            mt-4 ml-4">
-							Item Quantity
-						</label>
-						<input
-							type="number"
-							name="quantity"
-							id="quantity"
-							placeholder="Quantity"
-							className="
-                            px-4 py-2 mt-2
-                            focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
-                          "
-						/>
-						<label
-							htmlFor="date"
-							className="
-                            text-gray-700 text-sm font-bold
-                            mt-4 ml-4">
-							Date
-						</label>
-						<input
-							type="date"
-							name="date"
-							id="date"
-							placeholder="Date"
-							className="
-                            px-4 py-2 mt-2
-                            focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
-                          "
-						/>
-						<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-40 rounded-md  mt-12" mx-20>
-							Send Request
-						</button>
-					</form>
+					</div>
+
 				</div>
 			</div>
 		</div>

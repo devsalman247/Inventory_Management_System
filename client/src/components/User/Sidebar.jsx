@@ -11,7 +11,7 @@ const Sidebar = () => {
                     <li className='mt-10 cursor-pointer'
 
                         onClick={() => {
-                            navigate('/all_items')
+                            navigate('/user/dashboard')
                         }
                         }
                     >
@@ -22,7 +22,7 @@ const Sidebar = () => {
 
                     <li className='mt-10 cursor-pointer '
                         onClick={() => {
-                            navigate('/send_request')
+                            navigate('/user/request')
                         }   
                     }
                     >

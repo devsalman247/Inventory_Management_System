@@ -69,7 +69,7 @@ function Login() {
 						setAuth(res.data.data, { setIsLoggedIn, setLoggedInUser });
 						showMessage("Login successful!", "success");
 						if (res.data.data?.role === "admin") return navigateTo("/admin");
-						return navigateTo("/all_items");
+						return navigateTo("/user/dashboard");
 					} else {
 						showMessage("Login failed...!", "error");
 					}
