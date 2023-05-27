@@ -1,21 +1,7 @@
 import { useEffect, useState } from "react";
 import {
 	Login,
-	Admin,
 	AdminDashboard,
-	AddEmployee,
-	UpdateEmployee,
-	DeleteEmployee,
-	User,
-	Profile,
-	AvailableStock,
-	AllItems,
-	AddItem,
-	UpdateItem,
-	DeleteItem,
-	AssignItem,
-	SendRequest,
-	PrintReport,
 	ManageUsers,
 	Requests,
 	Settings,
@@ -60,27 +46,25 @@ function App() {
 			<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }}>
 				<Routes>
 					<Route path="/" element={<Login />} />
+
 					{/* Admin Routes */}
 					{loggedInUser && loggedInUser.role === "admin" && (
 						<>
-							<Route path="/admin" element={<Admin />} />
 							<Route path="/admin/dashboard" element={<AdminDashboard />} />
 							<Route path="/admin/manage_users" element={<ManageUsers />} />
 							<Route path="/admin/requests" element={<Requests />} />
 							<Route path="/admin/settings" element={<Settings />} />
-							<Route path="/add_employee" element={<AddEmployee />} />
-							<Route path="/update_employee" element={<UpdateEmployee />} />
-							<Route path="/delete_employee" element={<DeleteEmployee />} />
 						</>
 					)}
+
 					{/* User Routes */}
 					{loggedInUser && loggedInUser.role === "user" && (
 						<>
-							<Route path="/profile" element={<Profile />} />
 							<Route path="/user/dashboard" element={<UserDashboard />} />
 							<Route path="/user/request" element={<Request />} />
 						</>
 					)}
+
 					{/* Store Keeper Routes */}
 					{loggedInUser && loggedInUser.role === "store-keeper" && (
 						<>
@@ -89,16 +73,7 @@ function App() {
 							<Route path="/store/requests" element={<RequestsStore />} />
 						</>
 					)}
-					<Route path="/add_item" element={<AddItem />} />
-					<Route path="/available_stock" element={<AvailableStock />} />
-					<Route path="/update_item" element={<UpdateItem />} />
-					<Route path="/delete_item" element={<DeleteItem />} />
 
-					<Route path="/user" element={<User />} />
-					<Route path="/all_items" element={<AllItems />} />
-					<Route path="/send_request" element={<SendRequest />} />
-					<Route path="/print_report" element={<PrintReport />} />
-					<Route path="/assign_item" element={<AssignItem />} />
 					<Route path="*" element={<Navigate to="/" replace />} />
 				</Routes>
 			</AuthContext.Provider>
