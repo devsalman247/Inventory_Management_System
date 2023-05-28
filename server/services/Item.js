@@ -1,5 +1,6 @@
 import Item from "../models/Items.js";
 import User from "../models/User.js";
+import Request from "../models/Request.js";
 import IssuedItem from "../models/IssuedItem.js";
 import updateItems from "../utils/updateItems.js";
 
@@ -78,23 +79,25 @@ const getItemById = (id) => {
 		});
 };
 
-const requestItems = (id, items) => {
-	return User.findById(id)
-		.then(async (user) => {
-			if (!user) throw "User not found";
-			items = items.map((item) => {
-				return { ...item, status: 0 };
+const requestItems = (id, item) => {
+	console.log(item);
+	return Item.findOne({ _id: item._id }).then((reqItem) => {
+		if (!reqItem) throw "Item not found";
+		if (reqItem.stock < item.quantity) throw "Not enough stock";
+		const newRequest = new Request({ reqItem: item._id, requestedBy: id, quantity: item.quantity });
+		return newRequest
+			.save()
+			.then((reqId) => {
+				User.findByIdAndUpdate(id, { $push: { requests: reqId._id } }, { new: true }).then((user) => {
+					if (!user) throw "User not found";
+				});
+				return reqId;
+			})
+			.catch((err) => {
+				console.log(err);
+				throw err;
 			});
-			user.requests = [...user.requests, { items, filled: 0 }];
-			return await user.save().then((data) => {
-				if (!data) throw "Failed to request items";
-				return data;
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			throw err;
-		});
+	});
 };
 
 // Issued Items Service

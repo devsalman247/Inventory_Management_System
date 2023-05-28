@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import jsPDF from "jspdf";
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import http from "../../api";
 
 const Dashboard = () => {
+	const [userRequests, setUserRequests] = useState({ pending: [], approved: [], rejected: [], requests: [] });
 	const allocatedItems = [
 		{
 			id: 1,
@@ -147,18 +148,70 @@ const Dashboard = () => {
 		setCurrentPage(selected);
 	};
 
+	const getUserRequest = () => {
+		http
+			.get("/user/requests")
+			.then((res) => {
+				console.log(res.data.data);
+				setUserRequests(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	useEffect(() => {
+		getUserRequest();
+	}, []);
+
 	return (
 		<div className="flex flex-col min-h-screen">
 			<Navbar />
 			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="p-8 w-full">
-					<div className="flex justify-end mb-4">
-						<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" onClick={handleDownloadPDF}>
-							Download PDF
-						</button>
+					<div className="flex">
+						<div className="flex flex-wrap mb-5 w-3/5">
+							<div className="w-full flex gap-2">
+								<div className="bg-white rounded shadow p-4 w-[10rem]">
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Requested</span>
+										<span className="text-2xl font-semibold">
+											{userRequests.approved.length + userRequests.pending.length + userRequests.rejected.length}
+										</span>
+									</div>
+								</div>
+								<div className="bg-white rounded shadow p-4 min-w-[10rem]">
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Approved</span>
+										<span className="text-2xl font-semibold">{userRequests.approved.length}</span>
+									</div>
+								</div>
+								<div className="bg-white rounded shadow p-4 min-w-[10rem]">
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Pending</span>
+										<span className="text-2xl font-semibold">{userRequests.pending.length}</span>
+									</div>
+								</div>
+								<div className="bg-white rounded shadow p-4 min-w-[10rem]">
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Rejected</span>
+										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<h2 className="text-2xl font-semibold mb-4">All Items</h2>
+					<div className="flex justify-between mb-4">
+						<h2 className="text-2xl font-semibold">All Items</h2>
+						<div className="flex justify-end w-2/5">
+							<button
+								className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded inline-block"
+								onClick={handleDownloadPDF}>
+								Download PDF
+							</button>
+						</div>
+					</div>
 					<table className="w-full bg-white border border-gray-300">
 						{/* Table content... */}
 						<thead>
@@ -172,21 +225,27 @@ const Dashboard = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{currentItems.map((item) => (
-								<tr key={item.id}>
-									<td className="py-2 px-4 border-b text-center">{item.id}</td>
-									<td className="py-2 px-4 border-b text-left">{item.name}</td>
-									<td className="py-2 px-4 border-b text-left">{item.quantity}</td>
-									<td className={`py-2 px-4 border-b text-left ${getStatusColorClass(item.status)}`}>{item.status}</td>
-									<td className="py-2 px-4 border-b text-left">{item.allocatedDate}</td>
-									<td className="py-2 px-4 border-b text-left">{item.returnDate}</td>
+							{userRequests.requests.map((request) => (
+								<tr key={request.reqItem._id}>
+									<td className="py-4 px-4 border-b text-center">{request.reqItem._id}</td>
+									<td className="py-4 px-4 border-b text-left">{request.name}</td>
+									<td className="py-4 px-4 border-b text-left">{request.quantity}</td>
+									<td className={`py-4 px-4 border-b text-left ${getStatusColorClass(request.status)}`}>
+										{request.status}
+									</td>
+									<td className="py-4 px-4 border-b text-left">{request.allocatedDate}</td>
+									<td className="py-4 px-4 border-b text-left">
+										<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
+											Return
+										</button>
+									</td>
 								</tr>
 							))}
 						</tbody>
 					</table>
 
 					{totalPages > 1 && (
-						<div className="mt-20 fixed bottom-20 left-20 right-0 flex justify-center">
+						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
 							<ReactPaginate
 								previousLabel="Previous"
 								nextLabel="Next"

@@ -73,8 +73,8 @@ const ItemDelete = async (req, res, next) => {
 };
 
 const ItemRequest = async (req, res, next) => {
-	const items = req.body;
-	requestItems(req.user.id, items)
+	if (!req.body.item) return next(new BadRequestResponse("Please provide all required fields"));
+	requestItems(req.user.id, req.body.item)
 		.then((isRequestSent) => {
 			if (isRequestSent) return next(new OkResponse("Request sent successfully"));
 		})

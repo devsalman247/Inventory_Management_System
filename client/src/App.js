@@ -28,11 +28,23 @@ function App() {
 				.get("/user/context")
 				.then((res) => {
 					setAuth(res.data.data, { setIsLoggedIn, setLoggedInUser });
-					if (res.data.data?.role === "admin") {
-						if (location.pathname === "/") {
-							navigate("/admin");
-						} else {
+					if (location.pathname === "/") {
+						if (res.data.data.role === "admin") {
+							navigate("/admin/dashboard");
+						} else if (res.data.data.role === "store-keeper") {
+							navigate("/store");
+						} else if (res.data.data.role === "user") {
+							navigate("/user/dashboard");
+						}
+					} else {
+						if (location.pathname.includes("admin") && res.data.data.role === "admin") {
 							navigate(location.pathname);
+						} else if (location.pathname.includes("store") && res.data.data.role === "store-keeper") {
+							navigate(location.pathname);
+						} else if (location.pathname.includes("user") && res.data.data.role === "user") {
+							navigate(location.pathname);
+						} else {
+							navigate("/");
 						}
 					}
 				})
