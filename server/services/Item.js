@@ -79,7 +79,7 @@ const getItemById = (id) => {
 		});
 };
 
-const requestItems = (id, item) => {
+const requestItem = (id, item) => {
 	console.log(item);
 	return Item.findOne({ _id: item._id }).then((reqItem) => {
 		if (!reqItem) throw "Item not found";
@@ -92,6 +92,23 @@ const requestItems = (id, item) => {
 					if (!user) throw "User not found";
 				});
 				return reqId;
+			})
+			.catch((err) => {
+				console.log(err);
+				throw err;
+			});
+	});
+};
+
+const cancelRequest = (id) => {
+	return Request.findById(id).then((request) => {
+		if (!request) throw "Request not found";
+		request.status = "cancelled";
+		return request
+			.save()
+			.then((req) => {
+				if (!req) throw "Failed to cancel request";
+				return req;
 			})
 			.catch((err) => {
 				console.log(err);
@@ -172,7 +189,8 @@ const ItemService = {
 	deleteItem,
 	getAllItems,
 	getItemById,
-	requestItems,
+	requestItem,
+	cancelRequest,
 	// Issued Items Service
 	issueItem,
 	getAllIssuedItems,

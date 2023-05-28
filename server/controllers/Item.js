@@ -7,7 +7,8 @@ const {
 	deleteItem,
 	getAllItems,
 	getItemById,
-	requestItems,
+	requestItem,
+	cancelRequest,
 	issueItem,
 	getAllIssuedItems,
 	getIssuedItemById,
@@ -74,9 +75,20 @@ const ItemDelete = async (req, res, next) => {
 
 const ItemRequest = async (req, res, next) => {
 	if (!req.body.item) return next(new BadRequestResponse("Please provide all required fields"));
-	requestItems(req.user.id, req.body.item)
+	requestItem(req.user.id, req.body.item)
 		.then((isRequestSent) => {
 			if (isRequestSent) return next(new OkResponse("Request sent successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
+const CancelRequest = async (req, res, next) => {
+	const { id } = req.params;
+	cancelRequest(id)
+		.then((isRequestCancelled) => {
+			if (isRequestCancelled) return next(new OkResponse("Request cancelled successfully"));
 		})
 		.catch((err) => {
 			return next(new BadRequestResponse(err));
@@ -125,6 +137,7 @@ const ItemController = {
 	ItemUpdate,
 	ItemDelete,
 	ItemRequest,
+	CancelRequest,
 	// Issued Items Controller
 	ItemIssue,
 	ItemGetAllIssued,

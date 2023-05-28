@@ -47,7 +47,6 @@ const Request = () => {
 				},
 			})
 			.then((res) => {
-				console.log(res.data.data);
 				Swal.fire({
 					title: "Success!",
 					text: "Request sent successfully",
@@ -64,9 +63,21 @@ const Request = () => {
 			});
 	};
 
-	const handleCancel = (itemId) => {
-		const updatedrequestedItems = requestedItems.filter((item) => item.id !== itemId);
-		setRequestedItems(updatedrequestedItems);
+	const cancelRequest = (reqId) => {
+		http
+			.post(`/item/request/cancel/${reqId}`)
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request cancelled successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const handlePageChange = ({ selected }) => {
@@ -88,7 +99,6 @@ const Request = () => {
 		http
 			.get("/user/requests")
 			.then((res) => {
-				console.log(res.data.data);
 				setRequestedItems(res.data.data.pending);
 			})
 			.catch((err) => {
@@ -176,7 +186,7 @@ const Request = () => {
 									</thead>
 									<tbody>
 										{paginatedItems.map((item) => (
-											<tr key={item.id}>
+											<tr key={item._id}>
 												<td className="py-2 px-4 border-b text-center">{item.reqItem.itemId}</td>
 												<td className="py-2 px-4 border-b text-center">{item.reqItem.name}</td>
 												<td className="py-2 px-4 border-b text-center">{item.quantity}</td>
@@ -187,7 +197,7 @@ const Request = () => {
 												<td className="py-2 px-4 border-b text-center">
 													<button
 														className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
-														onClick={() => handleCancel(item.id)}>
+														onClick={() => cancelRequest(item._id)}>
 														Cancel
 													</button>
 												</td>
