@@ -1,109 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import jsPDF from "jspdf";
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import http from "../../api";
+import Swal from "sweetalert2";
 
 const Dashboard = () => {
-	const allocatedItems = [
-		{
-			id: 1,
-			name: "Table",
-			quantity: 5,
-			status: "Approved",
-			allocatedDate: "2023-05-24",
-			returnDate: "2023-06-05",
-		},
-		{
-			id: 2,
-			name: "Chair",
-			quantity: 10,
-			status: "Pending",
-			allocatedDate: "2023-05-25",
-			returnDate: "2023-06-06",
-		},
-		{
-			id: 3,
-			name: "Board Marker",
-			quantity: 3,
-			status: "Rejected",
-			allocatedDate: "2023-05-26",
-			returnDate: "2023-06-07",
-		},
-		{
-			id: 4,
-			name: "Computer",
-			quantity: 2,
-			status: "Approved",
-			allocatedDate: "2023-05-27",
-			returnDate: "2023-06-08",
-		},
-		{
-			id: 5,
-			name: "Daster",
-			quantity: 7,
-			status: "Pending",
-			allocatedDate: "2023-05-28",
-			returnDate: "2023-06-09",
-		},
-		{
-			id: 6,
-			name: "Pen",
-			quantity: 20,
-			status: "Approved",
-			allocatedDate: "2023-05-29",
-			returnDate: "2023-06-10",
-		},
-		{
-			id: 7,
-			name: "Notebook",
-			quantity: 15,
-			status: "Rejected",
-			allocatedDate: "2023-05-30",
-			returnDate: "2023-06-11",
-		},
-		{
-			id: 8,
-			name: "Laptop",
-			quantity: 3,
-			status: "Pending",
-			allocatedDate: "2023-05-31",
-			returnDate: "2023-06-12",
-		},
-		{
-			id: 9,
-			name: "Whiteboard",
-			quantity: 1,
-			status: "Approved",
-			allocatedDate: "2023-06-01",
-			returnDate: "2023-06-13",
-		},
-		{
-			id: 10,
-			name: "Desk Lamp",
-			quantity: 4,
-			status: "Rejected",
-			allocatedDate: "2023-06-02",
-			returnDate: "2023-06-14",
-		},
-		{
-			id: 11,
-			name: "Scanner",
-			quantity: 2,
-			status: "Pending",
-			allocatedDate: "2023-06-03",
-			returnDate: "2023-06-15",
-		},
-		{
-			id: 12,
-			name: "Keyboard",
-			quantity: 6,
-			status: "Approved",
-			allocatedDate: "2023-06-04",
-			returnDate: "2023-06-16",
-		},
-	];
+	const [userRequests, setUserRequests] = useState({
+		pending: [],
+		approved: [],
+		rejected: [],
+		cancelled: [],
+		requests: [],
+	});
+	const [selectedFilter, setSelectedFilter] = useState("requests");
 
 	const getStatusColorClass = (status) => {
 		switch (status) {
@@ -122,7 +33,7 @@ const Dashboard = () => {
 		doc.text("Inventory Report", 20, 20);
 
 		let y = 50;
-		allocatedItems.forEach((item) => {
+		userRequests.requests.forEach((item) => {
 			const { id, name, quantity, status, allocatedDate, returnDate } = item;
 			doc.setFontSize(8);
 			doc.text(`Item ID: ${id}`, 30, y);
@@ -138,14 +49,47 @@ const Dashboard = () => {
 	};
 
 	const itemsPerPage = 5;
-	const totalPages = Math.ceil(allocatedItems.length / itemsPerPage);
+	const totalPages = Math.ceil(userRequests.requests.length / itemsPerPage);
 	const [currentPage, setCurrentPage] = useState(0);
 	const offset = currentPage * itemsPerPage;
-	const currentItems = allocatedItems.slice(offset, offset + itemsPerPage);
+	// const currentItems = allocatedItems.slice(offset, offset + itemsPerPage);
 
 	const handlePageChange = ({ selected }) => {
 		setCurrentPage(selected);
 	};
+
+	const getUserRequests = () => {
+		http
+			.get("/user/requests")
+			.then((res) => {
+				console.log(res.data.data);
+				setUserRequests(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const cancelRequest = (reqId) => {
+		http
+			.post(`/item/request/cancel/${reqId}`)
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request cancelled successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	useEffect(() => {
+		getUserRequests();
+	}, []);
 
 	return (
 		<div className="flex flex-col min-h-screen">
@@ -153,12 +97,77 @@ const Dashboard = () => {
 			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="p-8 w-full">
-					<div className="flex justify-end mb-4">
-						<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" onClick={handleDownloadPDF}>
-							Download PDF
-						</button>
+					<div className="flex">
+						<div className="flex flex-wrap mb-5 w-4/5">
+							<div className="w-full flex gap-2">
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "requests" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("requests")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Requested</span>
+										<span className="text-2xl font-semibold">
+											{userRequests.approved.length +
+												userRequests.pending.length +
+												userRequests.rejected.length +
+												userRequests.cancelled.length}
+										</span>
+									</div>
+								</div>
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "approved" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("approved")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Approved</span>
+										<span className="text-2xl font-semibold">{userRequests.approved.length}</span>
+									</div>
+								</div>
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "pending" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("pending")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Pending</span>
+										<span className="text-2xl font-semibold">{userRequests.pending.length}</span>
+									</div>
+								</div>
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("rejected")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Rejected</span>
+										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
+									</div>
+								</div>
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("cancelled")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Cancelled</span>
+										<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<h2 className="text-2xl font-semibold mb-4">All Items</h2>
+					<div className="flex justify-between mb-4">
+						<h2 className="text-2xl font-semibold">All Items</h2>
+						<div className="flex justify-end w-2/5">
+							<button
+								className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded inline-block"
+								onClick={handleDownloadPDF}>
+								Download PDF
+							</button>
+						</div>
+					</div>
 					<table className="w-full bg-white border border-gray-300">
 						{/* Table content... */}
 						<thead>
@@ -172,21 +181,41 @@ const Dashboard = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{currentItems.map((item) => (
-								<tr key={item.id}>
-									<td className="py-2 px-4 border-b text-center">{item.id}</td>
-									<td className="py-2 px-4 border-b text-left">{item.name}</td>
-									<td className="py-2 px-4 border-b text-left">{item.quantity}</td>
-									<td className={`py-2 px-4 border-b text-left ${getStatusColorClass(item.status)}`}>{item.status}</td>
-									<td className="py-2 px-4 border-b text-left">{item.allocatedDate}</td>
-									<td className="py-2 px-4 border-b text-left">{item.returnDate}</td>
+							{userRequests[selectedFilter].map((request) => (
+								<tr key={request._id}>
+									<td className="py-4 px-4 border-b text-center">{request.reqItem.itemId}</td>
+									<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
+									<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
+									<td className={`py-4 px-2 border-b text-left pl-10 ${getStatusColorClass(request.status)}`}>
+										{request.status}
+									</td>
+									<td className="py-4 px-4 border-b text-left pl-6">
+										{new Date(request.requestDate).toISOString().substring(0, 10)}
+									</td>
+									<td className="py-4 px-4 border-b text-left">
+										{request.status === "Approved" && request.reqItem.isReturnable && !request.returnDate ? (
+											<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
+												Return
+											</button>
+										) : request.status === "Approved" && request.reqItem.isReturnable && request.returnDate ? (
+											new Date(request.requestDate).toISOString().substring(0, 10)
+										) : request.status === "pending" ? (
+											<button
+												className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 ml-2 rounded inline-block"
+												onClick={() => cancelRequest(request._id)}>
+												Cancel
+											</button>
+										) : (
+											<span className="pl-6">N/A</span>
+										)}
+									</td>
 								</tr>
 							))}
 						</tbody>
 					</table>
 
 					{totalPages > 1 && (
-						<div className="mt-20 fixed bottom-20 left-20 right-0 flex justify-center">
+						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
 							<ReactPaginate
 								previousLabel="Previous"
 								nextLabel="Next"

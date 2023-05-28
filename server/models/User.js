@@ -28,27 +28,8 @@ const UserSchema = new mongoose.Schema(
 		},
 		requests: [
 			{
-				items: [
-					{
-						id: { type: mongoose.Schema.Types.ObjectId },
-						count: { type: Number },
-						status: {
-							type: Number,
-							enum: [
-								0, //pending
-								1, //approved
-							],
-						},
-					},
-				],
-				filled: {
-					type: Number,
-					enum: [
-						0, // Not filled
-						1, // Filled
-					],
-				},
-				requestDate: { type: Date },
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Request",
 			},
 		],
 		hash: {
@@ -71,6 +52,14 @@ UserSchema.methods.setPassword = function () {
 UserSchema.methods.validPassword = function (password) {
 	return bcrypt.compareSync(password, this.hash);
 };
+
+// const autoPopulate = function (next) {
+// 	this.populate("requests");
+// 	next();
+// };
+
+// UserSchema.pre("findOne", autoPopulate);
+// UserSchema.pre("find", autoPopulate);
 
 UserSchema.methods.generateJWT = function () {
 	return jwt.sign(

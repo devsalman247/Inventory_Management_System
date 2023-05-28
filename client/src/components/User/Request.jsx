@@ -1,52 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
+import http from "../../api";
 
 const Request = () => {
-	const [selectedItem, setSelectedItem] = useState("");
+	const [items, setItems] = useState([]);
+	const [selectedItem, setSelectedItem] = useState(null);
 	const [selectedQuantity, setSelectedQuantity] = useState("");
-	const [requestItems, setRequestItems] = useState([]);
+	const [requestedItems, setRequestedItems] = useState([]);
 	const [currentPage, setCurrentPage] = useState(0);
 
-	const itemsPerPage = 2;
-	const allocatedItems = [
-		{
-			id: 1,
-			name: "Chair",
-			quantity: 5,
-		},
-		{
-			id: 2,
-			name: "Board Marker",
-			quantity: 10,
-		},
-		{
-			id: 3,
-			name: "Pen",
-			quantity: 3,
-		},
-		{
-			id: 4,
-			name: "Computer",
-			quantity: 2,
-		},
-		{
-			id: 5,
-			name: "Pointer",
-			quantity: 7,
-		},
-	];
+	const itemsPerPage = 3;
 
 	const handleItemChange = (event) => {
-		setSelectedItem(event.target.value);
+		if (event.target.value === "") {
+			setSelectedItem(null);
+			setSelectedQuantity("");
+			return;
+		}
+		const newSelectedItem = JSON.parse(event.target.value);
+		setSelectedItem(newSelectedItem);
 	};
 
 	const handleQuantityChange = (event) => {
-		setSelectedQuantity(event.target.value);
+		setSelectedQuantity(Math.abs(parseInt(event.target.value)));
 	};
-
 
 	const handleRequest = () => {
 		if (!selectedItem || !selectedQuantity) {
@@ -59,37 +39,80 @@ const Request = () => {
 			return;
 		}
 
-		const currentDate = new Date().toLocaleDateString(); // Get the current date
-		const selectedItemData = allocatedItems.find((item) => item.id === parseInt(selectedItem));
-		const requestedItem = {
-			id: selectedItemData.id,
-			name: selectedItemData.name,
-			quantity: parseInt(selectedQuantity),
-			date: currentDate,
-			status: "Pending",
-		};
-		setRequestItems([...requestItems, requestedItem]);
-		setSelectedItem("");
-		setSelectedQuantity("");
-		Swal.fire({
-			title: "Success!",
-			text: "Request sent successfully",
-			icon: "success",
-			confirmButtonText: "OK",
-		});
+		http
+			.post("/item/request", {
+				item: {
+					_id: selectedItem._id,
+					quantity: selectedQuantity,
+				},
+			})
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request sent successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+				getItems();
+				setSelectedItem(null);
+				setSelectedQuantity("");
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
-	const handleCancel = (itemId) => {
-		const updatedRequestItems = requestItems.filter((item) => item.id !== itemId);
-		setRequestItems(updatedRequestItems);
+	const cancelRequest = (reqId) => {
+		http
+			.post(`/item/request/cancel/${reqId}`)
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request cancelled successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const handlePageChange = ({ selected }) => {
 		setCurrentPage(selected);
 	};
 
+	const getItems = () => {
+		http
+			.get("/item")
+			.then((res) => {
+				setItems(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const getUserRequests = () => {
+		http
+			.get("/user/requests")
+			.then((res) => {
+				setRequestedItems(res.data.data.pending);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	const offset = currentPage * itemsPerPage;
-	const paginatedItems = requestItems.slice(offset, offset + itemsPerPage);
+	const paginatedItems = requestedItems.slice(offset, offset + itemsPerPage);
+
+	useEffect(() => {
+		getItems();
+		getUserRequests();
+	}, []);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -105,42 +128,33 @@ const Request = () => {
 									<tr>
 										<th className="py-2 px-4 border-b">Item</th>
 										<th className="py-2 px-4 border-b">Quantity</th>
+										<th className="py-2 px-4 border-b">Stock Available</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td className="py-2 px-4 border-b text-center">
 											<select
-												value={selectedItem}
+												value={JSON.stringify(selectedItem)}
 												onChange={handleItemChange}
-												className="py-2 px-4 border  border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-											>
+												className="py-2 px-4 border  border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
 												<option value="">Select Item</option>
-												{allocatedItems.map((item) => (
-													<option key={item.id} value={item.id}>
-														{item.id} - {item.name}
+												{items.map((item) => (
+													<option key={item._id} value={JSON.stringify(item)}>
+														{item.name}
 													</option>
 												))}
 											</select>
 										</td>
 										<td className="py-2 px-4 border-b text-center">
-											<select
+											<input
+												type="number"
 												value={selectedQuantity}
 												onChange={handleQuantityChange}
-												className="py-2 px-4 text-center border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-											>
-												<option value="">Select Quantity</option>
-												{selectedItem &&
-													Array.from(
-														{ length: allocatedItems.find((item) => item.id === parseInt(selectedItem)).quantity },
-														(_, i) => (
-															<option key={i + 1} value={i + 1}>
-																{i + 1}
-															</option>
-														)
-													)}
-											</select>
+												className="py-2 px-2 w-[8rem] border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+											/>
 										</td>
+										<td className="py-2 px-4 border-b text-center">{selectedItem ? selectedItem.stock : "0"}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -148,9 +162,9 @@ const Request = () => {
 					</div>
 
 					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 mb-2 relative left-3/4 transform -translate-x-1/2 ml-48"
-						onClick={handleRequest}
-					>
+						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 mb-2 relative left-3/4 transform -translate-x-1/2 ml-48 disabled:opacity-50"
+						disabled={!selectedItem || !selectedQuantity || selectedQuantity > selectedItem?.stock}
+						onClick={handleRequest}>
 						Send Request
 					</button>
 
@@ -158,7 +172,7 @@ const Request = () => {
 					<div>
 						<h2 className="text-lg font-semibold mb-4">Requested Items</h2>
 						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
-							{requestItems.length > 0 ? (
+							{requestedItems.length > 0 ? (
 								<table className="w-full">
 									<thead>
 										<tr>
@@ -172,17 +186,18 @@ const Request = () => {
 									</thead>
 									<tbody>
 										{paginatedItems.map((item) => (
-											<tr key={item.id}>
-												<td className="py-2 px-4 border-b text-center">{item.id}</td>
-												<td className="py-2 px-4 border-b text-center">{item.name}</td>
+											<tr key={item._id}>
+												<td className="py-2 px-4 border-b text-center">{item.reqItem.itemId}</td>
+												<td className="py-2 px-4 border-b text-center">{item.reqItem.name}</td>
 												<td className="py-2 px-4 border-b text-center">{item.quantity}</td>
-												<td className="py-2 px-4 border-b text-center">{item.date}</td>
+												<td className="py-2 px-4 border-b text-center">
+													{new Date(item.requestDate).toISOString().substring(0, 10)}
+												</td>
 												<td className="py-2 px-4 border-b text-center">{item.status}</td>
 												<td className="py-2 px-4 border-b text-center">
 													<button
 														className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
-														onClick={() => handleCancel(item.id)}
-													>
+														onClick={() => cancelRequest(item._id)}>
 														Cancel
 													</button>
 												</td>
@@ -204,7 +219,7 @@ const Request = () => {
 							breakClassName="text-gray-500 px-2 cursor-pointer"
 							containerClassName="flex justify-center"
 							pageClassName="mx-4"
-							pageCount={Math.ceil(requestItems.length / itemsPerPage)}
+							pageCount={Math.ceil(requestedItems.length / itemsPerPage)}
 							marginPagesDisplayed={2}
 							pageRangeDisplayed={5}
 							onPageChange={handlePageChange}
@@ -213,10 +228,8 @@ const Request = () => {
 							previousClassName="mx-1"
 							nextClassName="mx-1"
 							disabledClassName="opacity-50 cursor-not-allowed"
-
 						/>
 					</div>
-
 				</div>
 			</div>
 		</div>
