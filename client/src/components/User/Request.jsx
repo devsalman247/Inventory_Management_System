@@ -82,6 +82,12 @@ const Request = () => {
 	const handleCancel = (itemId) => {
 		const updatedRequestItems = requestItems.filter((item) => item.id !== itemId);
 		setRequestItems(updatedRequestItems);
+		Swal.fire({
+			title: "Success!",
+			text: "Request cancelled successfully",
+			icon: "success",
+			confirmButtonText: "OK",
+		});
 	};
 
 	const handlePageChange = ({ selected }) => {
