@@ -1,0 +1,82 @@
+{
+  "pending": [
+    {
+      "_id": "1",
+      "reqItem": {
+        "itemId": "1001",
+        "name": "Item 1"
+      },
+      "quantity": 5,
+      "status": "pending",
+      "requesterName": "John Doe"
+    },
+    {
+      "_id": "2",
+      "reqItem": {
+        "itemId": "1002",
+        "name": "Item 2"
+      },
+      "quantity": 3,
+      "status": "pending",
+      "requesterName": "Jane Smith"
+    }
+  ],
+  "approved": [
+    {
+      "_id": "3",
+      "reqItem": {
+        "itemId": "1003",
+        "name": "Item 3"
+      },
+      "quantity": 2,
+      "status": "approved",
+      "requesterName": "John Doe"
+    }
+  ],
+  "rejected": [
+    {
+      "_id": "4",
+      "reqItem": {
+        "itemId": "1004",
+        "name": "Item 4"
+      },
+      "quantity": 1,
+      "status": "rejected",
+      "requesterName": "Jane Smith"
+    }
+  ],
+  "cancelled": [
+    {
+      "_id": "5",
+      "reqItem": {
+        "itemId": "1005",
+        "name": "Item 5"
+      },
+      "quantity": 4,
+      "status": "cancelled",
+      "requesterName": "John Doe"
+    }
+  ],
+  "requests": [
+    {
+      "_id": "6",
+      "reqItem": {
+        "itemId": "1006",
+        "name": "Item 6"
+      },
+      "quantity": 7,
+      "status": "requested",
+      "requesterName": "Jane Smith"
+    },
+    {
+      "_id": "7",
+      "reqItem": {
+        "itemId": "1007",
+        "name": "Item 7"
+      },
+      "quantity": 2,
+      "status": "requested",
+      "requesterName": "John Doe"
+    }
+  ]
+}
