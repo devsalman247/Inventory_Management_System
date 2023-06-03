@@ -68,8 +68,13 @@ function Login() {
 					if (res.status === 200) {
 						setAuth(res.data.data, { setIsLoggedIn, setLoggedInUser });
 						showMessage("Login successful!", "success");
-						if (res.data.data?.role === "admin") return navigateTo("/admin");
-						return navigateTo("/user/dashboard");
+						if (res.data.data?.role === "admin") {
+							return navigateTo("/admin/dashboard");
+						} else if (res.data.data?.role === "store-keeper") {
+							return navigateTo("/store");
+						} else {
+							return navigateTo("/user/dashboard");
+						}
 					} else {
 						showMessage("Login failed...!", "error");
 					}

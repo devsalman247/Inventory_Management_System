@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Request from "../models/Request.js";
 
 const addUser = (name, email, password, designation) => {
 	try {
@@ -56,6 +57,23 @@ const fetchUsers = () => {
 		});
 };
 
+const getUserRequests = (id) => {
+	return Request.find({ requestedBy: id })
+		.sort({ createdAt: -1 })
+		.then((requests) => {
+			const pending = requests.filter((request) => request.status === "pending");
+			const approved = requests.filter((request) => request.status === "approved");
+			const rejected = requests.filter((request) => request.status === "rejected");
+			const cancelled = requests.filter((request) => request.status === "cancelled");
+			requests.sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate));
+			return { pending, approved, rejected, cancelled, requests };
+		})
+		.catch((err) => {
+			console.log(err);
+			throw err;
+		});
+};
+
 const updateUser = (id, user) => {
 	return User.findById(id)
 		.then((userToUpdate) => {
@@ -100,6 +118,6 @@ const deleteUser = (id) => {
 		});
 };
 
-const UserService = { addUser, authenticateUser, fetchUsers, updateUser, deleteUser };
+const UserService = { addUser, authenticateUser, fetchUsers, getUserRequests, updateUser, deleteUser };
 
 export default UserService;

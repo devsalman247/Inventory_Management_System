@@ -16,17 +16,45 @@ const ItemSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		issued: [
+		stockOut: [
 			{
-				id: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "IssuedItem",
-				},
 				quantity: {
 					type: Number,
+					default: 0,
+				},
+				date: {
+					type: Date,
+					default: Date.now,
 				},
 			},
 		],
+		stockIn: [
+			{
+				quantity: {
+					type: Number,
+					default: 0,
+				},
+				date: {
+					type: Date,
+					default: Date.now,
+				},
+			},
+		],
+		isReturnAble: {
+			type: Boolean,
+			default: false,
+		},
+		// issued: [
+		// 	{
+		// 		id: {
+		// 			type: mongoose.Schema.Types.ObjectId,
+		// 			ref: "IssuedItem",
+		// 		},
+		// 		quantity: {
+		// 			type: Number,
+		// 		},
+		// 	},
+		// ],
 	},
 	{ timestamps: true }
 );

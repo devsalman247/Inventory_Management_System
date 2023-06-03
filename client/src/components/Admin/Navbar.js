@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import logo from "../../logo.png";
 import admin from "../../images/admin.jpeg";
-import { AuthContext } from "../../context_store";
+import { AuthContext, purgeAuth } from "../../context_store";
 import { useNavigate } from "react-router-dom";
+import { IoLogOutOutline } from "react-icons/io5";
 
 export const Navbar = () => {
 	let navigate = useNavigate();
-	const { setIsLoggedIn } = useContext(AuthContext);
+	const { setIsLoggedIn, loggedInUser, setLoggedInUser } = useContext(AuthContext);
 
 	const logout = () => {
-		setIsLoggedIn(false);
-		localStorage.clear();
+		purgeAuth({ setIsLoggedIn, setLoggedInUser });
 		navigate("/");
 	};
 
@@ -24,7 +24,7 @@ export const Navbar = () => {
 	return (
 		<>
 			{/* Navbar */}
-			<div className="navbar flex items-center   w-screen h-16 bg-[#00B4F4] shadow-md">
+			<div className="navbar flex items-center   w-screen h-16 bg-[#00B4F4] shadow-md relative">
 				{/* left */}
 				<div className="w-1/4 h-full flex items-center justify-center ml-12">
 					<img src={logo} className="w-12 App-logo" alt="logo" />
@@ -47,22 +47,17 @@ export const Navbar = () => {
 				</div>
 
 				{/* right */}
-				<div className="right flex items-center justify-center ml-8">
-					<img src={admin} className="w-10 h-10 rounded-full ml-16" alt="admin" />
-					<h4 className=" ml-3">
-						<span className="text-white text-md">Admin</span>
-
-						<select
-							name="admin_options"
-							id="admin_options"
-							onChange={(e) => handleChange(e)}
-							className="ml-4 text-white text-md outline-none bg-[#00B4F4]">
-							<option value="Home">Home</option>
-							<option value="profile">Profile</option>
-							<option value="setting">Setting</option>
-							<option value="logout">Logout</option>
-						</select>
-					</h4>
+				<div className="right flex items-center justify-center absolute right-16">
+					<div className="flex items-center py-1 px-3 rounded hover:cursor-pointer bg-sky-600">
+						<img src={admin} className="w-11 h-11 rounded-full" alt="admin" />
+						<div className="flex flex-col">
+							<span className="text-white text-md ml-2">{loggedInUser?.name}</span>
+							<span className="text-white text-md ml-2">{loggedInUser?.email}</span>
+						</div>
+					</div>
+					{/* <button className="text-2xl text-white" onClick={logout}>
+						<IoLogOutOutline />
+					</button> */}
 				</div>
 			</div>
 		</>
