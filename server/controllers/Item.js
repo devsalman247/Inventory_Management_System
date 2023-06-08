@@ -9,6 +9,9 @@ const {
 	getItemById,
 	requestItem,
 	cancelRequest,
+	approveRequest,
+	rejectRequest,
+	returnItemRequest,
 	issueItem,
 	getAllIssuedItems,
 	getIssuedItemById,
@@ -95,6 +98,43 @@ const CancelRequest = async (req, res, next) => {
 		});
 };
 
+const ApproveRequest = async (req, res, next) => {
+	if (req.user.role !== "store-keeper")
+		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+	const { id } = req.params;
+	approveRequest(id)
+		.then((isRequestApproved) => {
+			if (isRequestApproved) return next(new OkResponse("Request approved successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
+const RejectRequest = async (req, res, next) => {
+	if (req.user.role !== "store-keeper")
+		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+	const { id } = req.params;
+	rejectRequest(id)
+		.then((isRequestRejected) => {
+			if (isRequestRejected) return next(new OkResponse("Request rejected successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
+const ItemReturnRequest = async (req, res, next) => {
+	if (!req.params.id) return next(new BadRequestResponse("Please provide all required fields"));
+	returnItemRequest(req.params.id)
+		.then((isRequestSent) => {
+			if (isRequestSent) return next(new OkResponse("Request sent successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
 const ItemIssue = async (req, res, next) => {
 	const { reqId, item } = req.body;
 	issueItem(item, reqId)
@@ -138,6 +178,9 @@ const ItemController = {
 	ItemDelete,
 	ItemRequest,
 	CancelRequest,
+	ApproveRequest,
+	RejectRequest,
+	ItemReturnRequest,
 	// Issued Items Controller
 	ItemIssue,
 	ItemGetAllIssued,

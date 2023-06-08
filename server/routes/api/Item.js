@@ -11,6 +11,9 @@ const {
 	ItemDelete,
 	ItemRequest,
 	CancelRequest,
+	ApproveRequest,
+	RejectRequest,
+	ItemReturnRequest,
 	ItemIssue,
 	ItemGetAllIssued,
 	ItemGetIssuedById,
@@ -31,7 +34,10 @@ router.get("/", ItemGetAll);
 router.get("/:id", ItemGetById);
 router.post("/", isAdmin, ItemCreate);
 router.post("/request", verifyToken, ItemRequest);
+router.post("/return/:id", verifyToken, ItemReturnRequest);
 router.post("/request/cancel/:id", verifyToken, CancelRequest);
+router.post("/request/approve/:id", verifyToken, ApproveRequest);
+router.post("/request/reject/:id", verifyToken, RejectRequest);
 router.put("/:id", isAdmin, ItemUpdate);
 router.delete("/:id", isAdmin, ItemDelete);
 

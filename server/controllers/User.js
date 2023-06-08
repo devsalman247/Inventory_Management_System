@@ -76,8 +76,7 @@ const UserFetchAll = (req, res, next) => {
 };
 
 const UserRequests = (req, res, next) => {
-	console.log(req.user);
-	getUserRequests(req.user.id)
+	getUserRequests(req.user)
 		.then((requests) => {
 			return next(new OkResponse(requests));
 		})

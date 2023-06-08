@@ -18,6 +18,10 @@ const ItemSchema = new mongoose.Schema(
 		},
 		stockOut: [
 			{
+				type: {
+					type: String,
+					enum: ["removed", "assigned"],
+				},
 				quantity: {
 					type: Number,
 					default: 0,
@@ -30,6 +34,10 @@ const ItemSchema = new mongoose.Schema(
 		],
 		stockIn: [
 			{
+				type: {
+					type: String,
+					enum: ["added", "returned"],
+				},
 				quantity: {
 					type: Number,
 					default: 0,

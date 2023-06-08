@@ -70,13 +70,13 @@ const Dashboard = () => {
 			});
 	};
 
-	const cancelRequest = (reqId) => {
+	const returnItem = (reqId) => {
 		http
-			.post(`/item/request/cancel/${reqId}`)
+			.post(`/item/return/${reqId}`)
 			.then((res) => {
 				Swal.fire({
 					title: "Success!",
-					text: "Request cancelled successfully",
+					text: "Successfully requested for return",
 					icon: "success",
 					confirmButtonText: "OK",
 				});
@@ -176,6 +176,7 @@ const Dashboard = () => {
 								<th className="py-2 px-4 border-b text-left">Item Name</th>
 								<th className="py-2 px-4 border-b text-left">Item Quantity</th>
 								<th className="py-2 px-4 border-b text-left">Request Status</th>
+								<th className="py-2 px-4 border-b text-left">Requested Date</th>
 								<th className="py-2 px-4 border-b text-left">Allocated Date</th>
 								<th className="py-2 px-4 border-b text-left">Return Date</th>
 							</tr>
@@ -192,19 +193,21 @@ const Dashboard = () => {
 									<td className="py-4 px-4 border-b text-left pl-6">
 										{new Date(request.requestDate).toISOString().substring(0, 10)}
 									</td>
+									<td className="py-4 px-4 border-b text-left pl-10">
+										{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
+									</td>
 									<td className="py-4 px-4 border-b text-left">
-										{request.status === "Approved" && request.reqItem.isReturnable && !request.returnDate ? (
-											<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
+										{/* change date */}
+										{request.return.status === "pending" ? (
+											<button
+												onClick={() => returnItem(request._id)}
+												className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
 												Return
 											</button>
-										) : request.status === "Approved" && request.reqItem.isReturnable && request.returnDate ? (
-											new Date(request.requestDate).toISOString().substring(0, 10)
-										) : request.status === "pending" ? (
-											<button
-												className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 ml-2 rounded inline-block"
-												onClick={() => cancelRequest(request._id)}>
-												Cancel
-											</button>
+										) : request.return.status === "pending-approval" ? (
+											<span className="pl-6">Pending For Approval</span>
+										) : request.return.status === "returned" ? (
+											new Date(request.return.returnedDate).toISOString().substring(0, 10)
 										) : (
 											<span className="pl-6">N/A</span>
 										)}
