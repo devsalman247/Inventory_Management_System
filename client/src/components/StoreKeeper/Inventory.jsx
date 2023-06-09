@@ -102,7 +102,9 @@ const Inventory = () => {
 		XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory");
 
 		const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-		const fileData = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+		const fileData = new Blob([excelBuffer], {
+			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		});
 		saveAs(fileData, "inventory.xlsx");
 	};
 
@@ -132,7 +134,6 @@ const Inventory = () => {
 		reader.readAsArrayBuffer(file);
 	};
 
-
 	return (
 		<div className="bg-gray-100 min-h-screen">
 			<Navbar />
@@ -156,8 +157,7 @@ const Inventory = () => {
 
 							<button
 								className="text-white bg-blue-400 hover:bg-blue-600  font-bold py-1 px-4 ml-2  rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-								onClick={handleReset}
-							>
+								onClick={handleReset}>
 								Reset
 							</button>
 						</div>
@@ -170,8 +170,7 @@ const Inventory = () => {
 								name="chartType"
 								value={chartType}
 								onChange={handleChartTypeChange}
-								className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-							>
+								className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
 								<option value="stockIn">Stock In</option>
 								<option value="stockOut">Stock Out</option>
 							</select>
@@ -232,14 +231,11 @@ const Inventory = () => {
 									placeholder="Enter item quantity"
 								/>
 							</div>
-							<button
-								type="submit"
-								className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-							>
+							<button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
 								Add Item
 							</button>
 						</form>
-						<div className="flex justify-around mt-12">
+						{/* <div className="flex justify-around mt-12">
 							<label htmlFor="import" className="font-bold mb-2">
 								Import Inventory:
 							</label>
@@ -256,7 +252,7 @@ const Inventory = () => {
 							onClick={handleExport}
 						>
 							Export Inventory
-						</button>
+						</button> */}
 					</div>
 				</div>
 			</div>

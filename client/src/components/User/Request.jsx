@@ -121,7 +121,7 @@ const Request = () => {
 				<Sidebar />
 				<div className="w-full px-10 mt-10">
 					<div className="mb-4">
-						<h2 className="text-lg font-semibold mb-4">Select Items</h2>
+						<h2 className="text-lg font-semibold mb-4">Request New Item</h2>
 						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
 							<table className="w-full">
 								<thead>
@@ -137,7 +137,7 @@ const Request = () => {
 											<select
 												value={JSON.stringify(selectedItem)}
 												onChange={handleItemChange}
-												className="py-2 px-4 border  border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+												className="py-2 px-4 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
 												<option value="">Select Item</option>
 												{items.map((item) => (
 													<option key={item._id} value={JSON.stringify(item)}>
@@ -151,7 +151,7 @@ const Request = () => {
 												type="number"
 												value={selectedQuantity}
 												onChange={handleQuantityChange}
-												className="py-2 px-2 w-[8rem] border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+												className="py-2 px-2 text-center w-[8rem] border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 											/>
 										</td>
 										<td className="py-2 px-4 border-b text-center">{selectedItem ? selectedItem.stock : "0"}</td>
@@ -206,30 +206,32 @@ const Request = () => {
 									</tbody>
 								</table>
 							) : (
-								<p>No items requested.</p>
+								<p>No pending requests to show here.</p>
 							)}
 						</div>
 					</div>
 
-					<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
-						<ReactPaginate
-							previousLabel={"Previous"}
-							nextLabel={"Next"}
-							breakLabel={"..."}
-							breakClassName="text-gray-500 px-2 cursor-pointer"
-							containerClassName="flex justify-center"
-							pageClassName="mx-4"
-							pageCount={Math.ceil(requestedItems.length / itemsPerPage)}
-							marginPagesDisplayed={2}
-							pageRangeDisplayed={5}
-							onPageChange={handlePageChange}
-							activeClassName="bg-blue-500 text-white px-2 py-1 rounded"
-							activeLinkClassName="cursor-pointer"
-							previousClassName="mx-1"
-							nextClassName="mx-1"
-							disabledClassName="opacity-50 cursor-not-allowed"
-						/>
-					</div>
+					{Math.ceil(requestedItems.length / itemsPerPage) > 1 && (
+						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
+							<ReactPaginate
+								previousLabel={"Previous"}
+								nextLabel={"Next"}
+								breakLabel={"..."}
+								breakClassName="text-gray-500 px-2 cursor-pointer"
+								containerClassName="flex justify-center"
+								pageClassName="mx-4"
+								pageCount={Math.ceil(requestedItems.length / itemsPerPage)}
+								marginPagesDisplayed={2}
+								pageRangeDisplayed={5}
+								onPageChange={handlePageChange}
+								activeClassName="bg-blue-500 text-white px-2 py-1 rounded"
+								activeLinkClassName="cursor-pointer"
+								previousClassName="mx-1"
+								nextClassName="mx-1"
+								disabledClassName="opacity-50 cursor-not-allowed"
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

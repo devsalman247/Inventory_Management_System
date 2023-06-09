@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
-import data from "./data.json";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
@@ -151,7 +150,7 @@ const Dashboard = () => {
 								<th className="py-2 px-4 border-b text-left">Requested Date</th>
 								<th className="py-2 px-4 border-b text-left">Allocated Date</th>
 								<th className="py-2 px-4 border-b text-left">Return Date</th>
-								<th className="py-2 px-4 border-b text-left pl-20">Actions</th>
+								<th className="py-2 px-4 border-b text-left pl-20">Status</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -175,19 +174,6 @@ const Dashboard = () => {
 									<td className="py-4 px-4 border-b text-left">
 										{request.return.status === "pending-approval" ? (
 											<div className="ml-4">Pending Return Approval</div>
-										) : request.status === "pending" ? (
-											<div>
-												<button
-													className="bg-green-500 hover:bg-green-600 text-white py-2 px-2 ml-2 rounded inline-block"
-													onClick={() => handleApprove(request._id)}>
-													Approve
-												</button>
-												<button
-													className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 ml-2 rounded inline-block"
-													onClick={() => handleReject(request._id)}>
-													Reject
-												</button>
-											</div>
 										) : (
 											<div className="pl-16">{request.status.charAt(0).toUpperCase() + request.status.slice(1)}</div>
 										)}
