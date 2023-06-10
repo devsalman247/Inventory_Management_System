@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import http from "../../api";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Admin from "./Admin";
+import Storekeeper from "./Storekeeper";
+import AddEmployee from "./AddEmployee";
+import UpdateEmployee from "./UpdateEmployee";
+import DeleteEmployee from "./DeleteEmployee";
 
 const Dashboard = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
@@ -154,6 +160,18 @@ const Dashboard = () => {
 							</tbody>
 						</table>
 					</div>
+
+					{/* Routing */}
+					{/* <Router>
+						<Routes>
+							<Route path="/" element={<Admin />} />
+							<Route path="/admin/addEmployee" element={<AddEmployee />} />
+							<Route path="/admin/updateEmployee" element={<UpdateEmployee />} />
+							<Route path="/admin/deleteEmployee" element={<DeleteEmployee />} />
+							<Route path="/admin/storekeeper" element={<Storekeeper />} />
+						</Routes>
+					</Router> */}
+
 				</div>
 			</div>
 		</div>

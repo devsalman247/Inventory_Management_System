@@ -10,11 +10,15 @@ import {
 	Store,
 	Inventory,
 	RequestsStore,
+	AddEmployee,
+	UpdateEmployee,
+	DeleteEmployee,
 } from "./components";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext, purgeAuth, setAuth } from "./context_store";
 import http from "./api";
+import Storekeeper from "./components/Admin/Storekeeper";
 
 function App() {
 	const location = useLocation();
@@ -63,9 +67,13 @@ function App() {
 					{loggedInUser && loggedInUser.role === "admin" && (
 						<>
 							<Route path="/admin/dashboard" element={<AdminDashboard />} />
-							<Route path="/admin/manage_users" element={<ManageUsers />} />
-							<Route path="/admin/requests" element={<Requests />} />
-							<Route path="/admin/settings" element={<Settings />} />
+							<Route path="/admin/add-employee" element={<AddEmployee />} />
+							<Route path="/admin/update-employee" element={<UpdateEmployee />} />
+							<Route path="/admin/delete-employee" element={<DeleteEmployee />} />
+							<Route path="/admin/delete-employee" element={<DeleteEmployee />} />
+							<Route path="/admin/store-keeper" element={<Storekeeper />} />
+							{/* <Route path="/admin/requests" element={<Requests />} />
+							<Route path="/admin/settings" element={<Settings />} /> */}
 						</>
 					)}
 

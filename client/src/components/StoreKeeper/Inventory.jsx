@@ -187,6 +187,7 @@ const Inventory = () => {
 							</BarChart>
 						</div>
 					</div>
+					
 					<div className="bg-white p-4 rounded-lg shadow-md flex-grow-0 flex-shrink-0 w-1/2">
 						<h3 className="text-lg font-bold mb-2">Add New Inventory Item</h3>
 						<form onSubmit={handleFormSubmit}>
