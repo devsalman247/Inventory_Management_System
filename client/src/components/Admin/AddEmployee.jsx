@@ -52,75 +52,69 @@ const AddEmployee = () => {
 				})
 				.catch((err) => {
 					if (err.response?.data?.message === "ValidationError: email: is already taken.") {
-						showMessage("User already exists with same email address!", "error");
+						showMessage("User already exists with the same email address!", "error");
 					} else {
-						showMessage("Failed to add user!", "error");
+						showMessage("Failed to add a user!", "error");
 					}
 					console.log(err);
 				});
 		}
 	};
-
 	return (
-		<div className="flex flex-col ">
+		<div className="flex flex-col">
 			<Navbar />
 
-			<div className="flex">
-				<div>
-					<Sidebar />
-				</div>
+			<div className="flex flex-col lg:flex-row">
+				{/* <Sidebar /> */}
 
 				{/* Add Employee */}
-				<div className="flex flex-col items-center justify-center w-full h-full">
-					<form className=" flex flex-col mt-8 w-[1000px] h-[500px] bg-slate-200 rounded-md shadow-md">
-						{/* first name */}
-						<label htmlFor="firstname" className="w-full px-4 py-2 font-semibold ">
+				<div className="flex flex-col pl-4 pr-4 items-center justify-center w-full h-full">
+					<form className="flex flex-col mt-8 w-full bg-slate-200 rounded-md shadow-md
+        // set the width for sm, md, and lg
+        sm:w-3/4 md:w-3/4 lg:w-full">
+						{/* Full Name */}
+						<label htmlFor="firstname" className="w-full px-4 py-2 font-semibold">
 							Full Name
 						</label>
 						<input
 							type="text"
 							placeholder="Enter your name"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg
-							focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
-							"
+							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
 						/>
 
-						{/* email */}
-						<label htmlFor="email" className="w-full mt-4 px-4 py-2 font-semibold">
+						{/* Email */}
+						<label htmlFor="email" className="w-full px-4 py-2 font-semibold">
 							Email
 						</label>
 						<input
 							type="email"
-							placeholder="Enter your mail"
+							placeholder="Enter your email"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg 
-														focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
-
-							"
+							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
 						/>
 
-						<label htmlFor="email" className="w-full mt-4 px-4 py-2 font-semibold">
+						{/* Password */}
+						<label htmlFor="password" className="w-full px-4 py-2 font-semibold">
 							Password
 						</label>
 						<input
 							type="password"
 							placeholder="Set password"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg 
-														focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50
-"
+							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
 						/>
 
-						{/* address */}
-						<label htmlFor="address" className="w-full mt-4 px-4 py-2 font-semibold">
+						{/* Designation */}
+						<label htmlFor="designation" className="w-full px-4 py-2 font-semibold">
 							Designation
 						</label>
 						<select
 							name="designation"
 							id="designation"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 outline-none rounded-lg ">
+							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+						>
 							<option value="Professor">Professor</option>
 							<option value="Assistant Professor">Assistant Professor</option>
 							<option value="Lecturer">Lecturer</option>
@@ -129,7 +123,8 @@ const AddEmployee = () => {
 						{/* Submit Button */}
 						<button
 							onClick={(e) => addEmployee(e)}
-							className="w-1/4 px-4 py-2 mx-auto mt-12 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600">
+							className="w-1/2 px-4 py-2 mx-auto mt-8 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600"
+						>
 							Add Employee
 						</button>
 					</form>
@@ -137,6 +132,7 @@ const AddEmployee = () => {
 			</div>
 		</div>
 	);
+
 };
 
 export default AddEmployee;

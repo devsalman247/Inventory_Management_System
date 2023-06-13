@@ -56,14 +56,14 @@ const UpdateEmployee = () => {
 	};
 
 	return (
-		<div className="w-full h-full bg-[#F7F7F7]">
+		<div className="w-full h-full bg-[#F7F7F7] flex flex-col">
 			<Navbar />
-			<div className="super_section flex ">
-				<Sidebar />
+			<div className="super_section flex flex-1">
+				{/* <Sidebar /> */}
 				{/* Main Content */}
-				<div className="main_content flex flex-col items-center ">
-					<div className="main_top relative top-4 right-[385px] ">
-						<h1 className=" mt-8  font-semibold text-xl">Update Employees</h1>
+				<div className="main_content flex flex-col items-center">
+					<div className="main_top relative top-4 right-[385px]">
+						<h1 className="mt-8 font-semibold text-xl">Update Employees</h1>
 						<p className="">Dashboard</p>
 					</div>
 
@@ -83,14 +83,18 @@ const UpdateEmployee = () => {
 							className="py-4 p-2 outline-none mt-8 ml-4 bg-white"
 							onChange={(e) => {
 								setDesignation(e.target.value);
-							}}>
+							}}
+						>
 							<option value="Select">Designation</option>
 							<option value="Professor">Professor</option>
 							<option value="Assistant Professor">Assistant Professor</option>
 							<option value="Lecturer">Lecturer</option>
 						</select>
 
-						<button className="bg-[#00B4F4] text-white py-4 px-32 mt-8 ml-4 rounded-lg" onClick={searchUser}>
+						<button
+							className="bg-[#00B4F4] text-white py-4 px-8 mt-8 ml-4 rounded-lg"
+							onClick={searchUser}
+						>
 							Search
 						</button>
 					</div>
@@ -120,13 +124,14 @@ const UpdateEmployee = () => {
 						className="bg-[#00B4F4] absolute top-[265px] right-[460px] text-white py-2 px-4 mt-8 ml-12 rounded-lg"
 						onClick={() => {
 							filterUsers();
-						}}>
+						}}
+					>
 						Apply
 					</button>
 
 					{/* Display data in the form of table*/}
-					<div className="main_table flex flex-col  mt-8">
-						<table className="w-[780px] bg-white shadow-md rounded-lg mr-40 ">
+					<div className="main_table flex flex-col mt-8">
+						<table className="w-full bg-white shadow-md rounded-lg sm:w-[780px]">
 							<thead className="bg-[#00B4F4] w-[240px] text-white text-center ">
 								<tr className="text-left">
 									<th className="px-4 py-3">Name</th>
@@ -139,43 +144,46 @@ const UpdateEmployee = () => {
 								{users.length > 0 &&
 									(filteredUsers.length === 0
 										? users.map((user) => {
-												return (
-													<tr className="text-left">
-														<td className="px-4 py-3" id="name">
-															{user.name}
-														</td>
-														<td className="px-4 py-3">{user.email}</td>
-														<td className="px-4 py-3">{user.designation}</td>
-														<td className="px-4 py-3">
-															{/* Edit */}
-															<button
-																className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4"
-																// fat arrow function to pass the id of the user to be edited
-																onClick={(e) => {
-																	editUser(e);
-																	setUserId(user._id);
-																}}>
-																Update
-															</button>
-														</td>
-													</tr>
-												);
-										  })
+											return (
+												<tr className="text-left" key={user._id}>
+													<td className="px-4 py-3" id="name">
+														{user.name}
+													</td>
+													<td className="px-4 py-3">{user.email}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">
+														{/* Edit */}
+														<button
+															className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4"
+															onClick={(e) => {
+																editUser(e);
+																setUserId(user._id);
+															}}
+														>
+															Update
+														</button>
+													</td>
+												</tr>
+											);
+										})
 										: filteredUsers.map((user) => {
-												return (
-													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
-														<td className="px-4 py-3">{user.email}</td>
-														<td className="px-4 py-3">{user.designation}</td>
-														<td className="px-4 py-3">
-															{/* Edit */}
-															<button className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4" onClick={editUser}>
-																Update
-															</button>
-														</td>
-													</tr>
-												);
-										  }))}
+											return (
+												<tr className="text-left" key={user._id}>
+													<td className="px-4 py-3">{user.name}</td>
+													<td className="px-4 py-3">{user.email}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">
+														{/* Edit */}
+														<button
+															className="bg-[#00B4F4] text-white py-1 px-4 rounded-lg mr-4"
+															onClick={editUser}
+														>
+															Update
+														</button>
+													</td>
+												</tr>
+											);
+										}))}
 							</tbody>
 						</table>
 						{showModal && <Modal setShowModal={setShowModal} users={users} userId={userId} />}
@@ -184,6 +192,7 @@ const UpdateEmployee = () => {
 			</div>
 		</div>
 	);
+
 };
 
 export default UpdateEmployee;

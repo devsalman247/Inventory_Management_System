@@ -5,7 +5,7 @@ export const Sidebar = () => {
     return (
         <>
             {/* Sidebar */}
-            <div className='sidebar flex text-white justify-center w-64 h-[590px] bg-[#34444C]'>
+            <div className='sidebar flex text-white justify-center w-64 h-min-screen bg-[#34444C]'>
                 <ul>
                     <li className='mt-10 cursor-pointer'
                     onClick={() => navigate('/admin/dashboard')}

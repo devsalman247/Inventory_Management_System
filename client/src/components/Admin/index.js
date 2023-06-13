@@ -2,12 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import http from "../../api";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Admin from "./Admin";
-import Storekeeper from "./Storekeeper";
-import AddEmployee from "./AddEmployee";
-import UpdateEmployee from "./UpdateEmployee";
-import DeleteEmployee from "./DeleteEmployee";
 
 const Dashboard = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
@@ -24,9 +18,11 @@ const Dashboard = () => {
 				checkedFilters.push(filter.value);
 			}
 		});
-		// Now filter the data and set accordng to the checked boxes
+		// Now filter the data and set according to the checked boxes
 		if (checkedFilters.length > 0) {
-			const filteredData = users.filter((user) => checkedFilters.includes(user.designation));
+			const filteredData = users.filter((user) =>
+				checkedFilters.includes(user.designation)
+			);
 			setFilteredUsers(filteredData);
 		} else {
 			setFilteredUsers([]);
@@ -36,11 +32,16 @@ const Dashboard = () => {
 
 	const searchUser = () => {
 		const filteredData = users.filter((user) => {
-			if (user.name.toLowerCase() === searchItem.toLowerCase() && user.designation === designation) {
+			if (
+				user.name.toLowerCase() === searchItem.toLowerCase() &&
+				user.designation === designation
+			) {
 				return user;
 			}
 		});
-		filteredData.length > 0 ? setFilteredUsers(filteredData) : setFilteredUsers([]);
+		filteredData.length > 0
+			? setFilteredUsers(filteredData)
+			: setFilteredUsers([]);
 	};
 
 	const fetchUsers = () => {
@@ -58,22 +59,21 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="w-full h-full bg-[#F7F7F7]">
+		<div className="w-full min-h-screen bg-[#F7F7F7] flex flex-col">
 			<Navbar />
-			<div className="super_section flex ">
-				<Sidebar />
-				{/* Main Content */}
-				<div className="main_content flex flex-col items-center ">
-					<div className="main_top relative top-4 right-[420px] ">
-						<h1 className=" mt-8  font-semibold text-xl">Employees</h1>
-						<p className="">Dashboard</p>
+			<div className="flex-1 flex">
+				{/* <Sidebar /> */}
+				<div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="my-8 sm:my-12 md:my-16 lg:my-12">
+						<h1 className="text-xl font-semibold">Employees</h1>
+						<p className="mt-2">Dashboard</p>
 					</div>
 
-					<div className="main_search flex relative top-4 right-[90px] mb-8 ">
+					<div className="flex flex-col sm:flex-row">
 						<input
 							type="text"
 							placeholder="Employee Name"
-							className="py-4 p-2 outline-none mt-8"
+							className="py-4 px-6 outline-none mb-4 sm:mb-0 sm:mr-4 sm:max-w-xs md:w-64"
 							onChange={(e) => {
 								setSearchItem(e.target.value);
 							}}
@@ -82,96 +82,98 @@ const Dashboard = () => {
 						<select
 							name="designation"
 							id="designation"
-							className="py-4 p-2 outline-none mt-8 ml-4 bg-white"
+							className="py-4 px-6 outline-none bg-white"
 							onChange={(e) => {
 								setDesignation(e.target.value);
-							}}>
+							}}
+						>
 							<option value="Select">Designation</option>
 							<option value="Professor">Professor</option>
 							<option value="Assistant Professor">Assistant Professor</option>
 							<option value="Lecturer">Lecturer</option>
 						</select>
 
-						<button className="bg-[#00B4F4] text-white py-4 px-32 mt-8 ml-4 rounded-lg" onClick={searchUser}>
+						<button
+							className="bg-[#00B4F4] text-white py-4 px-6 mt-4 sm:mt-0 sm:ml-4 rounded-lg"
+							onClick={searchUser}
+						>
 							Search
 						</button>
 					</div>
 
-					{/* Filters */}
-					<div className="main_filter flex mt-8 relative mr-[520px] ">
+					<div className="flex flex-col sm:flex-row mt-8">
 						{/* Add Filters font awesome icon */}
-						<i className="fas fa-filter text-[#00B4F4] text-2xl ml-12"></i>
-						<div className="filter1 flex items-center">
+						<i className="fas fa-filter text-[#00B4F4] text-2xl ml-4"></i>
+						<div className="flex items-center mt-4 sm:mt-0">
 							<input type="checkbox" className="ml-4" value={"Professor"} />
 							<p className="ml-2">Professor</p>
 						</div>
 
-						<div className="filter2 flex items-center ml-8">
-							<input type="checkbox" className="ml-4" value={"Assistant Professor"} />
+						<div className="flex items-center mt-4 sm:mt-0 ml-0 sm:ml-8">
+							<input
+								type="checkbox"
+								className="ml-4"
+								value={"Assistant Professor"}
+							/>
 							<p className="ml-2">Assistant Professor</p>
 						</div>
 
-						<div className="filter3 flex items-center ml-8">
+						<div className="flex items-center mt-4 sm:mt-0 ml-0 sm:ml-8">
 							<input type="checkbox" className="ml-4" value={"Lecturer"} />
 							<p className="ml-2">Lecturer</p>
 						</div>
+
+						<button
+							className="bg-[#00B4F4] text-white py-2 px-4 mt-4 sm:mb-2 sm:ml-4
+							md:ml-8 md:mb-8 
+							rounded-lg self-start"
+							onClick={() => {
+								filterUsers();
+							}}
+						>
+							Apply
+						</button>
 					</div>
 
-					{/* button to get checked filters */}
-					<button
-						className="bg-[#00B4F4] absolute top-[265px] right-[460px] text-white py-2 px-4 mt-8 ml-12 rounded-lg"
-						onClick={() => {
-							filterUsers();
-						}}>
-						Apply
-					</button>
-
-					{/* Display data in the form of table*/}
-					<div className="main_table flex flex-col items-center mt-8 ml-12 ">
-						<table className="w-[1000px] bg-white shadow-md rounded-lg">
-							<thead className="bg-[#00B4F4] text-white text-center ">
+					<div className="overflow-x-auto">
+						<table className="w-full bg-white shadow-md rounded-lg">
+							<thead className="bg-[#00B4F4] text-white text-center">
 								<tr className="text-left">
-									<th className="px-4 py-3">Name</th>
-									<th className="px-4 py-3">Designation</th>
-									<th className="px-4 py-3">Email</th>
+									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">
+										Name
+									</th>
+									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">
+										Designation
+									</th>
+									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">
+										Email
+									</th>
 								</tr>
 							</thead>
 							<tbody>
 								{users.length > 0 &&
 									(filteredUsers.length === 0
 										? users.map((user) => {
-												return (
-													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
-														<td className="px-4 py-3">{user.designation}</td>
-														<td className="px-4 py-3">{user.email}</td>
-													</tr>
-												);
-										  })
+											return (
+												<tr className="text-left" key={user.id}>
+													<td className="px-4 py-3">{user.name}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">{user.email}</td>
+												</tr>
+											);
+										})
 										: filteredUsers.map((user) => {
-												return (
-													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
-														<td className="px-4 py-3">{user.designation}</td>
-														<td className="px-4 py-3">{user.email}</td>
-													</tr>
-												);
-										  }))}
+											return (
+												<tr className="text-left" key={user.id}>
+													<td className="px-4 py-3">{user.name}</td>
+													<td className="px-4 py-3">{user.designation}</td>
+													<td className="px-4 py-3">{user.email}</td>
+												</tr>
+											);
+										}))}
 							</tbody>
 						</table>
 					</div>
-
-					{/* Routing */}
-					{/* <Router>
-						<Routes>
-							<Route path="/" element={<Admin />} />
-							<Route path="/admin/addEmployee" element={<AddEmployee />} />
-							<Route path="/admin/updateEmployee" element={<UpdateEmployee />} />
-							<Route path="/admin/deleteEmployee" element={<DeleteEmployee />} />
-							<Route path="/admin/storekeeper" element={<Storekeeper />} />
-						</Routes>
-					</Router> */}
-
 				</div>
 			</div>
 		</div>
