@@ -4,6 +4,7 @@ import admin from "../../images/admin.jpeg";
 import { AuthContext, purgeAuth } from "../../context_store";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
+import { IoLogOutOutline } from "react-icons/io5";
 
 export const Navbar = () => {
 	let navigate = useNavigate();
