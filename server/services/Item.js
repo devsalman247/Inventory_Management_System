@@ -80,7 +80,6 @@ const getItemById = (id) => {
 };
 
 const requestItem = (id, item) => {
-	console.log(item);
 	return Item.findOne({ _id: item._id }).then((reqItem) => {
 		if (!reqItem) throw "Item not found";
 		if (reqItem.stock < item.quantity) throw "Not enough stock";
@@ -108,6 +107,64 @@ const cancelRequest = (id) => {
 			.save()
 			.then((req) => {
 				if (!req) throw "Failed to cancel request";
+				return req;
+			})
+			.catch((err) => {
+				console.log(err);
+				throw err;
+			});
+	});
+};
+
+const approveRequest = (id) => {
+	return Request.findById(id).then((request) => {
+		if (!request) throw "Request not found";
+		if (request.reqItem.stock < request.quantity) throw "Not enough stock";
+		request.status = "approved";
+		request.approvedDate = Date.now();
+		return Item.findById(request.reqItem._id)
+			.then(async (item) => {
+				if (!item) throw "Item not found";
+				item.stockOut.push({ quantity: request.quantity, date: Date.now(), type: "assigned" });
+				item.stock -= request.quantity;
+				if (item.isReturnAble) request.return.status = "pending";
+				await item.save();
+				await request.save();
+				return request;
+			})
+			.catch((err) => {
+				console.log(err);
+				throw err;
+			});
+	});
+};
+
+const returnItemRequest = (id) => {
+	return Request.findById(id).then((request) => {
+		if (!request) throw "Request not found";
+		request.return.status = "pending-approval";
+		request.return.requests.push({ requestedDate: Date.now() });
+		return request
+			.save()
+			.then((req) => {
+				if (!req) throw "Failed to return request";
+				return req;
+			})
+			.catch((err) => {
+				console.log(err);
+				throw err;
+			});
+	});
+};
+
+const rejectRequest = (id) => {
+	return Request.findById(id).then((request) => {
+		if (!request) throw "Request not found";
+		request.status = "rejected";
+		return request
+			.save()
+			.then((req) => {
+				if (!req) throw "Failed to reject request";
 				return req;
 			})
 			.catch((err) => {
@@ -191,6 +248,9 @@ const ItemService = {
 	getItemById,
 	requestItem,
 	cancelRequest,
+	approveRequest,
+	rejectRequest,
+	returnItemRequest,
 	// Issued Items Service
 	issueItem,
 	getAllIssuedItems,

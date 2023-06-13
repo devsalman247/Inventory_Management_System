@@ -57,8 +57,9 @@ const fetchUsers = () => {
 		});
 };
 
-const getUserRequests = (id) => {
-	return Request.find({ requestedBy: id })
+const getUserRequests = (user) => {
+	const filter = user.role === "store-keeper" ? {} : { requestedBy: user.id };
+	return Request.find(filter)
 		.sort({ createdAt: -1 })
 		.then((requests) => {
 			const pending = requests.filter((request) => request.status === "pending");
@@ -66,7 +67,9 @@ const getUserRequests = (id) => {
 			const rejected = requests.filter((request) => request.status === "rejected");
 			const cancelled = requests.filter((request) => request.status === "cancelled");
 			requests.sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate));
-			return { pending, approved, rejected, cancelled, requests };
+			return user.role === "store-keeper"
+				? { pending, approved, rejected, requests }
+				: { pending, approved, rejected, cancelled, requests };
 		})
 		.catch((err) => {
 			console.log(err);

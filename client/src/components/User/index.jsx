@@ -69,13 +69,13 @@ const Dashboard = () => {
 			});
 	};
 
-	const cancelRequest = (reqId) => {
+	const returnItem = (reqId) => {
 		http
-			.post(`/item/request/cancel/${reqId}`)
+			.post(`/item/return/${reqId}`)
 			.then((res) => {
 				Swal.fire({
 					title: "Success!",
-					text: "Request cancelled successfully",
+					text: "Successfully requested for return",
 					icon: "success",
 					confirmButtonText: "OK",
 				});
@@ -94,78 +94,72 @@ const Dashboard = () => {
 		<div className="flex flex-col min-h-screen">
 			<Navbar />
 			<div className="flex flex-grow">
-				<Sidebar />
+				{/* <Sidebar /> */}
 				<div className="p-8 w-full">
-					<div className="flex flex-wrap mb-5">
-						<div className="w-full flex gap-2">
-							<div
-								className={`bg-white rounded shadow p-4 w-full sm:w-[10rem] md:w-[12rem] cursor-pointer ${selectedFilter === "requests" ? "border-2 border-blue-600" : ""
+					<div className="flex">
+						<div className="flex flex-wrap mb-5 w-4/5">
+							<div className="w-full flex gap-2">
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "requests" ? "border-2 border-blue-600" : ""
 									}`}
-								onClick={() => setSelectedFilter("requests")}
-							>
-								<div className="flex flex-col">
-									<span className="text-sm text-gray-500">Requested</span>
-									<span className="text-2xl font-semibold">
-										{userRequests.approved.length +
-											userRequests.pending.length +
-											userRequests.rejected.length +
-											userRequests.cancelled.length}
-									</span>
+									onClick={() => setSelectedFilter("requests")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Requested</span>
+										<span className="text-2xl font-semibold">
+											{userRequests.approved.length +
+												userRequests.pending.length +
+												userRequests.rejected.length +
+												userRequests.cancelled.length}
+										</span>
+									</div>
 								</div>
-							</div>
-							<div
-								className={`bg-white rounded shadow p-4 w-full sm:w-[10rem] md:w-[12rem] cursor-pointer ${selectedFilter === "approved" ? "border-2 border-blue-600" : ""
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "approved" ? "border-2 border-blue-600" : ""
 									}`}
-								onClick={() => setSelectedFilter("approved")}
-							>
-								<div className="flex flex-col">
-									<span className="text-sm text-gray-500">Approved</span>
-									<span className="text-2xl font-semibold">
-										{userRequests.approved.length}
-									</span>
+									onClick={() => setSelectedFilter("approved")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Approved</span>
+										<span className="text-2xl font-semibold">{userRequests.approved.length}</span>
+									</div>
 								</div>
-							</div>
-							<div
-								className={`bg-white rounded shadow p-4 w-full sm:w-[10rem] md:w-[12rem] cursor-pointer ${selectedFilter === "pending" ? "border-2 border-blue-600" : ""
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "pending" ? "border-2 border-blue-600" : ""
 									}`}
-								onClick={() => setSelectedFilter("pending")}
-							>
-								<div className="flex flex-col">
-									<span className="text-sm text-gray-500">Pending</span>
-									<span className="text-2xl font-semibold">
-										{userRequests.pending.length}
-									</span>
+									onClick={() => setSelectedFilter("pending")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Pending</span>
+										<span className="text-2xl font-semibold">{userRequests.pending.length}</span>
+									</div>
 								</div>
-							</div>
-							<div
-								className={`bg-white rounded shadow p-4 w-full sm:w-[10rem] md:w-[12rem] cursor-pointer ${selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
 									}`}
-								onClick={() => setSelectedFilter("rejected")}
-							>
-								<div className="flex flex-col">
-									<span className="text-sm text-gray-500">Rejected</span>
-									<span className="text-2xl font-semibold">
-										{userRequests.rejected.length}
-									</span>
+									onClick={() => setSelectedFilter("rejected")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Rejected</span>
+										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
+									</div>
 								</div>
-							</div>
-							<div
-								className={`bg-white rounded shadow p-4 w-full sm:w-[10rem] md:w-[12rem] cursor-pointer ${selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+										selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
 									}`}
-								onClick={() => setSelectedFilter("cancelled")}
-							>
-								<div className="flex flex-col">
-									<span className="text-sm text-gray-500">Cancelled</span>
-									<span className="text-2xl font-semibold">
-										{userRequests.cancelled.length}
-									</span>
+									onClick={() => setSelectedFilter("cancelled")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Cancelled</span>
+										<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div className="flex justify-between items-center mb-4">
+					<div className="flex justify-between mb-4">
 						<h2 className="text-2xl font-semibold">All Items</h2>
-						<div className="flex justify-end">
+						<div className="flex justify-end w-2/5">
 							<button
 								className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded inline-block"
 								onClick={handleDownloadPDF}
@@ -174,73 +168,57 @@ const Dashboard = () => {
 							</button>
 						</div>
 					</div>
-					<div className="overflow-x-auto">
-						<table className="w-full bg-white border border-gray-300">
-							<thead>
-								<tr className="bg-blue-500 text-white">
-									<th className="py-2 px-4 border-b text-center">Item ID</th>
-									<th className="py-2 px-4 border-b text-left">Item Name</th>
-									<th className="py-2 px-4 border-b text-left">Item Quantity</th>
-									<th className="py-2 px-4 border-b text-left">Request Status</th>
-									<th className="py-2 px-4 border-b text-left">Allocated Date</th>
-									<th className="py-2 px-4 border-b text-left">Return Date</th>
+					<table className="w-full bg-white border border-gray-300">
+						{/* Table content... */}
+						<thead>
+							<tr className="bg-blue-500 text-white">
+								<th className="py-2 px-4 border-b text-center">Item ID</th>
+								<th className="py-2 px-4 border-b text-left">Item Name</th>
+								<th className="py-2 px-4 border-b text-left">Item Quantity</th>
+								<th className="py-2 px-4 border-b text-left">Request Status</th>
+								<th className="py-2 px-4 border-b text-left">Requested Date</th>
+								<th className="py-2 px-4 border-b text-left">Allocated Date</th>
+								<th className="py-2 px-4 border-b text-left">Return Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{userRequests[selectedFilter].map((request) => (
+								<tr key={request._id}>
+									<td className="py-4 px-4 border-b text-center">{request.reqItem.itemId}</td>
+									<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
+									<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
+									<td className={`py-4 px-2 border-b text-left pl-10 ${getStatusColorClass(request.status)}`}>
+										{request.status}
+									</td>
+									<td className="py-4 px-4 border-b text-left pl-6">
+										{new Date(request.requestDate).toISOString().substring(0, 10)}
+									</td>
+									<td className="py-4 px-4 border-b text-left pl-10">
+										{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
+									</td>
+									<td className="py-4 px-4 border-b text-left">
+										{/* change date */}
+										{request.return.status === "pending" ? (
+											<button
+												onClick={() => returnItem(request._id)}
+												className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
+												Return
+											</button>
+										) : request.return.status === "pending-approval" ? (
+											<span className="pl-6">Pending For Approval</span>
+										) : request.return.status === "returned" ? (
+											new Date(request.return.returnedDate).toISOString().substring(0, 10)
+										) : (
+											<span className="pl-6">N/A</span>
+										)}
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								{userRequests[selectedFilter].slice(offset, offset + itemsPerPage).map((request) => (
-									<tr key={request._id}>
-										<td className="py-4 px-4 border-b text-center">
-											{request.reqItem.itemId}
-										</td>
-										<td className="py-4 px-2 border-b text-left pl-2 md:pl-6">
-											{request.reqItem.name}
-										</td>
-										<td className="py-4 px-2 border-b text-left pl-2 md:pl-12">
-											{request.quantity}
-										</td>
-										<td
-											className={`py-4 px-2 border-b text-left pl-2 md:pl-10 ${getStatusColorClass(
-												request.status
-											)}`}
-										>
-											{request.status}
-										</td>
-										<td className="py-4 px-4 border-b text-left pl-2 md:pl-6">
-											{new Date(request.requestDate)
-												.toISOString()
-												.substring(0, 10)}
-										</td>
-										<td className="py-4 px-4 border-b text-left">
-											{request.status === "Approved" &&
-												request.reqItem.isReturnable &&
-												!request.returnDate ? (
-												<button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 ml-2 rounded inline-block">
-													Return
-												</button>
-											) : request.status === "Approved" &&
-												request.reqItem.isReturnable &&
-												request.returnDate ? (
-												new Date(request.requestDate)
-													.toISOString()
-													.substring(0, 10)
-											) : request.status === "pending" ? (
-												<button
-													className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 ml-2 rounded inline-block"
-													onClick={() => cancelRequest(request._id)}
-												>
-													Cancel
-												</button>
-											) : (
-												<span className="pl-2 md:pl-6">N/A</span>
-											)}
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
+							))}
+						</tbody>
+					</table>
+
 					{totalPages > 1 && (
-						<div className="mt-20 flex justify-center">
+						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
 							<ReactPaginate
 								previousLabel="Previous"
 								nextLabel="Next"
@@ -264,6 +242,7 @@ const Dashboard = () => {
 			</div>
 		</div>
 	);
+
 };
 
 export default Dashboard;

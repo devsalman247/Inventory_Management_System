@@ -18,9 +18,36 @@ const RequestSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
-		returnDate: {
+		approvedDate: {
 			type: Date,
 			default: null,
+		},
+		return: {
+			status: {
+				type: String,
+				enum: ["pending", "not-applicable", "returned", "pending-approval"],
+				default: "not-applicable",
+			},
+			returnedDate: {
+				type: Date,
+				default: null,
+			},
+			requests: [
+				{
+					requestedDate: {
+						type: Date,
+						default: Date.now,
+					},
+					approvedDate: {
+						type: Date,
+						default: null,
+					},
+					rejectedDate: {
+						type: Date,
+						default: null,
+					},
+				},
+			],
 		},
 		status: {
 			type: String,

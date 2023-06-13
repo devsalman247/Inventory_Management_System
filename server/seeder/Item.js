@@ -8,6 +8,12 @@ async function seedItems() {
 		name: "Chair",
 		itemId: `ITM-000${count + 1}`,
 		stock: 15,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 15,
+			},
+		],
 		isReturnAble: true,
 	});
 
@@ -15,6 +21,12 @@ async function seedItems() {
 		name: "Table",
 		itemId: `ITM-000${count + 2}`,
 		stock: 15,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 15,
+			},
+		],
 		isReturnAble: true,
 	});
 
@@ -22,6 +34,12 @@ async function seedItems() {
 		name: "PC",
 		itemId: `ITM-000${count + 3}`,
 		stock: 15,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 15,
+			},
+		],
 		isReturnAble: true,
 	});
 
@@ -29,6 +47,12 @@ async function seedItems() {
 		name: "Sofa",
 		itemId: `ITM-000${count + 4}`,
 		stock: 15,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 15,
+			},
+		],
 		isReturnAble: true,
 	});
 
@@ -36,12 +60,24 @@ async function seedItems() {
 		name: "Printer",
 		itemId: `ITM-000${count + 5}`,
 		stock: 15,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 15,
+			},
+		],
 	});
 
 	const item6 = new Item({
 		name: "Marker",
 		itemId: `ITM-000${count + 6}`,
 		stock: 100,
+		stockIn: [
+			{
+				type: "added",
+				quantity: 100,
+			},
+		],
 	});
 
 	await item1.save().then(async (item) => {
