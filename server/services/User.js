@@ -66,9 +66,10 @@ const getUserRequests = (user) => {
 			const approved = requests.filter((request) => request.status === "approved");
 			const rejected = requests.filter((request) => request.status === "rejected");
 			const cancelled = requests.filter((request) => request.status === "cancelled");
+			const pendingApproval = requests.filter((request) => request.return.status === "pending-approval");
 			requests.sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate));
 			return user.role === "store-keeper"
-				? { pending, approved, rejected, requests }
+				? { pending, approved, rejected, requests, pendingApproval }
 				: { pending, approved, rejected, cancelled, requests };
 		})
 		.catch((err) => {
