@@ -11,6 +11,7 @@ const {
 	cancelRequest,
 	approveRequest,
 	rejectRequest,
+	rejectRequests,
 	returnItemRequest,
 	issueItem,
 	getAllIssuedItems,
@@ -124,6 +125,19 @@ const RejectRequest = async (req, res, next) => {
 		});
 };
 
+const RejectRequests = async (req, res, next) => {
+	if (req.user.role !== "store-keeper")
+		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+	const { ids } = req.body;
+	rejectRequests(ids)
+		.then((isRequestRejected) => {
+			if (isRequestRejected) return next(new OkResponse("Request rejected successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
 const ItemReturnRequest = async (req, res, next) => {
 	if (!req.params.id) return next(new BadRequestResponse("Please provide all required fields"));
 	returnItemRequest(req.params.id)
@@ -180,6 +194,7 @@ const ItemController = {
 	CancelRequest,
 	ApproveRequest,
 	RejectRequest,
+	RejectRequests,
 	ItemReturnRequest,
 	// Issued Items Controller
 	ItemIssue,

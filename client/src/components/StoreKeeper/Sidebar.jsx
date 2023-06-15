@@ -5,8 +5,8 @@ import { MdOutlineManageHistory } from "react-icons/md";
 const Sidebar = () => {
 	const navigate = useNavigate();
 	return (
-		<div className="overflow-x-hidden">
-			<div className="sidebar flex text-white justify-center w-64 h-[596px] bg-[#34444C]">
+		<div className="w-64 h-full">
+			<div className="sidebar flex text-white justify-center h-full bg-[#34444C]">
 				<ul>
 					<li
 						className="mt-10 cursor-pointer"

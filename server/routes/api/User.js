@@ -7,10 +7,10 @@ const { UserSignUp, UserLogin, UserAdd, UserProfile, UserFetchAll, UserRequests,
 	UserConroller;
 const { verifyToken, isAdmin } = UserAuth;
 
+router.get("/", verifyToken, isAdmin, UserFetchAll);
 router.post("/signup", UserSignUp);
 router.post("/login", UserLogin);
 router.post("/add", verifyToken, isAdmin, UserAdd);
-router.get("/", verifyToken, isAdmin, UserFetchAll);
 router.get("/context", verifyToken, UserProfile);
 router.get("/requests", verifyToken, UserRequests);
 router.delete("/:id", verifyToken, isAdmin, UserDelete);

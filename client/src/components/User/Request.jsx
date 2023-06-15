@@ -115,11 +115,11 @@ const Request = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col w-full h-full">
+		<div className="flex flex-col h-full">
 			<Navbar />
-			<div className="flex">
+			<div className="flex h-full">
 				<Sidebar />
-				<div className="w-full px-10 mt-10">
+				<div className="px-10 mt-10 flex-grow">
 					<div className="mb-4">
 						<h2 className="text-lg font-semibold mb-4">Request New Item</h2>
 						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">

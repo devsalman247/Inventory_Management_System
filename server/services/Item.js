@@ -174,6 +174,10 @@ const rejectRequest = (id) => {
 	});
 };
 
+const rejectRequests = (ids) => {
+	return Request.updateMany({ _id: { $in: ids } }, { $set: { status: "rejected" } });
+};
+
 // Issued Items Service
 const issueItem = async (item, reqId) => {
 	try {
@@ -250,6 +254,7 @@ const ItemService = {
 	cancelRequest,
 	approveRequest,
 	rejectRequest,
+	rejectRequests,
 	returnItemRequest,
 	// Issued Items Service
 	issueItem,

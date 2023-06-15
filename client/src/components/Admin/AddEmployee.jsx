@@ -61,19 +61,19 @@ const AddEmployee = () => {
 		}
 	};
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col h-full">
 			<Navbar />
 
-			<div className="flex flex-col lg:flex-row">
-				{/* <Sidebar /> */}
+			<div className="w-full flex h-full">
+				<Sidebar />
 
 				{/* Add Employee */}
-				<div className="flex flex-col pl-4 pr-4 items-center justify-center w-full h-full">
-					<form className="flex flex-col mt-8 w-full bg-slate-200 rounded-md shadow-md
-        // set the width for sm, md, and lg
-        sm:w-3/4 md:w-3/4 lg:w-full">
+				<div className="flex justify-center flex-grow">
+					<form
+						className="flex flex-col self-start mt-8 lg:px-8 lg:py-6 w-full bg-slate-200 rounded-md shadow-md
+        sm:w-3/4 md:w-3/4 lg:w-[750px]">
 						{/* Full Name */}
-						<label htmlFor="firstname" className="w-full px-4 py-2 font-semibold">
+						<label htmlFor="firstname" className="w-full px-4 pb-2 font-semibold">
 							Full Name
 						</label>
 						<input
@@ -113,8 +113,7 @@ const AddEmployee = () => {
 							name="designation"
 							id="designation"
 							onChange={(e) => changeEmployeeInfo(e)}
-							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-						>
+							className="px-2 py-2 mx-4 my-2 outline-none rounded-lg focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
 							<option value="Professor">Professor</option>
 							<option value="Assistant Professor">Assistant Professor</option>
 							<option value="Lecturer">Lecturer</option>
@@ -123,8 +122,7 @@ const AddEmployee = () => {
 						{/* Submit Button */}
 						<button
 							onClick={(e) => addEmployee(e)}
-							className="w-1/2 px-4 py-2 mx-auto mt-8 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600"
-						>
+							className="w-1/2 px-4 py-2 mx-auto mt-8 text-white bg-slate-500 rounded-md shadow-md hover:bg-blue-600">
 							Add Employee
 						</button>
 					</form>
@@ -132,7 +130,6 @@ const AddEmployee = () => {
 			</div>
 		</div>
 	);
-
 };
 
 export default AddEmployee;

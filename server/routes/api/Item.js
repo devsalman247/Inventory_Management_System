@@ -13,6 +13,7 @@ const {
 	CancelRequest,
 	ApproveRequest,
 	RejectRequest,
+	RejectRequests,
 	ItemReturnRequest,
 	ItemIssue,
 	ItemGetAllIssued,
@@ -38,6 +39,7 @@ router.post("/return/:id", verifyToken, ItemReturnRequest);
 router.post("/request/cancel/:id", verifyToken, CancelRequest);
 router.post("/request/approve/:id", verifyToken, ApproveRequest);
 router.post("/request/reject/:id", verifyToken, RejectRequest);
+router.put("/requests/reject", verifyToken, RejectRequests);
 router.put("/:id", isAdmin, ItemUpdate);
 router.delete("/:id", isAdmin, ItemDelete);
 

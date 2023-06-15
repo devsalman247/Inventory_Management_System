@@ -63,8 +63,6 @@ const Dashboard = () => {
 		setItemQuantity("");
 	};
 
-	
-
 	const getStatusColorClass = (status) => {
 		switch (status) {
 			case "approved":
@@ -137,9 +135,9 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="flex flex-col h-full">
 			<Navbar />
-			<div className="flex">
+			<div className="flex h-full">
 				<Sidebar />
 				<div>
 					<div className="flex mt-8 ml-20">

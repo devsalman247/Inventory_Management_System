@@ -53,9 +53,18 @@ const Requests = () => {
 			});
 	};
 
-	const handleReject = (requestId) => {
+	const handleReject = (rejectAll) => {
+		if (!rejectAll && selectedRequests.length === 0) {
+			Swal.fire({
+				title: "Error!",
+				text: "Please select at least one request",
+				icon: "error",
+				confirmButtonText: "OK",
+			});
+			return;
+		}
 		http
-			.post(`/item/request/reject/${requestId}`)
+			.put(`/item/requests/reject`, { ids: rejectAll ? userRequests.pending : selectedRequests })
 			.then((res) => {
 				Swal.fire({
 					title: "Success!",
@@ -97,9 +106,9 @@ const Requests = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="flex flex-col h-full">
 			<Navbar />
-			<div className="flex">
+			<div className="flex h-full">
 				<Sidebar />
 				<div>
 					<div className="flex mt-8 ml-20">
@@ -131,11 +140,17 @@ const Requests = () => {
 
 					<div className="flex justify-end py-4">
 						{selectedRequests.length > 0 && (
-							<button className="px-4 py-2 mr-2 bg-red-500 hover:bg-red-700 text-white rounded-md">
+							<button
+								className="px-4 py-2 mr-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+								onClick={() => handleReject(false)}>
 								Reject Requests
 							</button>
 						)}
-						<button className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md">Reject All Requests</button>
+						<button
+							className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+							onClick={() => handleReject(true)}>
+							Reject All Requests
+						</button>
 					</div>
 
 					<table className="w-[1120px] bg-white border border-gray-300 ml-20 text-left">

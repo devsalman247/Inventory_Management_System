@@ -135,9 +135,9 @@ const Inventory = () => {
 	};
 
 	return (
-		<div className="bg-gray-100 min-h-screen">
+		<div className="bg-gray-100 flex flex-col h-full">
 			<Navbar />
-			<div className="flex">
+			<div className="flex h-full">
 				<Sidebar />
 				<div className="flex flex-1 p-4">
 					<div className="bg-white p-4 rounded-lg shadow-md flex-grow-0 flex-shrink-0 w-1/2 mr-4">
@@ -186,7 +186,7 @@ const Inventory = () => {
 							</BarChart>
 						</div>
 					</div>
-					
+
 					<div className="bg-white p-4 rounded-lg shadow-md flex-grow-0 flex-shrink-0 w-1/2">
 						<h3 className="text-lg font-bold mb-2">Add New Inventory Item</h3>
 						<form onSubmit={handleFormSubmit}>

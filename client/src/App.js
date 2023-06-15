@@ -58,7 +58,7 @@ function App() {
 
 	return (
 		// main container
-		<div className=" bg-[#F7F7F7] main_container  w-screen h-screen">
+		<div className="bg-[#F7F7F7] main_container w-screen h-screen">
 			<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }}>
 				<Routes>
 					<Route path="/" element={<Login />} />
@@ -69,7 +69,6 @@ function App() {
 							<Route path="/admin/dashboard" element={<AdminDashboard />} />
 							<Route path="/admin/add-employee" element={<AddEmployee />} />
 							<Route path="/admin/update-employee" element={<UpdateEmployee />} />
-							<Route path="/admin/delete-employee" element={<DeleteEmployee />} />
 							<Route path="/admin/delete-employee" element={<DeleteEmployee />} />
 							<Route path="/admin/store-keeper" element={<Storekeeper />} />
 							{/* <Route path="/admin/requests" element={<Requests />} />

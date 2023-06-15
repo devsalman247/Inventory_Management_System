@@ -91,79 +91,78 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col min-h-screen">
+		<div className="flex flex-col h-full">
 			<Navbar />
-			<div className="flex flex-grow">
-				{/* <Sidebar /> */}
-				<div className="p-8 w-full">
-					<div className="flex">
-						<div className="flex flex-wrap mb-5 w-4/5">
-							<div className="w-full flex gap-2">
-								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-										selectedFilter === "requests" ? "border-2 border-blue-600" : ""
-									}`}
-									onClick={() => setSelectedFilter("requests")}>
-									<div className="flex flex-col">
-										<span className="text-sm text-gray-500">Requested</span>
-										<span className="text-2xl font-semibold">
-											{userRequests.approved.length +
-												userRequests.pending.length +
-												userRequests.rejected.length +
-												userRequests.cancelled.length}
-										</span>
-									</div>
+			<div className="flex h-full">
+				<Sidebar />
+				<div className="p-8 flex-grow">
+					{/* <div> */}
+					<div className="flex flex-wrap mb-5 w-4/5">
+						<div className="w-full flex gap-2">
+							<div
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "requests" ? "border-2 border-blue-600" : ""
+								}`}
+								onClick={() => setSelectedFilter("requests")}>
+								<div className="flex flex-col">
+									<span className="text-sm text-gray-500">Requested</span>
+									<span className="text-2xl font-semibold">
+										{userRequests.approved.length +
+											userRequests.pending.length +
+											userRequests.rejected.length +
+											userRequests.cancelled.length}
+									</span>
 								</div>
-								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-										selectedFilter === "approved" ? "border-2 border-blue-600" : ""
-									}`}
-									onClick={() => setSelectedFilter("approved")}>
-									<div className="flex flex-col">
-										<span className="text-sm text-gray-500">Approved</span>
-										<span className="text-2xl font-semibold">{userRequests.approved.length}</span>
-									</div>
+							</div>
+							<div
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "approved" ? "border-2 border-blue-600" : ""
+								}`}
+								onClick={() => setSelectedFilter("approved")}>
+								<div className="flex flex-col">
+									<span className="text-sm text-gray-500">Approved</span>
+									<span className="text-2xl font-semibold">{userRequests.approved.length}</span>
 								</div>
-								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-										selectedFilter === "pending" ? "border-2 border-blue-600" : ""
-									}`}
-									onClick={() => setSelectedFilter("pending")}>
-									<div className="flex flex-col">
-										<span className="text-sm text-gray-500">Pending</span>
-										<span className="text-2xl font-semibold">{userRequests.pending.length}</span>
-									</div>
+							</div>
+							<div
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "pending" ? "border-2 border-blue-600" : ""
+								}`}
+								onClick={() => setSelectedFilter("pending")}>
+								<div className="flex flex-col">
+									<span className="text-sm text-gray-500">Pending</span>
+									<span className="text-2xl font-semibold">{userRequests.pending.length}</span>
 								</div>
-								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-										selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
-									}`}
-									onClick={() => setSelectedFilter("rejected")}>
-									<div className="flex flex-col">
-										<span className="text-sm text-gray-500">Rejected</span>
-										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
-									</div>
+							</div>
+							<div
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
+								}`}
+								onClick={() => setSelectedFilter("rejected")}>
+								<div className="flex flex-col">
+									<span className="text-sm text-gray-500">Rejected</span>
+									<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
 								</div>
-								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-										selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
-									}`}
-									onClick={() => setSelectedFilter("cancelled")}>
-									<div className="flex flex-col">
-										<span className="text-sm text-gray-500">Cancelled</span>
-										<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
-									</div>
+							</div>
+							<div
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+								}`}
+								onClick={() => setSelectedFilter("cancelled")}>
+								<div className="flex flex-col">
+									<span className="text-sm text-gray-500">Cancelled</span>
+									<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
 								</div>
 							</div>
 						</div>
 					</div>
+					{/* </div> */}
 					<div className="flex justify-between mb-4">
 						<h2 className="text-2xl font-semibold">All Items</h2>
 						<div className="flex justify-end w-2/5">
 							<button
 								className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded inline-block"
-								onClick={handleDownloadPDF}
-							>
+								onClick={handleDownloadPDF}>
 								Download PDF
 							</button>
 						</div>
@@ -237,7 +236,6 @@ const Dashboard = () => {
 			</div>
 		</div>
 	);
-
 };
 
 export default Dashboard;

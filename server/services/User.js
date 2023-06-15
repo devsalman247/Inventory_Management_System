@@ -46,8 +46,8 @@ const authenticateUser = (email, password) => {
 		});
 };
 
-const fetchUsers = () => {
-	return User.find({ role: "user" })
+const fetchUsers = (role) => {
+	return User.find({ role })
 		.then((users) => {
 			return users;
 		})
@@ -86,11 +86,11 @@ const updateUser = (id, user) => {
 			}
 			if (user.name) userToUpdate.name = user.name;
 			if (user.email) userToUpdate.email = user.email;
-			if (user.designation) userToUpdate.designation = user.designation;
 			if (user.password) {
 				userToUpdate.hash = user.password;
 				userToUpdate.setPassword();
 			}
+			if (user.profileImage) userToUpdate.profileImage = user.profileImage;
 			return userToUpdate
 				.save()
 				.then((user) => {

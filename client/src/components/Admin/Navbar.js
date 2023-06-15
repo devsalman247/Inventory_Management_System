@@ -18,30 +18,16 @@ export const Navbar = () => {
 	return (
 		<>
 			{/* Navbar */}
-			<div className="navbar flex items-center justify-between w-screen h-16 bg-[#00B4F4] shadow-md px-16">
+			<div className="flex items-center justify-between lg:py-1 lg:px-8 bg-[#00B4F4] shadow-md w-full">
 				{/* left */}
-				<div className="w-1/4 h-full flex items-center justify-center">
+				<div className="h-full flex items-center justify-center gap-4">
 					<img src={logo} className="w-12 App-logo" alt="logo" />
-					<h4 className=" ml-8">
+					<h4>
 						<span className="text-white text-xl">FCIT Inventory System</span>
 					</h4>
 				</div>
-				{/* center */}
-				{/* <div className="center ml-56"> */}
-				{/* search Icon */}
-				{/* <div className="search w-[400px] h-10 bg-slate-500 rounded-lg ">
-						<input
-							type="text"
-							className="w-full h-full rounded-lg px-4 outline-none
-                        text-slate-700 "
-							placeholder="Search here"
-						/>
-						<i className="fas fa-search relative bottom-8 left-[360px] cursor-pointer text-slate-500 "></i>
-					</div>
-				</div> */}
 
-				{/* right */}
-				<div className="right flex items-center justify-center gap-4">
+				<div className="flex items-center justify-center gap-4">
 					<div className="flex items-center py-1 px-3 rounded hover:cursor-pointer">
 						<img src={admin} className="w-11 h-11 rounded-full" alt="admin" />
 						<div className="flex flex-col">

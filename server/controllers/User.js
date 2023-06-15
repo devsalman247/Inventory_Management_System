@@ -66,7 +66,11 @@ const UserProfile = (req, res, next) => {
 };
 
 const UserFetchAll = (req, res, next) => {
-	fetchUsers()
+	let { role } = req.query;
+	if (!role) {
+		role = "user";
+	}
+	fetchUsers(role)
 		.then((users) => {
 			return next(new OkResponse(users));
 		})

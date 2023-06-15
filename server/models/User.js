@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema(
 		designation: {
 			type: String,
 		},
+		profileImage: {
+			type: String,
+		},
 		requests: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
@@ -82,6 +85,7 @@ UserSchema.methods.toAuthJSON = function () {
 		email: this.email,
 		role: this.role,
 		designation: this.designation,
+		profileImage: this.profileImage,
 		token: this.generateJWT(),
 	};
 };
@@ -94,6 +98,7 @@ UserSchema.methods.toJSON = function () {
 		role: this.role,
 		designation: this.designation,
 		requests: this.requests,
+		profileImage: this.profileImage,
 	};
 };
 

@@ -19,12 +19,13 @@ mongoose
 		console.log(`connected to db in Dev environment`);
 	});
 
-// mongoose.set('debug',true);
+mongoose.set("debug", true);
 
 app.use(express.json());
 app.use(cors());
 app.use(router);
 app.use(httpResponse.Middleware);
+app.use(express.static("public"));
 
 app.listen(PORT, () => {
 	console.log(`Listening at port ${PORT}.`);
