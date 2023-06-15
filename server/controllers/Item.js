@@ -42,7 +42,7 @@ const ItemGetById = async (req, res, next) => {
 
 const ItemCreate = async (req, res, next) => {
 	const item = req.body;
-	if (!item.name || !item.issued || item.stock === undefined) {
+	if (!item.name || !item.stock || item.stock === undefined) {
 		return next(new BadRequestResponse("Please provide all required fields"));
 	}
 	createItem(item)

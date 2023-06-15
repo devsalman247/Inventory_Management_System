@@ -33,7 +33,7 @@ router.put("/issued/:id", isAdmin, ItemUpdateIssued);
 // Items Routes
 router.get("/", ItemGetAll);
 router.get("/:id", ItemGetById);
-router.post("/", isAdmin, ItemCreate);
+router.post("/", ItemCreate);
 router.post("/request", verifyToken, ItemRequest);
 router.post("/return/:id", verifyToken, ItemReturnRequest);
 router.post("/request/cancel/:id", verifyToken, CancelRequest);

@@ -29,7 +29,11 @@ export const Navbar = () => {
 
 				<div className="flex items-center justify-center gap-4">
 					<div className="flex items-center py-1 px-3 rounded hover:cursor-pointer">
-						<img src={admin} className="w-11 h-11 rounded-full" alt="admin" />
+						<img
+							src={loggedInUser?.profileImage ? loggedInUser?.profileImage : admin}
+							className="w-11 h-11 rounded-full"
+							alt="admin"
+						/>
 						<div className="flex flex-col">
 							<span className="text-white text-md ml-2">{loggedInUser?.name}</span>
 							<span className="text-white text-md ml-2">{loggedInUser?.email}</span>

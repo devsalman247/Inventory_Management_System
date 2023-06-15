@@ -4,12 +4,15 @@ import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import http from "../../api";
+import Swal from "sweetalert2";
 
 const Inventory = () => {
 	const [chartType, setChartType] = useState("stockIn");
 	const [itemName, setItemName] = useState("");
 	const [itemId, setItemId] = useState("");
 	const [itemQuantity, setItemQuantity] = useState("");
+	const [returnable, setReturnable] = useState(true);
 	const [data, setData] = useState([
 		{ name: "Chair", stockIn: 20, stockOut: 10 },
 		{ name: "Pen", stockIn: 30, stockOut: 15 },
@@ -32,27 +35,21 @@ const Inventory = () => {
 	const handleFormSubmit = (event) => {
 		event.preventDefault();
 
-		// Check if the item already exists in the data
-		const existingItemIndex = data.findIndex((item) => item.name === itemName);
-
-		if (existingItemIndex !== -1) {
-			// Update the quantity of the existing item
-			const updatedData = [...data];
-			updatedData[existingItemIndex].stockIn += Number(itemQuantity);
-			setData(updatedData);
-		} else {
-			// Add a new item to the data
-			const newItem = {
-				name: itemName,
-				stockIn: Number(itemQuantity),
-				stockOut: 0,
-			};
-			setData([...data, newItem]);
-		}
-
-		setItemName("");
-		setItemId("");
-		setItemQuantity("");
+		http
+			.post("/item", { name: itemName, stock: itemQuantity, isReturnAble: returnable })
+			.then((res) => {
+				console.log(res.data);
+				setItemName("");
+				setItemQuantity("");
+				setReturnable(true);
+				Swal.fire({
+					title: "Item added successfully!",
+					icon: "success",
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const handleInputChange = (event) => {
@@ -189,9 +186,9 @@ const Inventory = () => {
 
 					<div className="bg-white p-4 rounded-lg shadow-md flex-grow-0 flex-shrink-0 w-1/2">
 						<h3 className="text-lg font-bold mb-2">Add New Inventory Item</h3>
-						<form onSubmit={handleFormSubmit}>
-							<div className="mb-8">
-								<label htmlFor="itemName" className="font-bold mb-2">
+						<form onSubmit={handleFormSubmit} className="flex flex-col px-28 mt-20 gap-6">
+							<div>
+								<label htmlFor="itemName" className="font-bold mb-4 inline-block">
 									Item Name:
 								</label>
 								<input
@@ -199,27 +196,13 @@ const Inventory = () => {
 									id="itemName"
 									name="itemName"
 									value={itemName}
-									onChange={handleInputChange}
+									onChange={(e) => setItemName(e.target.value)}
 									className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
 									placeholder="Enter item name"
 								/>
 							</div>
-							<div className="mb-8">
-								<label htmlFor="itemId" className="font-bold mb-2">
-									Item ID:
-								</label>
-								<input
-									type="text"
-									id="itemId"
-									name="itemId"
-									value={itemId}
-									onChange={handleInputChange}
-									className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-									placeholder="Enter item ID"
-								/>
-							</div>
-							<div className="mb-8">
-								<label htmlFor="itemQuantity" className="font-bold mb-4">
+							<div>
+								<label htmlFor="itemQuantity" className="font-bold mb-4 inline-block">
 									Item Quantity:
 								</label>
 								<input
@@ -227,12 +210,30 @@ const Inventory = () => {
 									id="itemQuantity"
 									name="itemQuantity"
 									value={itemQuantity}
-									onChange={handleInputChange}
+									onChange={(e) => setItemQuantity(Math.abs(parseInt(e.target.value)))}
 									className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
 									placeholder="Enter item quantity"
 								/>
 							</div>
-							<button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+
+							<div className="flex justify-between">
+								<span className="text-base font-medium text-gray-900 dark:text-gray-300">Returnable?</span>
+								<label class="relative inline-flex items-center cursor-pointer">
+									<input
+										type="checkbox"
+										defaultChecked={returnable}
+										value={returnable}
+										class="sr-only peer"
+										onChange={(e) => setReturnable(e.target.checked)}
+									/>
+									<div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+								</label>
+							</div>
+
+							<button
+								type="submit"
+								disabled={!itemName || !itemQuantity}
+								className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded">
 								Add Item
 							</button>
 						</form>

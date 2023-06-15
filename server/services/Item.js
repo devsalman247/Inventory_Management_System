@@ -12,6 +12,12 @@ const createItem = async (item) => {
 		itemId = (parseInt(itemId.slice(4)) + 1).toString().padStart(4, "0");
 
 		const newItem = new Item({ ...item });
+		newItem.stockIn = [
+			{
+				type: "added",
+				quantity: item.stock,
+			},
+		];
 		newItem.itemId = `ITM-${itemId}`;
 		return newItem
 			.save()
