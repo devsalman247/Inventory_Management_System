@@ -5,6 +5,13 @@ import jsPDF from "jspdf";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+
+
+// Register fonts
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const Dashboard = () => {
 	const [userRequests, setUserRequests] = useState({
@@ -27,26 +34,53 @@ const Dashboard = () => {
 		}
 	};
 
+	// Register fonts
+	pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 	const handleDownloadPDF = () => {
-		const doc = new jsPDF();
-		doc.setFontSize(18);
-		doc.text("Inventory Report", 20, 20);
+		const documentDefinition = {
+			content: [
+				{
+					text: "Inventory Report",
+					style: "heading",
+				},
+				{
+					layout: "lightHorizontalLines",
+					table: {
+						headerRows: 1,
+						widths: ["auto", "*", "*", "*", "*", "*"],
+						body: [
+							["Item ID", "Item Name", "Quantity", "Status", "Allocated Date", "Return Date"],
+							...userRequests[selectedFilter].map((item) => {
+								const { reqItem, quantity, status, approvedDate, returnData } = item;
+								const { itemId, name } = reqItem;
+								const allocatedDate = approvedDate ? new Date(approvedDate).toISOString().substring(0, 10) : "N/A";
+								const returnDate = returnData?.returnedDate ? new Date(returnData.returnedDate).toISOString().substring(0, 10) : "N/A";
 
-		let y = 50;
-		userRequests.requests.forEach((item) => {
-			const { id, name, quantity, status, allocatedDate, returnDate } = item;
-			doc.setFontSize(8);
-			doc.text(`Item ID: ${id}`, 30, y);
-			doc.text(`Item Name: ${name}`, 60, y);
-			doc.text(`Quantity: ${quantity}`, 90, y);
-			doc.text(`Status: ${status}`, 120, y);
-			doc.text(`Allocated Date: ${allocatedDate}`, 150, y);
-			doc.text(`Return Date: ${returnDate}`, 180, y);
-			y += 10;
-		});
+								return [itemId, name, quantity, status, allocatedDate, returnDate];
+							}),
+						],
+					},
+				},
+			],
+			styles: {
+				heading: {
+					fontSize: 18,
+					bold: true,
+					color: "blue", // Set the heading color to blue
+					margin: [0, 0, 0, 10], // Add margin bottom to separate from table
+				},
+			},
+			defaultStyle: {
+				fillColor: "#ffffff", // Set background color to white
+				fontSize: 12,
+			},
+		};
 
-		doc.save("inventory_report.pdf");
+		pdfMake.createPdf(documentDefinition).download("inventory_report.pdf");
 	};
+
+
 
 	const itemsPerPage = 5;
 	const totalPages = Math.ceil(userRequests.requests.length / itemsPerPage);
@@ -100,9 +134,8 @@ const Dashboard = () => {
 					<div className="flex flex-wrap mb-5 w-4/5">
 						<div className="w-full flex gap-2">
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-									selectedFilter === "requests" ? "border-2 border-blue-600" : ""
-								}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "requests" ? "border-2 border-blue-600" : ""
+									}`}
 								onClick={() => setSelectedFilter("requests")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Requested</span>
@@ -115,9 +148,8 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-									selectedFilter === "approved" ? "border-2 border-blue-600" : ""
-								}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "approved" ? "border-2 border-blue-600" : ""
+									}`}
 								onClick={() => setSelectedFilter("approved")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Approved</span>
@@ -125,9 +157,8 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-									selectedFilter === "pending" ? "border-2 border-blue-600" : ""
-								}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "pending" ? "border-2 border-blue-600" : ""
+									}`}
 								onClick={() => setSelectedFilter("pending")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Pending</span>
@@ -135,9 +166,8 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-									selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
-								}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
+									}`}
 								onClick={() => setSelectedFilter("rejected")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Rejected</span>
@@ -145,9 +175,8 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
-									selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
-								}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+									}`}
 								onClick={() => setSelectedFilter("cancelled")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Cancelled</span>

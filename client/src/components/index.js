@@ -13,6 +13,8 @@ export { default as Request } from "./User/Request";
 export { default as Store } from "./StoreKeeper";
 export { default as Inventory } from "./StoreKeeper/Inventory";
 export { default as RequestsStore } from "./StoreKeeper/Requests";
+export { default as VendorDetails } from "./StoreKeeper/VendorDetails"
+
 
 export { default as AddEmployee } from "./Admin/AddEmployee";
 export { default as UpdateEmployee } from "./Admin/UpdateEmployee";

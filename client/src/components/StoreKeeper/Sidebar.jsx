@@ -34,6 +34,16 @@ const Sidebar = () => {
 						<MdOutlineManageHistory className="inline-block w-6 h-6 mr-2" />
 						<span>Manage Requests</span>
 					</li>
+
+					<li
+						className="mt-10 cursor-pointer"
+						onClick={() => {
+							navigate("/store/vendorDetails");
+						}}>
+						<i className="fas fa-box-open mr-4"></i>
+						<span>Vendor Details</span>
+					</li>
+					
 				</ul>
 			</div>
 		</div>

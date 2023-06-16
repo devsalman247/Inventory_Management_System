@@ -6,6 +6,7 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import http from "../../api";
 import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
 
 const Inventory = () => {
 	const [chartType, setChartType] = useState("stockIn");
@@ -13,6 +14,7 @@ const Inventory = () => {
 	const [itemId, setItemId] = useState("");
 	const [itemQuantity, setItemQuantity] = useState("");
 	const [returnable, setReturnable] = useState(true);
+
 	const [data, setData] = useState([
 		{ name: "Chair", stockIn: 20, stockOut: 10 },
 		{ name: "Pen", stockIn: 30, stockOut: 15 },
@@ -25,8 +27,46 @@ const Inventory = () => {
 		{ name: "Duster", stockIn: 10, stockOut: 1 },
 	]);
 
-	const [searchTerm, setSearchTerm] = useState("");
-	const [filteredData, setFilteredData] = useState(data);
+	const tableData = [
+		{
+			"itemName": "Chair",
+			"itemQuantity": 20
+		},
+		{
+			"itemName": "Pen",
+			"itemQuantity": 30
+		},
+		{
+			"itemName": "Ball Point",
+			"itemQuantity": 15
+		},
+		{
+			"itemName": "Computer Table",
+			"itemQuantity": 10
+		},
+		{
+			"itemName": "Laptop",
+			"itemQuantity": 5
+		},
+		{
+			"itemName": "Projector",
+			"itemQuantity": 10
+		},
+		{
+			"itemName": "White Board",
+			"itemQuantity": 10
+		},
+		{
+			"itemName": "Marker",
+			"itemQuantity": 10
+		},
+		{
+			"itemName": "Duster",
+			"itemQuantity": 10
+		}
+	]
+
+
 
 	const handleChartTypeChange = (event) => {
 		setChartType(event.target.value);
@@ -62,6 +102,10 @@ const Inventory = () => {
 			setItemQuantity(value);
 		}
 	};
+
+	const [searchTerm, setSearchTerm] = useState("");
+	const [filteredData, setFilteredData] = useState(data);
+
 
 	const handleSearch = (event) => {
 		setSearchTerm(event.target.value);
@@ -130,6 +174,46 @@ const Inventory = () => {
 
 		reader.readAsArrayBuffer(file);
 	};
+
+	const [currentPage, setCurrentPage] = useState(0);
+	const itemsPerPage = 5; // Number of items to display per page
+
+	// Calculate the index range for the current page
+	const offset = currentPage * itemsPerPage;
+	const pageCount = Math.ceil(tableData.length / itemsPerPage);
+	const paginatedData = tableData.slice(offset, offset + itemsPerPage);
+
+	const handlePageChange = ({ selected }) => {
+		setCurrentPage(selected);
+	};
+
+
+	const renderPageButtons = () => {
+		const isFirstPage = currentPage === 0;
+		const isLastPage = currentPage === pageCount - 1;
+
+		return (
+			<div className="flex gap-8">
+				<button
+					className={`border rounded py-1 px-2 ${isFirstPage ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-500 text-white"
+						}`}
+					onClick={() => !isFirstPage && handlePageChange({ selected: currentPage - 1 })}
+					disabled={isFirstPage}
+				>
+					Previous
+				</button>
+				<button
+					className={`border rounded py-1 px-2 ${isLastPage ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-500 text-white"
+						}`}
+					onClick={() => !isLastPage && handlePageChange({ selected: currentPage + 1 })}
+					disabled={isLastPage}
+				>
+					Next
+				</button>
+			</div>
+		);
+	};
+
 
 	return (
 		<div className="bg-gray-100 flex flex-col h-full">
@@ -257,6 +341,40 @@ const Inventory = () => {
 						</button> */}
 					</div>
 				</div>
+			</div>
+			<div>
+				<table className="mt-4 w-[820px] ml-72 border-collapse">
+					<thead>
+						<tr>
+							<th className="py-2 px-4 border-b border-gray-300 bg-gray-200">Item Name</th>
+							<th className="py-2 px-4 border-b border-gray-300 bg-gray-200">Remaining Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+						{paginatedData.map((item, index) => (
+							<tr key={index} className={item.itemQuantity === 0 ? "bg-red-200" : ""}>
+								<td className="py-2 px-4 border-b border-gray-300">{item.itemName}</td>
+								<td className="py-2 px-4 border-b border-gray-300">{item.itemQuantity}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+
+			<div className="flex justify-center mt-4">
+				<ReactPaginate
+					className="flex gap-8 "
+					previousLabel={"Previous"}
+					nextLabel={"Next"}
+					breakLabel={"..."}
+					breakClassName={"break-me"}
+					pageCount={pageCount}
+					marginPagesDisplayed={2}
+					pageRangeDisplayed={5}
+					onPageChange={handlePageChange}
+					containerClassName={"pagination"}
+					activeClassName={"active"}
+				/>
 			</div>
 		</div>
 	);

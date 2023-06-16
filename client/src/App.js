@@ -13,6 +13,7 @@ import {
 	AddEmployee,
 	UpdateEmployee,
 	DeleteEmployee,
+	VendorDetails,
 } from "./components";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -90,6 +91,7 @@ function App() {
 							<Route path="/store" element={<Store />} />
 							<Route path="/store/inventory" element={<Inventory />} />
 							<Route path="/store/requests" element={<RequestsStore />} />
+							<Route path="/store/vendorDetails" element={<VendorDetails />} />
 						</>
 					)}
 
