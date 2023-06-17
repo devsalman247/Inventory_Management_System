@@ -52,9 +52,9 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="w-full h-full bg-[#F7F7F7] flex flex-col">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-			<div className="flex-1 flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="my-8 sm:my-12 md:my-16 lg:my-12 lg:flex lg:justify-between">

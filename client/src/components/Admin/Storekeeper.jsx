@@ -76,9 +76,9 @@ const Storekeeper = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-			<div className="flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="flex flex-col items-center flex-grow mt-4">
 					{/* Edit Storekeeper Profile */}

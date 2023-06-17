@@ -63,13 +63,10 @@ function Modal({ setShowModal, users, userId }) {
 
 	return (
 		<div
-			className="modal-overlay   bg-slate-300 rounded-md absolute left-72 top-[82px] shadow-lg
-        border-2 border-gray-300
-        transition-all duration-800 ease-in-out
-        
-        ">
+			className="modal-overlay bg-slate-300 rounded-md w-1/2 absolute left-1/4 top-[82px] shadow-lg
+        border-2 border-gray-300 transition-all duration-800 ease-in-out">
 			<div className="modal-content">
-				<form className="w-[1020px] h-[550px] flex flex-col">
+				<form className="flex flex-col py-4">
 					{/* Full Name */}
 					<input
 						type="text"
@@ -137,15 +134,13 @@ function Modal({ setShowModal, users, userId }) {
 						onClick={(e) => updateEmployee(e)}
 						type="submit"
 						className="py-4 p-2 outline-none mt-12 
-                        bg-slate-300
-                        text-black 
-                        border-2 border-gray-400
                         rounded-md
                         ml-8
                         mr-8
-                        hover:bg-blue-400
+                        bg-blue-400
                         transition-all duration-300 ease-in-out
-                        hover:text-white
+                        text-white
+						hover:opacity-75
                         ">
 						Update
 					</button>

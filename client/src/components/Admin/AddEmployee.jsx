@@ -61,10 +61,9 @@ const AddEmployee = () => {
 		}
 	};
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-
-			<div className="w-full flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 
 				{/* Add Employee */}
