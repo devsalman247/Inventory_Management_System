@@ -67,9 +67,9 @@ const AddEmployee = () => {
 				<Sidebar />
 
 				{/* Add Employee */}
-				<div className="flex justify-center flex-grow">
+				<div className="flex justify-center flex-grow px-4 py-4">
 					<form
-						className="flex flex-col self-start mt-8 lg:px-8 lg:py-6 w-full bg-slate-200 rounded-md shadow-md
+						className="flex flex-col self-start mt-8 px-4 py-4 lg:px-8 lg:py-6 w-full bg-slate-200 rounded-md shadow-md
         sm:w-3/4 md:w-3/4 lg:w-[750px]">
 						{/* Full Name */}
 						<label htmlFor="firstname" className="w-full px-4 pb-2 font-semibold">

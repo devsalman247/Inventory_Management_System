@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import http from "../../api";
+import { AuthContext } from "../../context_store";
 
 const Dashboard = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
 	const [users, setUsers] = useState([]);
+	const { isSidebarOpen, setIsSidebarOpen } = useContext(AuthContext);
 
 	// get Checked filters
 	const filterUsers = () => {
@@ -52,13 +54,13 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col flex-grow">
+		<div className="flex flex-col flex-grow relative">
 			<Navbar />
 			<div className="flex flex-grow">
-				<Sidebar />
+				<Sidebar isSidebarOpen={isSidebarOpen} />
 				<div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="my-8 sm:my-12 md:my-16 lg:my-12 lg:flex lg:justify-between">
-						<div>
+						<div className="mb-2">
 							<h1 className="text-xl font-semibold">Employees</h1>
 							<p className="mt-2">Dashboard</p>
 						</div>

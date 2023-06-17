@@ -3,12 +3,12 @@ import logo from "../../logo.png";
 import admin from "../../images/admin.jpeg";
 import { AuthContext, purgeAuth } from "../../context_store";
 import { useNavigate } from "react-router-dom";
-import { FiLogOut } from "react-icons/fi";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { IoLogOutOutline } from "react-icons/io5";
 
 export const Navbar = () => {
 	let navigate = useNavigate();
-	const { setIsLoggedIn, loggedInUser, setLoggedInUser } = useContext(AuthContext);
+	const { setIsLoggedIn, loggedInUser, setLoggedInUser, setIsSidebarOpen, isSidebarOpen } = useContext(AuthContext);
 
 	const logout = () => {
 		purgeAuth({ setIsLoggedIn, setLoggedInUser });
@@ -18,9 +18,10 @@ export const Navbar = () => {
 	return (
 		<>
 			{/* Navbar */}
-			<div className="flex items-center justify-between lg:py-2 lg:px-8 bg-[#00B4F4] shadow-md w-full">
+			<div className="flex items-center justify-between px-4 py-2 lg:py-2 lg:px-8 bg-[#00B4F4] shadow-md w-full">
 				{/* left */}
 				<div className="h-full flex items-center justify-center gap-4">
+					<RxHamburgerMenu className="sm:hidden text-white w-6 h-6" onClick={() => setIsSidebarOpen(true)} />
 					<img src={logo} className="w-12 App-logo" alt="logo" />
 					<h4>
 						<span className="text-white text-xl">FCIT Inventory System</span>
@@ -28,7 +29,7 @@ export const Navbar = () => {
 				</div>
 
 				<div className="flex items-center justify-center gap-4">
-					<div className="flex items-center py-1 px-3 rounded hover:cursor-pointer">
+					<div className="lg:flex hidden items-center py-1 px-3 rounded hover:cursor-pointer">
 						<img
 							src={loggedInUser?.profileImage ? loggedInUser?.profileImage : admin}
 							className="w-11 h-11 rounded-full"

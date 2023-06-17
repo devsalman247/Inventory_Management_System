@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import jsPDF from "jspdf";
@@ -7,11 +7,14 @@ import http from "../../api";
 import Swal from "sweetalert2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { AuthContext } from "../../context_store";
 
 // Register fonts
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const Dashboard = () => {
+	const { isSidebarOpen, setIsSidebarOpen } = useContext(AuthContext);
+
 	const [userRequests, setUserRequests] = useState({
 		pending: [],
 		approved: [],
@@ -123,16 +126,16 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col flex-grow">
+		<div className="flex flex-col flex-grow w-full relative">
 			<Navbar />
-			<div className="flex flex-grow">
+			<div className="flex w-full h-full">
 				<Sidebar />
-				<div className="p-8 flex-grow">
+				<div className="p-8 w-full">
 					{/* <div> */}
-					<div className="flex flex-wrap mb-5 w-4/5">
-						<div className="w-full flex gap-2">
+					<div className="flex w-full mb-5 md:w-4/5">
+						<div className="w-full flex flex-wrap gap-2">
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer min-w-[150px] ${
 									selectedFilter === "requests" ? "border-2 border-blue-600" : ""
 								}`}
 								onClick={() => setSelectedFilter("requests")}>
@@ -147,7 +150,7 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer min-w-[150px] ${
 									selectedFilter === "approved" ? "border-2 border-blue-600" : ""
 								}`}
 								onClick={() => setSelectedFilter("approved")}>
@@ -157,7 +160,7 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer min-w-[150px] ${
 									selectedFilter === "pending" ? "border-2 border-blue-600" : ""
 								}`}
 								onClick={() => setSelectedFilter("pending")}>
@@ -167,7 +170,7 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer min-w-[150px] ${
 									selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
 								}`}
 								onClick={() => setSelectedFilter("rejected")}>
@@ -177,7 +180,7 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer min-w-[150px] ${
 									selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
 								}`}
 								onClick={() => setSelectedFilter("cancelled")}>
@@ -199,49 +202,51 @@ const Dashboard = () => {
 							</button>
 						</div>
 					</div>
-					<table className="w-full bg-white border border-gray-300">
-						{/* Table content... */}
-						<thead>
-							<tr className="bg-blue-500 text-white">
-								<th className="py-2 px-4 border-b text-center">Item ID</th>
-								<th className="py-2 px-4 border-b text-center">Item Name</th>
-								<th className="py-2 px-4 border-b text-center">Item Quantity</th>
-								<th className="py-2 px-4 border-b text-center">Requested Date</th>
-								<th className="py-2 px-4 border-b text-center">Allocated Date</th>
-								<th className="py-2 px-4 border-b text-center">Return Date</th>
-								<th className="py-2 px-4 border-b text-center">Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							{userRequests[selectedFilter].map((request) => (
-								<tr key={request._id}>
-									<td className="py-4 px-4 border-b text-center">{request.reqItem.itemId}</td>
-									<td className="py-4 px-2 border-b text-center">{request.reqItem.name}</td>
-									<td className="py-4 px-2 border-b text-center">{request.quantity}</td>
-									<td className="py-4 px-4 border-b text-center">
-										{new Date(request.requestDate).toISOString().substring(0, 10)}
-									</td>
-									<td className="py-4 px-4 border-b text-center">
-										{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
-									</td>
-									<td className="py-4 px-4 border-b text-center">
-										{request.return.returnedDate
-											? new Date(request.return.returnedDate).toISOString().substring(0, 10)
-											: "N/A"}
-									</td>
-									<td className={`py-4 px-2 border-b text-center ${getStatusColorClass(request.status)}`}>
-										{request.return.status === "pending-approval" ? (
-											<div className="ml-4">Pending Return Approval</div>
-										) : (
-											<div className="text-center">
-												{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-											</div>
-										)}
-									</td>
+					<div className="w-full overflow-x-auto">
+						<table className="w-full bg-white border border-gray-300">
+							{/* Table content... */}
+							<thead>
+								<tr className="bg-blue-500 text-white">
+									<th className="py-2 px-4 border-b text-center">Item ID</th>
+									<th className="py-2 px-4 border-b text-center">Item Name</th>
+									<th className="py-2 px-4 border-b text-center">Item Quantity</th>
+									<th className="py-2 px-4 border-b text-center">Requested Date</th>
+									<th className="py-2 px-4 border-b text-center">Allocated Date</th>
+									<th className="py-2 px-4 border-b text-center">Return Date</th>
+									<th className="py-2 px-4 border-b text-center">Status</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{userRequests[selectedFilter].map((request) => (
+									<tr key={request._id}>
+										<td className="py-4 px-4 border-b text-center">{request.reqItem.itemId}</td>
+										<td className="py-4 px-2 border-b text-center">{request.reqItem.name}</td>
+										<td className="py-4 px-2 border-b text-center">{request.quantity}</td>
+										<td className="py-4 px-4 border-b text-center">
+											{new Date(request.requestDate).toISOString().substring(0, 10)}
+										</td>
+										<td className="py-4 px-4 border-b text-center">
+											{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
+										</td>
+										<td className="py-4 px-4 border-b text-center">
+											{request.return.returnedDate
+												? new Date(request.return.returnedDate).toISOString().substring(0, 10)
+												: "N/A"}
+										</td>
+										<td className={`py-4 px-2 border-b text-center ${getStatusColorClass(request.status)}`}>
+											{request.return.status === "pending-approval" ? (
+												<div className="ml-4">Pending Return Approval</div>
+											) : (
+												<div className="text-center">
+													{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+												</div>
+											)}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 
 					{totalPages > 1 && (
 						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
