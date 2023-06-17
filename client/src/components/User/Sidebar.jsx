@@ -9,10 +9,13 @@ const Sidebar = () => {
 	const { isSidebarOpen, setIsSidebarOpen } = useContext(AuthContext);
 
 	return (
-		<div className={`w-64 absolute h-full z-50 top-0 ${isSidebarOpen ? "block" : "hidden"}`}>
+		<div
+			className={`w-64 absolute md:relative h-full sm:flex-grow sm:h-auto z-50 top-0 ${
+				isSidebarOpen ? "block" : "md:block hidden"
+			}`}>
 			{/* Sidebar */}
 			<div className={`sidebar flex flex-col text-white items-start w-full h-full pl-4 bg-[#34444C]`}>
-				<div className="pt-4" onClick={() => setIsSidebarOpen(false)}>
+				<div className="pt-4 md:hidden" onClick={() => setIsSidebarOpen(false)}>
 					<RxCross1 className="w-5 h-5" />
 				</div>
 				<ul className={`sm:block flex flex-col`}>

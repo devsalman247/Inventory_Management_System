@@ -10,11 +10,11 @@ export const Sidebar = () => {
 		<>
 			{/* Sidebar */}
 			<div
-				className={`md:flex absolute lg:relative text-white justify-center h-full pl-6 w-64 z-50 top-0 bg-[#34444C] ${
-					isSidebarOpen ? "block" : "hidden"
+				className={`md:flex absolute md:relative h-full sm:h-auto sm:flex-shrink-0 text-white justify-center pl-6 w-64 z-50 top-0 bg-[#34444C] ${
+					isSidebarOpen ? "block" : "md:block hidden"
 				}
 				`}>
-				<div className="pt-4" onClick={() => setIsSidebarOpen(false)}>
+				<div className="pt-4 sm:hidden" onClick={() => setIsSidebarOpen(false)}>
 					<RxCross1 className="w-5 h-5" />
 				</div>
 				<ul>

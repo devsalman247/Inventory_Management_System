@@ -94,9 +94,9 @@ const DeleteEmployee = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col w-full">
+		<div className="flex flex-col flex-grow relative">
 			<Navbar />
-			<div className="flex w-full">
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
 				<Sidebar />
 				{/* Main Content */}
 				<div className="flex flex-col items-center w-full">

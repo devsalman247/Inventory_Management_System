@@ -128,7 +128,7 @@ const Dashboard = () => {
 	return (
 		<div className="flex flex-col flex-grow w-full relative">
 			<Navbar />
-			<div className="flex w-full h-full">
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
 				<Sidebar />
 				<div className="p-8 w-full">
 					{/* <div> */}

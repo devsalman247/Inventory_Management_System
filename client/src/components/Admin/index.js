@@ -56,8 +56,8 @@ const Dashboard = () => {
 	return (
 		<div className="flex flex-col flex-grow relative">
 			<Navbar />
-			<div className="flex flex-grow">
-				<Sidebar isSidebarOpen={isSidebarOpen} />
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
+				<Sidebar />
 				<div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="my-8 sm:my-12 md:my-16 lg:my-12 lg:flex lg:justify-between">
 						<div className="mb-2">
