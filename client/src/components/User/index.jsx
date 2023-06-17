@@ -8,8 +8,6 @@ import Swal from "sweetalert2";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-
-
 // Register fonts
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -55,7 +53,9 @@ const Dashboard = () => {
 								const { reqItem, quantity, status, approvedDate, returnData } = item;
 								const { itemId, name } = reqItem;
 								const allocatedDate = approvedDate ? new Date(approvedDate).toISOString().substring(0, 10) : "N/A";
-								const returnDate = returnData?.returnedDate ? new Date(returnData.returnedDate).toISOString().substring(0, 10) : "N/A";
+								const returnDate = returnData?.returnedDate
+									? new Date(returnData.returnedDate).toISOString().substring(0, 10)
+									: "N/A";
 
 								return [itemId, name, quantity, status, allocatedDate, returnDate];
 							}),
@@ -79,8 +79,6 @@ const Dashboard = () => {
 
 		pdfMake.createPdf(documentDefinition).download("inventory_report.pdf");
 	};
-
-
 
 	const itemsPerPage = 5;
 	const totalPages = Math.ceil(userRequests.requests.length / itemsPerPage);
@@ -125,17 +123,18 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-			<div className="flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="p-8 flex-grow">
 					{/* <div> */}
 					<div className="flex flex-wrap mb-5 w-4/5">
 						<div className="w-full flex gap-2">
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "requests" ? "border-2 border-blue-600" : ""
-									}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "requests" ? "border-2 border-blue-600" : ""
+								}`}
 								onClick={() => setSelectedFilter("requests")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Requested</span>
@@ -148,8 +147,9 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "approved" ? "border-2 border-blue-600" : ""
-									}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "approved" ? "border-2 border-blue-600" : ""
+								}`}
 								onClick={() => setSelectedFilter("approved")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Approved</span>
@@ -157,8 +157,9 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "pending" ? "border-2 border-blue-600" : ""
-									}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "pending" ? "border-2 border-blue-600" : ""
+								}`}
 								onClick={() => setSelectedFilter("pending")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Pending</span>
@@ -166,8 +167,9 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
-									}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
+								}`}
 								onClick={() => setSelectedFilter("rejected")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Rejected</span>
@@ -175,8 +177,9 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div
-								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
-									}`}
+								className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+								}`}
 								onClick={() => setSelectedFilter("cancelled")}>
 								<div className="flex flex-col">
 									<span className="text-sm text-gray-500">Cancelled</span>

@@ -11,7 +11,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className="w-64 h-full">
+		<div className="w-64">
 			{/* Menu icon */}
 			<div className="sm:hidden">
 				<button className="text-white p-4 focus:outline-none" onClick={handleMenuToggle}>

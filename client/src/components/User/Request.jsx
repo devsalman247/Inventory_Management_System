@@ -115,9 +115,9 @@ const Request = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-			<div className="flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="px-10 mt-10 flex-grow">
 					<div className="mb-4">

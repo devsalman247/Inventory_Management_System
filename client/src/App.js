@@ -59,7 +59,7 @@ function App() {
 
 	return (
 		// main container
-		<div className="bg-[#F7F7F7] main_container w-screen h-screen">
+		<div className="bg-[#F7F7F7] main_container min-h-screen max-w-screen flex flex-col">
 			<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }}>
 				<Routes>
 					<Route path="/" element={<Login />} />

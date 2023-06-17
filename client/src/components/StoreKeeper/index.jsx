@@ -135,9 +135,9 @@ const Dashboard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow">
 			<Navbar />
-			<div className="flex h-full">
+			<div className="flex flex-grow">
 				<Sidebar />
 				<div>
 					<div className="flex mt-8 ml-20">

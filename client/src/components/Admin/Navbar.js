@@ -18,7 +18,7 @@ export const Navbar = () => {
 	return (
 		<>
 			{/* Navbar */}
-			<div className="flex items-center justify-between lg:py-1 lg:px-8 bg-[#00B4F4] shadow-md w-full">
+			<div className="flex items-center justify-between lg:py-2 lg:px-8 bg-[#00B4F4] shadow-md w-full">
 				{/* left */}
 				<div className="h-full flex items-center justify-center gap-4">
 					<img src={logo} className="w-12 App-logo" alt="logo" />
@@ -39,7 +39,7 @@ export const Navbar = () => {
 							<span className="text-white text-md ml-2">{loggedInUser?.email}</span>
 						</div>
 					</div>
-					<button className="text-2xl text-white" onClick={logout}>
+					<button className="text-2xl text-white outline-none" onClick={logout}>
 						<IoLogOutOutline className="w-8 h-8" />
 					</button>
 				</div>

@@ -5,7 +5,7 @@ import { MdOutlineManageHistory } from "react-icons/md";
 const Sidebar = () => {
 	const navigate = useNavigate();
 	return (
-		<div className="w-64 h-full">
+		<div className="w-64">
 			<div className="sidebar flex text-white justify-center h-full bg-[#34444C]">
 				<ul>
 					<li
@@ -43,7 +43,6 @@ const Sidebar = () => {
 						<i className="fas fa-box-open mr-4"></i>
 						<span>Vendor Details</span>
 					</li>
-					
 				</ul>
 			</div>
 		</div>
