@@ -15,6 +15,7 @@ const Requests = () => {
 	});
 	const [selectedFilter, setSelectedFilter] = useState("pending");
 	const [selectedRequests, setSelectedRequests] = useState([]);
+	const [isAllSelected, setIsAllSelected] = useState(false);
 
 	const getStatusColorClass = (status) => {
 		switch (status) {
@@ -27,18 +28,63 @@ const Requests = () => {
 		}
 	};
 
-	const handleSelectedRequests = (event, reqId) => {
-		console.log(selectedRequests);
-		if (event.target.checked) {
-			setSelectedRequests([...selectedRequests, reqId]);
+	const handleSelectAll = () => {
+		if (isAllSelected) {
+			const allRequests = userRequests[selectedFilter].map((request) => {
+				return { ...request, isSelected: false };
+			});
+			setUserRequests({ ...userRequests, [selectedFilter]: allRequests });
+			setSelectedRequests([]);
 		} else {
-			setSelectedRequests(selectedRequests.filter((id) => id !== reqId));
+			const allRequests = userRequests[selectedFilter].map((request) => {
+				return { ...request, isSelected: true };
+			});
+			setUserRequests({ ...userRequests, [selectedFilter]: allRequests });
+			setSelectedRequests(userRequests[selectedFilter].map((request) => request._id));
+		}
+		setIsAllSelected(!isAllSelected);
+	};
+
+	const handleSelect = (requestId) => {
+		if (selectedRequests.includes(requestId)) {
+			const allRequests = userRequests[selectedFilter].map((request) => {
+				if (request._id === requestId) {
+					return { ...request, isSelected: false };
+				} else {
+					return request;
+				}
+			});
+			setUserRequests({ ...userRequests, [selectedFilter]: allRequests });
+			const filteredRequests = selectedRequests.filter((request) => request !== requestId);
+			if (filteredRequests.length === 0) {
+				setIsAllSelected(false);
+			}
+			setSelectedRequests(filteredRequests);
+		} else {
+			const allRequests = userRequests[selectedFilter].map((request) => {
+				if (request._id === requestId) {
+					return { ...request, isSelected: true };
+				} else {
+					return request;
+				}
+			});
+			setUserRequests({ ...userRequests, [selectedFilter]: allRequests });
+			setSelectedRequests([...selectedRequests, requestId]);
 		}
 	};
 
-	const handleApprove = (requestId) => {
+	const handleApprove = () => {
+		if (selectedRequests.length === 0) {
+			Swal.fire({
+				title: "Error!",
+				text: "Please select at least one request",
+				icon: "error",
+				confirmButtonText: "OK",
+			});
+			return;
+		}
 		http
-			.post(`/item/request/approve/${requestId}`)
+			.put(`/item/requests/approve`, { ids: selectedRequests })
 			.then((res) => {
 				Swal.fire({
 					title: "Success!",
@@ -53,8 +99,8 @@ const Requests = () => {
 			});
 	};
 
-	const handleReject = (rejectAll) => {
-		if (!rejectAll && selectedRequests.length === 0) {
+	const handleReject = () => {
+		if (selectedRequests.length === 0) {
 			Swal.fire({
 				title: "Error!",
 				text: "Please select at least one request",
@@ -64,7 +110,7 @@ const Requests = () => {
 			return;
 		}
 		http
-			.put(`/item/requests/reject`, { ids: rejectAll ? userRequests.pending : selectedRequests })
+			.put(`/item/requests/reject`, { ids: selectedRequests })
 			.then((res) => {
 				Swal.fire({
 					title: "Success!",
@@ -93,8 +139,19 @@ const Requests = () => {
 		http
 			.get("/user/requests")
 			.then((res) => {
-				console.log(res.data.data);
-				setUserRequests(res.data.data);
+				const pendingRequests = res.data.data.pending.map((request) => {
+					return { ...request, isSelected: false };
+				});
+				const pendingApprovalRequests = res.data.data.pendingApproval.map((request) => {
+					return { ...request, isSelected: false };
+				});
+				setUserRequests({
+					pending: pendingRequests,
+					approved: res.data.data.approved,
+					rejected: res.data.data.rejected,
+					pendingApproval: pendingApprovalRequests,
+					requests: res.data.data.requests,
+				});
 			})
 			.catch((err) => {
 				console.log(err);
@@ -139,17 +196,17 @@ const Requests = () => {
 					</div>
 
 					<div className="flex justify-end py-4">
-						{selectedRequests.length > 0 && (
-							<button
-								className="px-2 sm:px-4 py-2 w-32  sm:w-auto mr-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
-								onClick={() => handleReject(false)}>
-								Reject Requests
-							</button>
-						)}
 						<button
-							className="px-2 sm:px-4 py-2 w-32 sm:w-auto bg-red-500 hover:bg-red-700 text-white rounded-md"
-							onClick={() => handleReject(true)}>
-							Reject All Requests
+							disabled={selectedRequests.length === 0}
+							className="px-2 sm:px-4 py-2 w-32 mr-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+							onClick={() => handleApprove()}>
+							Approve Requests
+						</button>
+						<button
+							disabled={selectedRequests.length === 0}
+							className="px-2 sm:px-4 py-2 w-32 sm:w-auto bg-red-500 hover:bg-red-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+							onClick={() => handleReject()}>
+							Reject Requests
 						</button>
 					</div>
 
@@ -157,7 +214,15 @@ const Requests = () => {
 						<table className="w-full bg-white border border-gray-300 text-left">
 							<thead>
 								<tr className="bg-blue-500 text-white">
-									<th className="py-2 px-4 border-b text-center"></th>
+									<th className="py-2 px-4 border-b text-center">
+										<input
+											id="default-checkbox"
+											type="checkbox"
+											checked={isAllSelected}
+											onChange={() => handleSelectAll()}
+											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+										/>
+									</th>
 									<th className="py-2 px-4 border-b text-center">Item ID</th>
 									<th className="py-2 px-4 border-b text-left">Item Name</th>
 									<th className="py-2 px-4 border-b text-left">Item Quantity</th>
@@ -175,9 +240,10 @@ const Requests = () => {
 											<td className="py-4 px-4 border-b text-center">
 												<input
 													id="default-checkbox"
+													// defaultChecked={request.isSelected}
 													type="checkbox"
-													value=""
-													onChange={(e) => handleSelectedRequests(e, request._id)}
+													checked={request.isSelected}
+													onChange={() => handleSelect(request._id)}
 													className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
 												/>
 											</td>

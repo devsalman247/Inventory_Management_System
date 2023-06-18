@@ -184,6 +184,10 @@ const rejectRequests = (ids) => {
 	return Request.updateMany({ _id: { $in: ids } }, { $set: { status: "rejected" } });
 };
 
+const approveRequests = (ids) => {
+	return Request.updateMany({ _id: { $in: ids } }, { $set: { status: "approved", approvedDate: Date.now() } });
+};
+
 // Issued Items Service
 const issueItem = async (item, reqId) => {
 	try {
@@ -261,6 +265,7 @@ const ItemService = {
 	approveRequest,
 	rejectRequest,
 	rejectRequests,
+	approveRequests,
 	returnItemRequest,
 	// Issued Items Service
 	issueItem,

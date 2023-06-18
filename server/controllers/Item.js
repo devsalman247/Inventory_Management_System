@@ -12,6 +12,7 @@ const {
 	approveRequest,
 	rejectRequest,
 	rejectRequests,
+	approveRequests,
 	returnItemRequest,
 	issueItem,
 	getAllIssuedItems,
@@ -138,6 +139,19 @@ const RejectRequests = async (req, res, next) => {
 		});
 };
 
+const ApproveRequests = async (req, res, next) => {
+	if (req.user.role !== "store-keeper")
+		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+	const { ids } = req.body;
+	approveRequests(ids)
+		.then((isRequestApproved) => {
+			if (isRequestApproved) return next(new OkResponse("Request approved successfully"));
+		})
+		.catch((err) => {
+			return next(new BadRequestResponse(err));
+		});
+};
+
 const ItemReturnRequest = async (req, res, next) => {
 	if (!req.params.id) return next(new BadRequestResponse("Please provide all required fields"));
 	returnItemRequest(req.params.id)
@@ -195,6 +209,7 @@ const ItemController = {
 	ApproveRequest,
 	RejectRequest,
 	RejectRequests,
+	ApproveRequests,
 	ItemReturnRequest,
 	// Issued Items Controller
 	ItemIssue,
