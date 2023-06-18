@@ -138,13 +138,6 @@ function Login() {
 					<button className="mt-4 bg-blue-500 text-white rounded-md px-8 py-2 font-semibold" onClick={handleLogin}>
 						Login
 					</button>
-					{/* don't have an account */}
-					<p className="mt-4 text-slate-600">
-						Don't have an account?{" "}
-						<span className="text-blue-500 font-semibold cursor-pointer" onClick={() => navigateTo("/signup")}>
-							Sign Up
-						</span>
-					</p>
 				</div>
 			</div>
 		</div>

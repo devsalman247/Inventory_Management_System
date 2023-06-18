@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
+import noImage from "../../images/noImage.png";
 
 const DeleteEmployee = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
@@ -167,7 +168,7 @@ const DeleteEmployee = () => {
 						<table className="bg-white shadow-md rounded-lg w-[80%]">
 							<thead className="bg-[#00B4F4] text-white text-center ">
 								<tr className="text-left">
-									<th className="px-4 py-3">Name</th>
+									<th className="px-4 py-3">User</th>
 									<th className="px-4 py-3">Designation</th>
 									<th className="px-4 py-3">Email</th>
 									<th className="px-4 py-3">Action</th>
@@ -179,7 +180,16 @@ const DeleteEmployee = () => {
 										? users.map((user) => {
 												return (
 													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">{user.email}</td>
 														<td className="px-4 py-3">
@@ -197,7 +207,16 @@ const DeleteEmployee = () => {
 										: filteredUsers.map((user) => {
 												return (
 													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">
 															<button

@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
+import noImage from "../../images/noImage.png";
 
 const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });
@@ -149,12 +150,12 @@ const AddEmployee = () => {
 									className="mt-1 mr-2"
 								/>
 								{selectedImage ? (
-									<img src={selectedImage} alt="Profile Preview" className="rounded-full w-8 h-8 object-cover" />
+									<img src={selectedImage} alt="Profile Preview" className="rounded-full w-12 h-12 object-cover" />
 								) : (
 									<img
-										src="default-user-icon.png" // Replace with your default user icon or any other image URL
+										src={noImage} // Replace with your default user icon or any other image URL
 										alt="Default User Icon"
-										className="rounded-full w-8 h-8 object-cover"
+										className="rounded-full w-12 h-12 object-cover border border-gray-500"
 									/>
 								)}
 							</div>

@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import http from "../../api";
-import { AuthContext } from "../../context_store";
+import noImage from "../../images/noImage.png";
 
 const Dashboard = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
 	const [designation, setDesignation] = useState("");
 	const [users, setUsers] = useState([]);
-	const { isSidebarOpen, setIsSidebarOpen } = useContext(AuthContext);
 
 	// get Checked filters
 	const filterUsers = () => {
@@ -40,10 +39,10 @@ const Dashboard = () => {
 	};
 
 	const fetchUsers = () => {
-		const token = JSON.parse(localStorage.getItem("user"))?.token;
 		http
 			.get(`/user`)
 			.then((res) => {
+				console.log(res.data.data);
 				if (res.status === 200) setUsers(res.data.data);
 			})
 			.catch((err) => console.log(err));
@@ -125,12 +124,12 @@ const Dashboard = () => {
 					</div>
 
 					<div className="overflow-x-auto">
-						<table className="bg-white shadow-md rounded-lg w-[80%]">
+						<table className="bg-white shadow-md rounded-lg w-[80%] sm:w-[90%]">
 							<thead className="bg-[#00B4F4] text-white text-center">
 								<tr className="text-left">
-									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">Name</th>
-									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">Designation</th>
-									<th className="px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4">Email</th>
+									<th className="px-4 py-3 md:py-4">User</th>
+									<th className="px-4 py-3 md:py-4">Designation</th>
+									<th className="px-4 py-3 md:py-4">Email</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -139,7 +138,16 @@ const Dashboard = () => {
 										? users.map((user) => {
 												return (
 													<tr className="text-left" key={user.id}>
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">{user.email}</td>
 													</tr>
@@ -148,7 +156,16 @@ const Dashboard = () => {
 										: filteredUsers.map((user) => {
 												return (
 													<tr className="text-left" key={user.id}>
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">{user.email}</td>
 													</tr>
