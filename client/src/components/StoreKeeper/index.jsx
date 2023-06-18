@@ -139,12 +139,12 @@ const Dashboard = () => {
 			<Navbar />
 			<div className="flex flex-grow">
 				<Sidebar />
-				<div>
-					<div className="flex mt-8 ml-20">
-						<div className="flex flex-wrap mb-5 w-4/5">
-							<div className="w-full flex gap-2">
+				<div className="p-8 w-full">
+					<div className="flex mt-4 sm:mt-8">
+						<div className="flex mb-5">
+							<div className="flex flex-wrap gap-2">
 								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									className={`bg-white rounded shadow p-4 w-[10rem] min-w-[150px] cursor-pointer ${
 										selectedFilter === "requests" ? "border-2 border-blue-600" : ""
 									}`}
 									onClick={() => setSelectedFilter("requests")}>
@@ -156,7 +156,7 @@ const Dashboard = () => {
 									</div>
 								</div>
 								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									className={`bg-white rounded shadow p-4 w-[10rem] min-w-[150px] cursor-pointer ${
 										selectedFilter === "approved" ? "border-2 border-blue-600" : ""
 									}`}
 									onClick={() => setSelectedFilter("approved")}>
@@ -166,7 +166,7 @@ const Dashboard = () => {
 									</div>
 								</div>
 								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									className={`bg-white rounded shadow p-4 w-[10rem] min-w-[150px] cursor-pointer ${
 										selectedFilter === "pending" ? "border-2 border-blue-600" : ""
 									}`}
 									onClick={() => setSelectedFilter("pending")}>
@@ -176,7 +176,7 @@ const Dashboard = () => {
 									</div>
 								</div>
 								<div
-									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
+									className={`bg-white rounded shadow p-4 w-[10rem] min-w-[150px] cursor-pointer ${
 										selectedFilter === "rejected" ? "border-2 border-blue-600" : ""
 									}`}
 									onClick={() => setSelectedFilter("rejected")}>
@@ -189,50 +189,52 @@ const Dashboard = () => {
 						</div>
 					</div>
 
-					<table className="w-[1120px] bg-white border border-gray-300 ml-20 text-left">
-						<thead>
-							<tr className="bg-blue-500 text-white">
-								<th className="py-2 px-4 border-b text-center">Item ID</th>
-								<th className="py-2 px-4 border-b text-left">Item Name</th>
-								<th className="py-2 px-4 border-b text-left">Item Quantity</th>
-								<th className="py-2 px-4 border-b text-left">Requester</th>
-								<th className="py-2 px-4 border-b text-left">Requested Date</th>
-								<th className="py-2 px-4 border-b text-left">Allocated Date</th>
-								<th className="py-2 px-4 border-b text-left">Return Date</th>
-								<th className="py-2 px-4 border-b text-left pl-20">Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							{currentItems.map((request) => (
-								<tr key={request._id}>
-									<td className="py-4 px-4 border-b text-left">{request.reqItem.itemId}</td>
-									<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
-									<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
-									<td className="py-4 px-2 border-b  pl-4">{request.requestedBy.name}</td>
-									<td className="py-4 px-4 border-b text-left pl-6">
-										{new Date(request.requestDate).toISOString().substring(0, 10)}
-									</td>
-									<td className="py-4 px-4 border-b text-left pl-10">
-										{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
-									</td>
-									<td className="py-4 px-4 border-b text-left pl-10">
-										{request.return.returnedDate
-											? new Date(request.return.returnedDate).toISOString().substring(0, 10)
-											: "N/A"}
-									</td>
-									<td className="py-4 px-4 border-b text-left">
-										{request.return.status === "pending-approval" ? (
-											<div className="ml-4">Pending Return Approval</div>
-										) : (
-											<div className="pl-16">{request.status.charAt(0).toUpperCase() + request.status.slice(1)}</div>
-										)}
-									</td>
+					<div className="w-full overflow-x-auto">
+						<table className="w-[1120px] bg-white border border-gray-300 text-left">
+							<thead>
+								<tr className="bg-blue-500 text-white">
+									<th className="py-2 px-4 border-b text-center">Item ID</th>
+									<th className="py-2 px-4 border-b text-left">Item Name</th>
+									<th className="py-2 px-4 border-b text-left">Item Quantity</th>
+									<th className="py-2 px-4 border-b text-left">Requester</th>
+									<th className="py-2 px-4 border-b text-left">Requested Date</th>
+									<th className="py-2 px-4 border-b text-left">Allocated Date</th>
+									<th className="py-2 px-4 border-b text-left">Return Date</th>
+									<th className="py-2 px-4 border-b text-left pl-20">Status</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{currentItems.map((request) => (
+									<tr key={request._id}>
+										<td className="py-4 px-4 border-b text-left">{request.reqItem.itemId}</td>
+										<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
+										<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
+										<td className="py-4 px-2 border-b  pl-4">{request.requestedBy?.name}</td>
+										<td className="py-4 px-4 border-b text-left pl-6">
+											{new Date(request.requestDate).toISOString().substring(0, 10)}
+										</td>
+										<td className="py-4 px-4 border-b text-left pl-10">
+											{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
+										</td>
+										<td className="py-4 px-4 border-b text-left pl-10">
+											{request.return.returnedDate
+												? new Date(request.return.returnedDate).toISOString().substring(0, 10)
+												: "N/A"}
+										</td>
+										<td className="py-4 px-4 border-b text-left">
+											{request.return.status === "pending-approval" ? (
+												<div className="ml-4">Pending Return Approval</div>
+											) : (
+												<div className="pl-16">{request.status.charAt(0).toUpperCase() + request.status.slice(1)}</div>
+											)}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 					{totalPages > 1 && (
-						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
+						<div className="mt-20 fixed bottom-4 left-5 sm:left-20 right-0 flex justify-center">
 							<ReactPaginate
 								previousLabel="Previous"
 								nextLabel="Next"

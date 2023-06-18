@@ -40,11 +40,11 @@ const UserLogin = (req, res, next) => {
 };
 
 const UserAdd = (req, res, next) => {
-	const { name, email, password, designation } = req.body;
+	const { name, email, password, designation, profileImage } = req.body;
 	if (!email || !password || !name || !designation) {
 		return next(new BadRequestResponse("Please provide all input fields!"));
 	}
-	addUser(name, email, password, designation)
+	addUser(name, email, password, designation, profileImage)
 		.then((user) => {
 			if (user) {
 				return next(new OkResponse(user));

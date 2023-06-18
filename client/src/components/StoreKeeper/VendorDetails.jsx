@@ -68,45 +68,47 @@ const VendorDetails = () => {
 			<Navbar />
 			<div className="flex flex-grow">
 				<Sidebar />
-				<div className="flex flex-col flex-grow p-8">
+				<div className="flex flex-col w-full p-8">
 					<h2 className="text-2xl font-bold mb-4">Vendor Details</h2>
-					<table className="min-w-full bg-white border border-gray-300">
-						<thead>
-							<tr>
-								<th className="py-2 px-4 border-b">Vendor Name</th>
-								<th className="py-2 px-4 border-b">Item Name</th>
-								<th className="py-2 px-4 border-b">Item Quantity</th>
-								<th className="py-2 px-4 border-b">Total Price</th>
-								<th className="py-2 px-4 border-b">Issued Date</th>
-								<th className="py-2 px-4 border-b">Return Date</th>
-								<th className="py-2 px-4 border-b">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{vendorDetailsData.map((vendorDetail) => (
-								<tr key={vendorDetail.id}>
-									<td className="py-2 px-4 border-b text-center ">{vendorDetail.vendorName}</td>
-									<td className="py-2 px-4 border-b text-center">{vendorDetail.itemName}</td>
-									<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
-									<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
-									<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
-									<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
-									<td className="py-2 px-4 border-b text-center">
-										<button
-											className="px-2 py-1 bg-blue-500 text-white rounded-md"
-											onClick={() => openEditModal(vendorDetail)}>
-											Edit
-										</button>
-										<button
-											className="ml-2 px-2 py-1 bg-red-500 text-white rounded-md"
-											onClick={() => deleteVendorDetail(vendorDetail.id)}>
-											Delete
-										</button>
-									</td>
+					<div className="overflow-x-auto w-full">
+						<table className="bg-white border w-full border-gray-300">
+							<thead>
+								<tr>
+									<th className="py-2 px-4 border-b">Vendor Name</th>
+									<th className="py-2 px-4 border-b">Item Name</th>
+									<th className="py-2 px-4 border-b">Item Quantity</th>
+									<th className="py-2 px-4 border-b">Total Price</th>
+									<th className="py-2 px-4 border-b">Issued Date</th>
+									<th className="py-2 px-4 border-b">Return Date</th>
+									<th className="py-2 px-4 border-b">Actions</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{vendorDetailsData.map((vendorDetail) => (
+									<tr key={vendorDetail.id}>
+										<td className="py-2 px-4 border-b text-center ">{vendorDetail.vendorName}</td>
+										<td className="py-2 px-4 border-b text-center">{vendorDetail.itemName}</td>
+										<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
+										<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
+										<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
+										<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
+										<td className="py-2 px-4 border-b flex sm:justify-center">
+											<button
+												className="px-2 py-1 bg-blue-500 text-white rounded-md"
+												onClick={() => openEditModal(vendorDetail)}>
+												Edit
+											</button>
+											<button
+												className="ml-2 px-2 py-1 bg-red-500 text-white rounded-md"
+												onClick={() => deleteVendorDetail(vendorDetail.id)}>
+												Delete
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 			{isEditModalOpen && (

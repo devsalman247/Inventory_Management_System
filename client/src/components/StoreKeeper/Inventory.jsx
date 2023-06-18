@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 import { saveAs } from "file-saver";
@@ -211,29 +211,31 @@ const Inventory = () => {
 	};
 
 	return (
-		<div className="bg-gray-100 flex flex-col h-full">
+		<div className="flex flex-col flex-grow w-full relative">
 			<Navbar />
-			<div className="flex flex-grow">
+			<div className="flex w-full sm:flex-grow h-full">
 				<Sidebar />
-				<div className="flex flex-col flex-grow">
-					<div className="flex flex-grow p-4 gap-4">
-						<div className="bg-white p-4 rounded-lg shadow-md w-1/2">
-							<div className="mb-4">
-								<label htmlFor="search" className="font-bold mr-2">
-									Search Items:
-								</label>
-								<input
-									type="text"
-									id="search"
-									name="search"
-									value={searchTerm}
-									onChange={handleSearch}
-									className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-									placeholder="Search items"
-								/>
+				<div className="flex flex-col w-full sm:flex-grow pl-4 pr-4 sm:pl-10 sm:pr-10">
+					<div className="flex flex-wrap sm:flex-nowrap flex-grow sm:w-auto p-4 gap-4">
+						<div className="bg-white p-4 rounded-lg shadow-md w-full sm:w-1/2">
+							<div className="flex flex-col mb-4 gap-2">
+								<div className="flex justify-between items-center">
+									<label htmlFor="search" className="font-bold mr-2">
+										Search Items:
+									</label>
+									<input
+										type="text"
+										id="search"
+										name="search"
+										value={searchTerm}
+										onChange={handleSearch}
+										className="border border-gray-300 rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+										placeholder="Search items"
+									/>
+								</div>
 
 								<button
-									className="text-white bg-blue-400 hover:bg-blue-600  font-bold py-1 px-4 ml-2  rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+									className="text-white bg-blue-400 self-end hover:bg-blue-600  font-bold py-1 px-4 ml-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
 									onClick={handleReset}>
 									Reset
 								</button>
@@ -252,21 +254,23 @@ const Inventory = () => {
 									<option value="stockOut">Stock Out</option>
 								</select>
 							</div>
-							<div className="flex justify-center">
-								<BarChart width={500} height={430} data={filteredChartData}>
-									<CartesianGrid strokeDasharray="3 3" />
-									<XAxis dataKey="name" />
-									<YAxis />
-									<Tooltip />
-									<Legend />
-									<Bar dataKey="quantity" fill={chartType === "stockIn" ? "#8884d8" : "#ff4d4f"} />
-								</BarChart>
+							<div className="flex">
+								<ResponsiveContainer height={400}>
+									<BarChart data={filteredChartData}>
+										<CartesianGrid strokeDasharray="3 3" />
+										<XAxis dataKey="name" />
+										<YAxis />
+										<Tooltip />
+										<Legend />
+										<Bar dataKey="quantity" fill={chartType === "stockIn" ? "#8884d8" : "#ff4d4f"} />
+									</BarChart>
+								</ResponsiveContainer>
 							</div>
 						</div>
 
-						<div className="bg-white p-4 rounded-lg shadow-md w-1/2">
+						<div className="bg-white p-4 rounded-lg shadow-md w-full sm:w-1/2">
 							<h3 className="text-lg font-bold mb-2">Add New Inventory Item</h3>
-							<form onSubmit={handleFormSubmit} className="flex flex-col px-28 mt-20 gap-6">
+							<form onSubmit={handleFormSubmit} className="flex flex-col px-12 sm:px-28 mt-7 sm:mt-20 gap-6">
 								<div>
 									<label htmlFor="itemName" className="font-bold mb-4 inline-block">
 										Item Name:
@@ -337,9 +341,9 @@ const Inventory = () => {
 						</button> */}
 						</div>
 					</div>
-					<div className="flex flex-col">
-						<div>
-							<table className="mt-4 w-[820px] ml-72 border-collapse">
+					<div className="flex flex-col p-4">
+						<div className="flex justify-center">
+							<table className="mt-4 w-[95%] sm:w-full border-collapse">
 								<thead>
 									<tr>
 										<th className="py-2 px-4 border-b border-gray-300 bg-gray-200">Item Name</th>
@@ -350,7 +354,7 @@ const Inventory = () => {
 									{paginatedData.map((item, index) => (
 										<tr key={index} className={item.itemQuantity === 0 ? "bg-red-200" : ""}>
 											<td className="py-2 px-4 border-b border-gray-300">{item.itemName}</td>
-											<td className="py-2 px-4 border-b border-gray-300">{item.itemQuantity}</td>
+											<td className="py-2 px-4 border-b border-gray-300 text-center">{item.itemQuantity}</td>
 										</tr>
 									))}
 								</tbody>

@@ -110,9 +110,9 @@ const Requests = () => {
 			<Navbar />
 			<div className="flex flex-grow">
 				<Sidebar />
-				<div>
-					<div className="flex mt-8 ml-20">
-						<div className="flex flex-wrap mb-5 w-4/5">
+				<div className="w-full pl-12 pr-4 sm:pl-20 sm:pr-20">
+					<div className="flex mt-8">
+						<div className="flex flex-wrap mb-5 sm:w-4/5">
 							<div className="w-full flex gap-2">
 								<div
 									className={`bg-white rounded shadow p-4 w-[10rem] cursor-pointer ${
@@ -141,71 +141,75 @@ const Requests = () => {
 					<div className="flex justify-end py-4">
 						{selectedRequests.length > 0 && (
 							<button
-								className="px-4 py-2 mr-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+								className="px-2 sm:px-4 py-2 w-32  sm:w-auto mr-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
 								onClick={() => handleReject(false)}>
 								Reject Requests
 							</button>
 						)}
 						<button
-							className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+							className="px-2 sm:px-4 py-2 w-32 sm:w-auto bg-red-500 hover:bg-red-700 text-white rounded-md"
 							onClick={() => handleReject(true)}>
 							Reject All Requests
 						</button>
 					</div>
 
-					<table className="w-[1120px] bg-white border border-gray-300 ml-20 text-left">
-						<thead>
-							<tr className="bg-blue-500 text-white">
-								<th className="py-2 px-4 border-b text-center"></th>
-								<th className="py-2 px-4 border-b text-center">Item ID</th>
-								<th className="py-2 px-4 border-b text-left">Item Name</th>
-								<th className="py-2 px-4 border-b text-left">Item Quantity</th>
-								<th className="py-2 px-4 border-b text-left">Requester</th>
-								<th className="py-2 px-4 border-b text-left">Requested Date</th>
-								<th className="py-2 px-4 border-b text-left">Allocated Date</th>
-								<th className="py-2 px-4 border-b text-left">Return Date</th>
-								<th className="py-2 px-4 border-b text-left pl-20">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{userRequests &&
-								userRequests[selectedFilter].map((request) => (
-									<tr key={request._id}>
-										<td className="py-4 px-4 border-b text-center">
-											<input
-												id="default-checkbox"
-												type="checkbox"
-												value=""
-												onChange={(e) => handleSelectedRequests(e, request._id)}
-												className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-											/>
-										</td>
-										<td className="py-4 px-4 border-b text-left">{request.reqItem.itemId}</td>
-										<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
-										<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
-										<td className="py-4 px-2 border-b  pl-4">{request.requestedBy.name}</td>
-										<td className="py-4 px-4 border-b text-left pl-6">
-											{new Date(request.requestDate).toISOString().substring(0, 10)}
-										</td>
-										<td className="py-4 px-4 border-b text-left pl-10">
-											{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
-										</td>
-										<td className="py-4 px-4 border-b text-left pl-10">
-											{request.return.returnedDate
-												? new Date(request.return.returnedDate).toISOString().substring(0, 10)
-												: "N/A"}
-										</td>
-										<td className="py-4 px-4 border-b text-left">
-											{request.return.status === "pending-approval" ? (
-												<div className="ml-4">Pending Return Approval</div>
-											) : (
-												<div className="pl-16">{request.status.charAt(0).toUpperCase() + request.status.slice(1)}</div>
-											)}
-										</td>
-									</tr>
-								))}
-						</tbody>
-					</table>
+					<div className="w-full overflow-x-auto">
+						<table className="w-full bg-white border border-gray-300 text-left">
+							<thead>
+								<tr className="bg-blue-500 text-white">
+									<th className="py-2 px-4 border-b text-center"></th>
+									<th className="py-2 px-4 border-b text-center">Item ID</th>
+									<th className="py-2 px-4 border-b text-left">Item Name</th>
+									<th className="py-2 px-4 border-b text-left">Item Quantity</th>
+									<th className="py-2 px-4 border-b text-left">Requester</th>
+									<th className="py-2 px-4 border-b text-left">Requested Date</th>
+									<th className="py-2 px-4 border-b text-left">Allocated Date</th>
+									<th className="py-2 px-4 border-b text-left">Return Date</th>
+									<th className="py-2 px-4 border-b text-left pl-20">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{userRequests &&
+									userRequests[selectedFilter].map((request) => (
+										<tr key={request._id}>
+											<td className="py-4 px-4 border-b text-center">
+												<input
+													id="default-checkbox"
+													type="checkbox"
+													value=""
+													onChange={(e) => handleSelectedRequests(e, request._id)}
+													className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+												/>
+											</td>
+											<td className="py-4 px-4 border-b text-left">{request.reqItem.itemId}</td>
+											<td className="py-4 px-2 border-b text-left pl-6">{request.reqItem.name}</td>
+											<td className="py-4 px-2 border-b text-left pl-12">{request.quantity}</td>
+											<td className="py-4 px-2 border-b  pl-4">{request.requestedBy.name}</td>
+											<td className="py-4 px-4 border-b text-left pl-6">
+												{new Date(request.requestDate).toISOString().substring(0, 10)}
+											</td>
+											<td className="py-4 px-4 border-b text-left pl-10">
+												{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
+											</td>
+											<td className="py-4 px-4 border-b text-left pl-10">
+												{request.return.returnedDate
+													? new Date(request.return.returnedDate).toISOString().substring(0, 10)
+													: "N/A"}
+											</td>
+											<td className="py-4 px-4 border-b text-left">
+												{request.return.status === "pending-approval" ? (
+													<div className="ml-4">Pending Return Approval</div>
+												) : (
+													<div className="pl-16">
+														{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+													</div>
+												)}
+											</td>
+										</tr>
+									))}
+							</tbody>
+						</table>
+					</div>
 					{totalPages > 1 && (
 						<div className="mt-20 fixed bottom-4 left-20 right-0 flex justify-center">
 							<ReactPaginate

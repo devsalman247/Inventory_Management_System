@@ -1,13 +1,14 @@
 import User from "../models/User.js";
 import Request from "../models/Request.js";
 
-const addUser = (name, email, password, designation) => {
+const addUser = (name, email, password, designation, profileImage) => {
 	try {
 		const user = new User({
 			name,
 			email,
 			password,
 			designation,
+			profileImage,
 			requests: [],
 		});
 		user.hash = password;

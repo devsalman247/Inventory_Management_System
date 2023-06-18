@@ -60,7 +60,7 @@ function App() {
 
 	return (
 		// main container
-		<div className="bg-[#F7F7F7] main_container min-h-screen w-screen flex flex-col">
+		<div className="bg-[#F7F7F7] main_container min-h-screen w-full flex flex-col">
 			<AuthContext.Provider
 				value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, isSidebarOpen, setIsSidebarOpen }}>
 				<Routes>
