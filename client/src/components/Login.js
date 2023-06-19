@@ -102,8 +102,8 @@ function Login() {
 				<p className="mb-1 text-slate-600">Access to our dashboard</p>
 			</div>
 			{/* Div For Login Form */}
-			<div className="shadow-md login_form w-full sm:w-96 md:w-[500px] lg:w-[600px] py-4 mt-2 mb-4 flex flex-col items-center justify-center bg-white">
-				<div className="form w-full flex flex-col items-start justify-center px-8">
+			<div className="shadow-md login_form w-full sm:w-96 md:w-[500px] lg:w-1/4 lg:py-16 py-4 mt-2 mb-4 flex flex-col items-center justify-center bg-white">
+				<div className="form w-full flex flex-col items-start justify-center px-8 sm:pl-16 sm:gap-1">
 					<label htmlFor="email" className="mb-2">
 						Email Address
 					</label>
