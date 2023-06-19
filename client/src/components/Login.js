@@ -96,11 +96,11 @@ function Login() {
 	return (
 		// main container
 		<div className="bg-[#F7F7F7] min-h-screen flex flex-col items-center justify-center px-4">
-			<div className="flex flex-col items-center justify-center mb-6">
+			{/* <div className="flex flex-col items-center justify-center mb-6">
 				<img src={logo} className="w-40" alt="logo" />
 				<h1 className="text-2xl font-semibold mb-2">Login</h1>
 				<p className="mb-1 text-slate-600">Access to our dashboard</p>
-			</div>
+			</div> */}
 			{/* Div For Login Form */}
 			<div className="shadow-md login_form w-full sm:w-96 md:w-[500px] lg:w-1/4 lg:py-16 py-4 mt-2 mb-4 flex flex-col items-center justify-center bg-white">
 				<div className="form w-full flex flex-col items-start justify-center px-8 sm:pl-16 sm:gap-1">
