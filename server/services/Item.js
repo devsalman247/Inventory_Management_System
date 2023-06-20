@@ -154,28 +154,28 @@ const cancelRequest = (id) => {
 	});
 };
 
-const approveRequest = (id) => {
-	return Request.findById(id).then((request) => {
-		if (!request) throw "Request not found";
-		if (request.reqItem.stock < request.quantity) throw "Not enough stock";
-		request.status = "approved";
-		request.approvedDate = Date.now();
-		return Item.findById(request.reqItem._id)
-			.then(async (item) => {
-				if (!item) throw "Item not found";
-				item.stockOut.push({ quantity: request.quantity, date: Date.now(), type: "assigned" });
-				item.stock -= request.quantity;
-				if (item.isReturnAble) request.return.status = "pending";
-				await item.save();
-				await request.save();
-				return request;
-			})
-			.catch((err) => {
-				console.log(err);
-				throw err;
-			});
-	});
-};
+// const approveRequest = (id) => {
+// 	return Request.findById(id).then((request) => {
+// 		if (!request) throw "Request not found";
+// 		if (request.reqItem.stock < request.quantity) throw "Not enough stock";
+// 		request.status = "approved";
+// 		request.approvedDate = Date.now();
+// 		return Item.findById(request.reqItem._id)
+// 			.then(async (item) => {
+// 				if (!item) throw "Item not found";
+// 				item.stockOut.push({ quantity: request.quantity, date: Date.now(), type: "assigned" });
+// 				item.stock -= request.quantity;
+// 				if (item.isReturnAble) request.return.status = "pending";
+// 				await item.save();
+// 				await request.save();
+// 				return request;
+// 			})
+// 			.catch((err) => {
+// 				console.log(err);
+// 				throw err;
+// 			});
+// 	});
+// };
 
 const returnItemRequest = (id) => {
 	return Request.findById(id).then((request) => {
@@ -195,22 +195,22 @@ const returnItemRequest = (id) => {
 	});
 };
 
-const rejectRequest = (id) => {
-	return Request.findById(id).then((request) => {
-		if (!request) throw "Request not found";
-		request.status = "rejected";
-		return request
-			.save()
-			.then((req) => {
-				if (!req) throw "Failed to reject request";
-				return req;
-			})
-			.catch((err) => {
-				console.log(err);
-				throw err;
-			});
-	});
-};
+// const rejectRequest = (id) => {
+// 	return Request.findById(id).then((request) => {
+// 		if (!request) throw "Request not found";
+// 		request.status = "rejected";
+// 		return request
+// 			.save()
+// 			.then((req) => {
+// 				if (!req) throw "Failed to reject request";
+// 				return req;
+// 			})
+// 			.catch((err) => {
+// 				console.log(err);
+// 				throw err;
+// 			});
+// 	});
+// };
 
 const rejectRequests = (ids) => {
 	return Request.updateMany({ _id: { $in: ids } }, { $set: { status: "rejected" } });
@@ -249,69 +249,69 @@ const approveRequests = async (ids) => {
 };
 
 // Issued Items Service
-const issueItem = async (item, reqId) => {
-	try {
-		// get the last item in the database and increment the issuedId
-		let { issuedId } = await IssuedItem.findOne().sort({ _id: -1 }).select("issuedId");
+// const issueItem = async (item, reqId) => {
+// 	try {
+// 		// get the last item in the database and increment the issuedId
+// 		let { issuedId } = await IssuedItem.findOne().sort({ _id: -1 }).select("issuedId");
 
-		const newItem = new IssuedItem({ ...item, issuedId: ++issuedId, issueDate: Date.now(), lastReturn: null });
-		return newItem
-			.save()
-			.then(async (data) => {
-				if (!data) {
-					throw "Failed to create item";
-				}
-				// update the items in the database
-				await updateItems.borrowItem(data, reqId);
-				return data;
-			})
-			.catch((err) => {
-				console.log(err);
-				throw err;
-			});
-	} catch (err) {
-		console.log(err);
-		throw err;
-	}
-};
+// 		const newItem = new IssuedItem({ ...item, issuedId: ++issuedId, issueDate: Date.now(), lastReturn: null });
+// 		return newItem
+// 			.save()
+// 			.then(async (data) => {
+// 				if (!data) {
+// 					throw "Failed to create item";
+// 				}
+// 				// update the items in the database
+// 				await updateItems.borrowItem(data, reqId);
+// 				return data;
+// 			})
+// 			.catch((err) => {
+// 				console.log(err);
+// 				throw err;
+// 			});
+// 	} catch (err) {
+// 		console.log(err);
+// 		throw err;
+// 	}
+// };
 
-const getAllIssuedItems = () => {
-	return IssuedItem.find()
-		.populate("items.id")
-		.then((items) => {
-			if (!items) return [];
-			return items;
-		})
-		.catch((err) => {
-			console.log(err);
-			throw err;
-		});
-};
+// const getAllIssuedItems = () => {
+// 	return IssuedItem.find()
+// 		.populate("items.id")
+// 		.then((items) => {
+// 			if (!items) return [];
+// 			return items;
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			throw err;
+// 		});
+// };
 
-const getIssuedItemById = (id) => {
-	return IssuedItem.findById(id)
-		.populate("items.id")
-		.then((item) => {
-			if (!item) throw "Item not found";
-			return item;
-		})
-		.catch((err) => {
-			console.log(err);
-			throw err;
-		});
-};
+// const getIssuedItemById = (id) => {
+// 	return IssuedItem.findById(id)
+// 		.populate("items.id")
+// 		.then((item) => {
+// 			if (!item) throw "Item not found";
+// 			return item;
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			throw err;
+// 		});
+// };
 
-const updateIssuedItem = (id, item) => {
-	return IssuedItem.findByIdAndUpdate(id, item, { new: true })
-		.then((item) => {
-			if (!item) throw "Item not found";
-			return item;
-		})
-		.catch((err) => {
-			console.log(err);
-			throw err;
-		});
-};
+// const updateIssuedItem = (id, item) => {
+// 	return IssuedItem.findByIdAndUpdate(id, item, { new: true })
+// 		.then((item) => {
+// 			if (!item) throw "Item not found";
+// 			return item;
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			throw err;
+// 		});
+// };
 
 const ItemService = {
 	// Items Service
@@ -322,16 +322,16 @@ const ItemService = {
 	getItemById,
 	requestItem,
 	cancelRequest,
-	approveRequest,
-	rejectRequest,
+	// approveRequest,
+	// rejectRequest,
 	rejectRequests,
 	approveRequests,
 	returnItemRequest,
 	// Issued Items Service
-	issueItem,
-	getAllIssuedItems,
-	getIssuedItemById,
-	updateIssuedItem,
+	// issueItem,
+	// getAllIssuedItems,
+	// getIssuedItemById,
+	// updateIssuedItem,
 };
 
 export default ItemService;

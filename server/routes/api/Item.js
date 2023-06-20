@@ -11,25 +11,25 @@ const {
 	ItemDelete,
 	ItemRequest,
 	CancelRequest,
-	ApproveRequest,
-	RejectRequest,
+	// ApproveRequest,
+	// RejectRequest,
 	RejectRequests,
 	ApproveRequests,
 	ItemReturnRequest,
-	ItemIssue,
-	ItemGetAllIssued,
-	ItemGetIssuedById,
-	ItemUpdateIssued,
+	// ItemIssue,
+	// ItemGetAllIssued,
+	// ItemGetIssuedById,
+	// ItemUpdateIssued,
 } = ItemController;
 const { verifyToken, isAdmin } = UserAuth;
 
 router.use(verifyToken);
 
 // Issued Items Routes
-router.get("/issued", isAdmin, ItemGetAllIssued);
-router.get("/issued/:id", isAdmin, ItemGetIssuedById);
-router.post("/issued", isAdmin, ItemIssue);
-router.put("/issued/:id", isAdmin, ItemUpdateIssued);
+// router.get("/issued", isAdmin, ItemGetAllIssued);
+// router.get("/issued/:id", isAdmin, ItemGetIssuedById);
+// router.post("/issued", isAdmin, ItemIssue);
+// router.put("/issued/:id", isAdmin, ItemUpdateIssued);
 
 // Items Routes
 router.get("/", ItemGetAll);

@@ -9,15 +9,15 @@ const {
 	getItemById,
 	requestItem,
 	cancelRequest,
-	approveRequest,
-	rejectRequest,
+	// approveRequest,
+	// rejectRequest,
 	rejectRequests,
 	approveRequests,
 	returnItemRequest,
-	issueItem,
-	getAllIssuedItems,
-	getIssuedItemById,
-	updateIssuedItem,
+	// issueItem,
+	// getAllIssuedItems,
+	// getIssuedItemById,
+	// updateIssuedItem,
 } = ItemService;
 
 const ItemGetAll = async (req, res, next) => {
@@ -100,31 +100,31 @@ const CancelRequest = async (req, res, next) => {
 		});
 };
 
-const ApproveRequest = async (req, res, next) => {
-	if (req.user.role !== "store-keeper")
-		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
-	const { id } = req.params;
-	approveRequest(id)
-		.then((isRequestApproved) => {
-			if (isRequestApproved) return next(new OkResponse("Request approved successfully"));
-		})
-		.catch((err) => {
-			return next(new BadRequestResponse(err));
-		});
-};
+// const ApproveRequest = async (req, res, next) => {
+// 	if (req.user.role !== "store-keeper")
+// 		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+// 	const { id } = req.params;
+// 	approveRequest(id)
+// 		.then((isRequestApproved) => {
+// 			if (isRequestApproved) return next(new OkResponse("Request approved successfully"));
+// 		})
+// 		.catch((err) => {
+// 			return next(new BadRequestResponse(err));
+// 		});
+// };
 
-const RejectRequest = async (req, res, next) => {
-	if (req.user.role !== "store-keeper")
-		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
-	const { id } = req.params;
-	rejectRequest(id)
-		.then((isRequestRejected) => {
-			if (isRequestRejected) return next(new OkResponse("Request rejected successfully"));
-		})
-		.catch((err) => {
-			return next(new BadRequestResponse(err));
-		});
-};
+// const RejectRequest = async (req, res, next) => {
+// 	if (req.user.role !== "store-keeper")
+// 		return next(new UnauthorizedResponse("You are not authorized to perform this action"));
+// 	const { id } = req.params;
+// 	rejectRequest(id)
+// 		.then((isRequestRejected) => {
+// 			if (isRequestRejected) return next(new OkResponse("Request rejected successfully"));
+// 		})
+// 		.catch((err) => {
+// 			return next(new BadRequestResponse(err));
+// 		});
+// };
 
 const RejectRequests = async (req, res, next) => {
 	if (req.user.role !== "store-keeper")
@@ -163,39 +163,39 @@ const ItemReturnRequest = async (req, res, next) => {
 		});
 };
 
-const ItemIssue = async (req, res, next) => {
-	const { reqId, item } = req.body;
-	issueItem(item, reqId)
-		.then((item) => {
-			return next(new OkResponse(item));
-		})
-		.catch((err) => {
-			return next(new BadRequestResponse(err));
-		});
-};
+// const ItemIssue = async (req, res, next) => {
+// 	const { reqId, item } = req.body;
+// 	issueItem(item, reqId)
+// 		.then((item) => {
+// 			return next(new OkResponse(item));
+// 		})
+// 		.catch((err) => {
+// 			return next(new BadRequestResponse(err));
+// 		});
+// };
 
-const ItemUpdateIssued = async (req, res, next) => {};
+// const ItemUpdateIssued = async (req, res, next) => {};
 
-const ItemGetAllIssued = async (req, res, next) => {
-	getAllIssuedItems()
-		.then((items) => {
-			return next(new OkResponse(items));
-		})
-		.catch((err) => {
-			return next(new BadRequestResponse(err));
-		});
-};
+// const ItemGetAllIssued = async (req, res, next) => {
+// 	getAllIssuedItems()
+// 		.then((items) => {
+// 			return next(new OkResponse(items));
+// 		})
+// 		.catch((err) => {
+// 			return next(new BadRequestResponse(err));
+// 		});
+// };
 
-const ItemGetIssuedById = async (req, res, next) => {
-	const { id } = req.params;
-	getIssuedItemById(id)
-		.then((item) => {
-			return next(new OkResponse(item));
-		})
-		.catch((err) => {
-			return next(new BadRequestResponse(err));
-		});
-};
+// const ItemGetIssuedById = async (req, res, next) => {
+// 	const { id } = req.params;
+// 	getIssuedItemById(id)
+// 		.then((item) => {
+// 			return next(new OkResponse(item));
+// 		})
+// 		.catch((err) => {
+// 			return next(new BadRequestResponse(err));
+// 		});
+// };
 
 const ItemController = {
 	// Items Controller
@@ -206,16 +206,16 @@ const ItemController = {
 	ItemDelete,
 	ItemRequest,
 	CancelRequest,
-	ApproveRequest,
-	RejectRequest,
+	// ApproveRequest,
+	// RejectRequest,
 	RejectRequests,
 	ApproveRequests,
 	ItemReturnRequest,
 	// Issued Items Controller
-	ItemIssue,
-	ItemGetAllIssued,
-	ItemGetIssuedById,
-	ItemUpdateIssued,
+	// ItemIssue,
+	// ItemGetAllIssued,
+	// ItemGetIssuedById,
+	// ItemUpdateIssued,
 };
 
 export default ItemController;

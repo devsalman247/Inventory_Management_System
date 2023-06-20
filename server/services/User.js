@@ -87,6 +87,7 @@ const updateUser = (id, user) => {
 			}
 			if (user.name) userToUpdate.name = user.name;
 			if (user.email) userToUpdate.email = user.email;
+			if (user.designation) userToUpdate.designation = user.designation;
 			if (user.password) {
 				userToUpdate.hash = user.password;
 				userToUpdate.setPassword();

@@ -56,11 +56,13 @@ function Modal({ setShowModal, users, userId, fetchUsers }) {
 				email: emailValue,
 				password: passwordValue,
 				designation: designationValue,
+				profileImage: selectedImage,
 			})
 			.then((res) => {
 				if (res.status === 200) {
 					console.log(res.data.data);
 					showMessage("User has been updated successfully!", "success");
+					setShowModal(false);
 					fetchUsers();
 				}
 			})
