@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const VendorDetails = () => {
 	const [vendorName, setVendorName] = useState("");
@@ -28,6 +28,15 @@ const VendorDetails = () => {
 		},
 		// Add more vendor details objects as needed
 	]);
+
+	const [selectedVendor, setSelectedVendor] = useState([]);
+
+	const searchVendor = (vendorName) => {
+		const filteredVendor = vendor.items.filter((vendor) => {
+			return vendor.Vendor.toLowerCase().includes(vendorName.toLowerCase());
+		});
+		setSelectedVendor(filteredVendor);
+	};
 
 	// State for controlling the edit modal
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -67,88 +76,88 @@ const VendorDetails = () => {
 	};
 
 	const vendor = {
-		"items": [
+		items: [
 			{
-				"Vendor": "John Doe",
-				"itemName": "Item 1",
-				"itemQuantity": 5,
-				"totalPrice": 50,
-				"issuedDate": "2023-06-01",
-				"returnDate": "2023-06-10"
+				Vendor: "John Doe",
+				itemName: "Item 1",
+				itemQuantity: 5,
+				totalPrice: 50,
+				issuedDate: "2023-06-01",
+				returnDate: "2023-06-10",
 			},
 			{
-				"Vendor": "Jane Smith",
-				"itemName": "Item 2",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-02",
-				"returnDate": "2023-06-09"
+				Vendor: "Jane Smith",
+				itemName: "Item 2",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-02",
+				returnDate: "2023-06-09",
 			},
 			{
-				"Vendor": "Michael Johnson",
-				"itemName": "Item 3",
-				"itemQuantity": 2,
-				"totalPrice": 20,
-				"issuedDate": "2023-06-03",
-				"returnDate": "2023-06-08"
+				Vendor: "Michael Johnson",
+				itemName: "Item 3",
+				itemQuantity: 2,
+				totalPrice: 20,
+				issuedDate: "2023-06-03",
+				returnDate: "2023-06-08",
 			},
 			{
-				"Vendor": "Emily Brown",
-				"itemName": "Item 4",
-				"itemQuantity": 4,
-				"totalPrice": 40,
-				"issuedDate": "2023-06-04",
-				"returnDate": "2023-06-07"
+				Vendor: "Emily Brown",
+				itemName: "Item 4",
+				itemQuantity: 4,
+				totalPrice: 40,
+				issuedDate: "2023-06-04",
+				returnDate: "2023-06-07",
 			},
 			{
-				"Vendor": "Daniel Wilson",
-				"itemName": "Item 5",
-				"itemQuantity": 6,
-				"totalPrice": 60,
-				"issuedDate": "2023-06-05",
-				"returnDate": "2023-06-06"
+				Vendor: "Daniel Wilson",
+				itemName: "Item 5",
+				itemQuantity: 6,
+				totalPrice: 60,
+				issuedDate: "2023-06-05",
+				returnDate: "2023-06-06",
 			},
 			{
-				"Vendor": "Olivia Anderson",
-				"itemName": "Item 6",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-06",
-				"returnDate": "2023-06-05"
+				Vendor: "Olivia Anderson",
+				itemName: "Item 6",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-06",
+				returnDate: "2023-06-05",
 			},
 			{
-				"Vendor": "James Taylor",
-				"itemName": "Item 7",
-				"itemQuantity": 2,
-				"totalPrice": 20,
-				"issuedDate": "2023-06-07",
-				"returnDate": "2023-06-04"
+				Vendor: "James Taylor",
+				itemName: "Item 7",
+				itemQuantity: 2,
+				totalPrice: 20,
+				issuedDate: "2023-06-07",
+				returnDate: "2023-06-04",
 			},
 			{
-				"Vendor": "Sophia Martinez",
-				"itemName": "Item 8",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-08",
-				"returnDate": "2023-06-03"
+				Vendor: "Sophia Martinez",
+				itemName: "Item 8",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-08",
+				returnDate: "2023-06-03",
 			},
 			{
-				"Vendor": "David Johnson",
-				"itemName": "Item 9",
-				"itemQuantity": 4,
-				"totalPrice": 40,
-				"issuedDate": "2023-06-09",
-				"returnDate": "2023-06-02"
+				Vendor: "David Johnson",
+				itemName: "Item 9",
+				itemQuantity: 4,
+				totalPrice: 40,
+				issuedDate: "2023-06-09",
+				returnDate: "2023-06-02",
 			},
 			{
-				"Vendor": "Ava Thompson",
-				"itemName": "Item 10",
-				"itemQuantity": 5,
-				"totalPrice": 50,
-				"issuedDate": "2023-06-10",
-				"returnDate": "2023-06-01"
-			}
-		]
+				Vendor: "Ava Thompson",
+				itemName: "Item 10",
+				itemQuantity: 5,
+				totalPrice: 50,
+				issuedDate: "2023-06-10",
+				returnDate: "2023-06-01",
+			},
+		],
 	};
 
 	const generatePDF = () => {
@@ -157,118 +166,111 @@ const VendorDetails = () => {
 
 		// Set the document title
 		doc.setProperties({
-			title: 'Vendors Log History',
+			title: "Vendors Log History",
 		});
 
 		// Add the "Inventory Management System" title
-		doc.setFont('helvetica', 'bold');
+		doc.setFont("helvetica", "bold");
 		doc.setFontSize(16);
-		doc.text('Inventory Management System', 15, 15);
+		doc.text("Inventory Management System", 15, 15);
 
 		// Define the table headers
-		const headers = [
-			'Vendor',
-			'Item Name',
-			'Item Quantity',
-			'Total Price',
-			'Issued Date',
-			'Return Date',
-		];
+		const headers = ["Vendor", "Item Name", "Item Quantity", "Total Price", "Issued Date", "Return Date"];
 
 		// Get the items data
 		const items = [
 			{
-				"Vendor": "John Doe",
-				"itemName": "Item 1",
-				"itemQuantity": 5,
-				"totalPrice": 50,
-				"issuedDate": "2023-06-01",
-				"returnDate": "2023-06-10"
+				Vendor: "John Doe",
+				itemName: "Item 1",
+				itemQuantity: 5,
+				totalPrice: 50,
+				issuedDate: "2023-06-01",
+				returnDate: "2023-06-10",
 			},
 			{
-				"Vendor": "Jane Smith",
-				"itemName": "Item 2",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-02",
-				"returnDate": "2023-06-09"
+				Vendor: "Jane Smith",
+				itemName: "Item 2",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-02",
+				returnDate: "2023-06-09",
 			},
 			{
-				"Vendor": "Michael Johnson",
-				"itemName": "Item 3",
-				"itemQuantity": 2,
-				"totalPrice": 20,
-				"issuedDate": "2023-06-03",
-				"returnDate": "2023-06-08"
+				Vendor: "Michael Johnson",
+				itemName: "Item 3",
+				itemQuantity: 2,
+				totalPrice: 20,
+				issuedDate: "2023-06-03",
+				returnDate: "2023-06-08",
 			},
 			{
-				"Vendor": "Emily Brown",
-				"itemName": "Item 4",
-				"itemQuantity": 4,
-				"totalPrice": 40,
-				"issuedDate": "2023-06-04",
-				"returnDate": "2023-06-07"
+				Vendor: "Emily Brown",
+				itemName: "Item 4",
+				itemQuantity: 4,
+				totalPrice: 40,
+				issuedDate: "2023-06-04",
+				returnDate: "2023-06-07",
 			},
 			{
-				"Vendor": "Daniel Wilson",
-				"itemName": "Item 5",
-				"itemQuantity": 6,
-				"totalPrice": 60,
-				"issuedDate": "2023-06-05",
-				"returnDate": "2023-06-06"
+				Vendor: "Daniel Wilson",
+				itemName: "Item 5",
+				itemQuantity: 6,
+				totalPrice: 60,
+				issuedDate: "2023-06-05",
+				returnDate: "2023-06-06",
 			},
 			{
-				"Vendor": "Olivia Anderson",
-				"itemName": "Item 6",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-06",
-				"returnDate": "2023-06-05"
+				Vendor: "Olivia Anderson",
+				itemName: "Item 6",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-06",
+				returnDate: "2023-06-05",
 			},
 			{
-				"Vendor": "James Taylor",
-				"itemName": "Item 7",
-				"itemQuantity": 2,
-				"totalPrice": 20,
-				"issuedDate": "2023-06-07",
-				"returnDate": "2023-06-04"
+				Vendor: "James Taylor",
+				itemName: "Item 7",
+				itemQuantity: 2,
+				totalPrice: 20,
+				issuedDate: "2023-06-07",
+				returnDate: "2023-06-04",
 			},
 			{
-				"Vendor": "Sophia Martinez",
-				"itemName": "Item 8",
-				"itemQuantity": 3,
-				"totalPrice": 30,
-				"issuedDate": "2023-06-08",
-				"returnDate": "2023-06-03"
+				Vendor: "Sophia Martinez",
+				itemName: "Item 8",
+				itemQuantity: 3,
+				totalPrice: 30,
+				issuedDate: "2023-06-08",
+				returnDate: "2023-06-03",
 			},
 			{
-				"Vendor": "David Johnson",
-				"itemName": "Item 9",
-				"itemQuantity": 4,
-				"totalPrice": 40,
-				"issuedDate": "2023-06-09",
-				"returnDate": "2023-06-02"
+				Vendor: "David Johnson",
+				itemName: "Item 9",
+				itemQuantity: 4,
+				totalPrice: 40,
+				issuedDate: "2023-06-09",
+				returnDate: "2023-06-02",
 			},
 			{
-				"Vendor": "Ava Thompson",
-				"itemName": "Item 10",
-				"itemQuantity": 5,
-				"totalPrice": 50,
-				"issuedDate": "2023-06-10",
-				"returnDate": "2023-06-01"
-			}
+				Vendor: "Ava Thompson",
+				itemName: "Item 10",
+				itemQuantity: 5,
+				totalPrice: 50,
+				issuedDate: "2023-06-10",
+				returnDate: "2023-06-01",
+			},
 		];
 
 		// Verify items has valid data
 		if (items && items.length > 0) {
 			// Define the table rows
 			const rows = items.map((item) => [
-				item.Vendor || '', // Vendor Name (fallback to empty string if undefined)
-				item.itemName || '', // Item Name (fallback to empty string if undefined)
-				item.itemQuantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
-				item.totalPrice.toString() || '', // Total Price (fallback to empty string if undefined)
-				item.issuedDate || '', // Issued Date (fallback to empty string if undefined)
-				item.returnDate || '', // Return Date (fallback to empty string if undefined)
+				item.Vendor || "", // Vendor Name (fallback to empty string if undefined)
+				item.itemName || "", // Item Name (fallback to empty string if undefined)
+				item.itemQuantity.toString() || "", // Item Quantity (fallback to empty string if undefined)
+				item.totalPrice.toString() || "", // Total Price (fallback to empty string if undefined)
+				item.issuedDate || "", // Issued Date (fallback to empty string if undefined)
+				item.returnDate || "", // Return Date (fallback to empty string if undefined)
 			]);
 
 			// Set the table column styles
@@ -286,7 +288,7 @@ const VendorDetails = () => {
 				startY: 25, // Adjust the starting Y position for the table
 				head: [headers],
 				body: rows,
-				theme: 'grid',
+				theme: "grid",
 				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
 				alternateRowStyles: { fillColor: [220, 237, 200] },
 				columnStyles: columnStyles,
@@ -298,20 +300,16 @@ const VendorDetails = () => {
 			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
 			const topMargin = 14;
 			const rightMargin = 10;
-			doc.setFont('helvetica', 'normal');
+			doc.setFont("helvetica", "normal");
 			doc.setFontSize(10);
 			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
-				align: 'right',
+				align: "right",
 			});
 		}
 
 		// Save the PDF document
-		doc.save('vendors-log-history.pdf');
+		doc.save("vendors-log-history.pdf");
 	};
-
-
-
-
 
 	return (
 		<div className="flex flex-col flex-grow">
@@ -319,23 +317,20 @@ const VendorDetails = () => {
 			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="flex flex-col w-full p-8">
-
 					{/* Search Component */}
-					<div
-					className="mb-8"
-					>
+					<div className="mb-8">
 						<div className="flex flex-col sm:flex-row sm:justify-between mb-4">
 							<div className="flex items-center">
 								<input
 									type="text"
-									className="px-4 py-2 border border-gray-300 rounded-md mr-4"
+									className="px-4 py-2 border border-gray-300 rounded-md mr-4 outline-none"
 									placeholder="Search by vendor name"
 									value={vendorName}
-									onChange={(e) => setVendorName(e.target.value)}
+									onChange={(e) => setVendorName(e.target.value?.toLowerCase())}
 								/>
 								<button
 									className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-								>
+									onClick={() => searchVendor(vendorName)}>
 									Search
 								</button>
 							</div>
@@ -347,8 +342,7 @@ const VendorDetails = () => {
 						absolute
 						right-8
 						px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-						onClick={generatePDF}
-					>
+						onClick={generatePDF}>
 						Download PDF
 					</button>
 					<div className="overflow-x-auto w-full">
@@ -361,32 +355,30 @@ const VendorDetails = () => {
 									<th className="py-2 px-4 border-b">Total Price</th>
 									<th className="py-2 px-4 border-b">Issued Date</th>
 									<th className="py-2 px-4 border-b">Return Date</th>
-									<th className="py-2 px-4 border-b">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
-								{vendorDetailsData.map((vendorDetail) => (
-									<tr key={vendorDetail.id}>
-										<td className="py-2 px-4 border-b text-center ">{vendorDetail.vendorName}</td>
-										<td className="py-2 px-4 border-b text-center">{vendorDetail.itemName}</td>
-										<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
-										<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
-										<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
-										<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
-										<td className="py-2 px-4 border-b flex sm:justify-center">
-											<button
-												className="px-2 py-1 bg-blue-500 text-white rounded-md"
-												onClick={() => openEditModal(vendorDetail)}>
-												Edit
-											</button>
-											<button
-												className="ml-2 px-2 py-1 bg-red-500 text-white rounded-md"
-												onClick={() => deleteVendorDetail(vendorDetail.id)}>
-												Delete
-											</button>
-										</td>
-									</tr>
-								))}
+								{!selectedVendor.length > 0
+									? vendor.items.map((vendorDetail) => (
+											<tr key={vendorDetail.id}>
+												<td className="py-2 px-4 border-b text-center ">{vendorDetail.Vendor}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemName}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
+											</tr>
+									  ))
+									: selectedVendor.map((vendorDetail) => (
+											<tr key={vendorDetail.id}>
+												<td className="py-2 px-4 border-b text-center ">{vendorDetail.Vendor}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemName}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
+											</tr>
+									  ))}
 							</tbody>
 						</table>
 					</div>

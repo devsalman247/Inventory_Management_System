@@ -5,8 +5,8 @@ import userData from "./data.json";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const Dashboard = () => {
 	const [userRequests, setUserRequests] = useState({
@@ -140,23 +140,16 @@ const Dashboard = () => {
 
 		// Set the document title
 		doc.setProperties({
-			title: 'Request Log History',
+			title: "Request Log History",
 		});
 
 		// Add the "Inventory Management System" title
-		doc.setFont('helvetica', 'bold');
+		doc.setFont("helvetica", "bold");
 		doc.setFontSize(16);
-		doc.text('Inventory Management System', 15, 15);
+		doc.text("Inventory Management System", 15, 15);
 
 		// Define the table headers
-		const headers = [
-			'Item Name',
-			'Item Quantity',
-			'Requestor Name',
-			'Request Date',
-			'Issued Date',
-			'Status',
-		];
+		const headers = ["Item Name", "Item Quantity", "Requestor Name", "Request Date", "Issued Date", "Status"];
 
 		// Get the selected requests
 		const selectedRequests = userRequests[selectedPdfFilter];
@@ -165,12 +158,12 @@ const Dashboard = () => {
 		if (selectedRequests && selectedRequests.length > 0) {
 			// Define the table rows
 			const rows = selectedRequests.map((request) => [
-				request.reqItem.name || '', // Item Name (fallback to empty string if undefined)
-				request.quantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
-				request.requestedBy.name || '', // Requestor Name (fallback to empty string if undefined)
-				request.requestDate ? (new Date(request.requestDate).toISOString().substring(0, 10)) : 'N/A', // Request Date (fallback to empty string if undefined)
-				request.approvedDate ? (new Date(request.approvedDate).toISOString().substring(0, 10)) : 'N/A', // Issued Date (fallback to empty string if undefined)
-				request.status || '', // Status (fallback to empty string if undefined)
+				request.reqItem.name || "", // Item Name (fallback to empty string if undefined)
+				request.quantity.toString() || "", // Item Quantity (fallback to empty string if undefined)
+				request.requestedBy.name || "", // Requestor Name (fallback to empty string if undefined)
+				request.requestDate ? new Date(request.requestDate).toISOString().substring(0, 10) : "N/A", // Request Date (fallback to empty string if undefined)
+				request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A", // Issued Date (fallback to empty string if undefined)
+				request.status || "", // Status (fallback to empty string if undefined)
 			]);
 
 			// Set the table column styles
@@ -188,7 +181,7 @@ const Dashboard = () => {
 				startY: 25, // Adjust the starting Y position for the table
 				head: [headers],
 				body: rows,
-				theme: 'grid',
+				theme: "grid",
 				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
 				alternateRowStyles: { fillColor: [220, 237, 200] },
 				columnStyles: columnStyles,
@@ -200,15 +193,15 @@ const Dashboard = () => {
 			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
 			const topMargin = 14;
 			const rightMargin = 10;
-			doc.setFont('helvetica', 'normal');
+			doc.setFont("helvetica", "normal");
 			doc.setFontSize(10);
 			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
-				align: 'right',
+				align: "right",
 			});
 		}
 
 		// Save the PDF document
-		doc.save('request-log-history.pdf');
+		doc.save("request-log-history.pdf");
 	};
 
 	const handleFilterChange = (e) => {
@@ -236,7 +229,10 @@ const Dashboard = () => {
 									<div className="flex flex-col">
 										<span className="text-sm text-gray-500">Requested</span>
 										<span className="text-2xl font-semibold">
-											{userRequests.approved.length + userRequests.pending.length + userRequests.rejected.length}
+											{userRequests.approved.length +
+												userRequests.pending.length +
+												userRequests.rejected.length +
+												userRequests.cancelled.length}
 										</span>
 									</div>
 								</div>
@@ -282,36 +278,30 @@ const Dashboard = () => {
 										<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
 									</div>
 								</div>
-
-
 							</div>
 						</div>
 					</div>
 
-					<div className="mb-4 px-2 sm:px-6 flex justify-end">
-						<select
-							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-							value={selectedPdfFilter}
-							onChange={handleFilterChange}
-						>
-							<option value="requests">All Requests</option>
-							<option value="approved">Approved</option>
-							<option value="pending">Pending</option>
-							<option value="rejected">Rejected</option>
-							<option value="cancelled">Cancelled</option>
-						</select>
-						<button
-							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 "
-
-							disabled={userRequests[selectedPdfFilter].length === 0}
-							onClick={generatePDF}
-						>
-							Download PDF
-						</button>
-					</div>
-
 					<div className="w-full overflow-x-auto">
-						<table className="w-[1020px] bg-white border border-gray-300 text-left">
+						<div className="mb-4 flex justify-end sm:w-full">
+							<select
+								className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+								value={selectedPdfFilter}
+								onChange={handleFilterChange}>
+								<option value="requests">All Requests</option>
+								<option value="approved">Approved</option>
+								<option value="pending">Pending</option>
+								<option value="rejected">Rejected</option>
+								<option value="cancelled">Cancelled</option>
+							</select>
+							<button
+								className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 "
+								disabled={userRequests[selectedPdfFilter].length === 0}
+								onClick={generatePDF}>
+								Download PDF
+							</button>
+						</div>
+						<table className="w-[1020px] sm:w-full bg-white border border-gray-300 text-left">
 							<thead>
 								<tr className="bg-blue-500 text-white">
 									<th className="py-2 px-4 border-b text-center">Item ID</th>

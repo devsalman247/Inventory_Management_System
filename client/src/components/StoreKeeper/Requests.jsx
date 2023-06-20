@@ -5,464 +5,15 @@ import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
 
-
 const Requests = () => {
 	const [userRequests, setUserRequests] = useState({
 		pending: [],
 		pendingApproval: [],
 		requests: [],
 	});
-	const [selectedFilter, setSelectedFilter] = useState("requests");
+	const [selectedFilter, setSelectedFilter] = useState("pending");
 	const [selectedRequests, setSelectedRequests] = useState([]);
 	const [isAllSelected, setIsAllSelected] = useState(false);
-	
-
-	const Requests = {
-		pending: [
-			{
-				_id: '1',
-				reqItem: {
-					itemId: '1001',
-					name: 'Item 1',
-				},
-				quantity: 5,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-15',
-				approvedDate: '2023-06-19',
-				status: 'pending',
-			},
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-16',
-				approvedDate: '2023-06-20',
-				status: 'pending',
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-17',
-				approvedDate: '2023-06-21',
-				status: 'pending',
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: '2023-06-22',
-				status: 'pending',
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Robert Wilson',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: '2023-06-23',
-				status: 'pending',
-			},
-		],
-
-		approved: [
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: '2023-06-18',
-				status: 'approved',
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: '2023-06-19',
-				status: 'approved',
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-20',
-				approvedDate: '2023-06-20',
-				status: 'approved',
-
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-21',
-				approvedDate: '2023-06-21',
-				status: 'approved',
-			},
-			{
-				_id: '6',
-				reqItem: {
-					itemId: '1006',
-					name: 'Item 6',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Sarah Wilson',
-				},
-				requestDate: '2023-06-22',
-				approvedDate: '2023-06-22',
-				status: 'approved',
-			},
-		],
-
-		rejected: [
-			{
-				_id: '1',
-				reqItem: {
-					itemId: '1001',
-					name: 'Item 1',
-				},
-				quantity: 5,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-15',
-				approvedDate: "2023-06-15",
-				status: 'rejected',
-
-			},
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-16',
-				approvedDate: "2023-06-16",
-				status: 'rejected',
-
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-17',
-				approvedDate: "2023-06-17",
-				status: 'rejected',
-
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: "2023-06-18",
-				status: 'rejected',
-
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Robert Wilson',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: "2023-06-19",
-				status: 'rejected',
-
-			},
-		],
-
-		requests: [
-			{
-				_id: '1',
-				reqItem: {
-					itemId: '1001',
-					name: 'Item 1',
-				},
-				quantity: 5,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-15',
-				approvedDate: '2023-06-19',
-				status: 'pending',
-			},
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-16',
-				approvedDate: '2023-06-20',
-				status: 'pending',
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-17',
-				approvedDate: '2023-06-21',
-				status: 'pending',
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: '2023-06-22',
-				status: 'pending',
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Robert Wilson',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: '2023-06-23',
-				status: 'pending',
-			},
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: '2023-06-18',
-				status: 'approved',
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: '2023-06-19',
-				status: 'approved',
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-20',
-				approvedDate: '2023-06-20',
-				status: 'approved',
-
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-21',
-				approvedDate: '2023-06-21',
-				status: 'approved',
-			},
-			{
-				_id: '6',
-				reqItem: {
-					itemId: '1006',
-					name: 'Item 6',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Sarah Wilson',
-				},
-				requestDate: '2023-06-22',
-				approvedDate: '2023-06-22',
-				status: 'approved',
-			},
-			{
-				_id: '1',
-				reqItem: {
-					itemId: '1001',
-					name: 'Item 1',
-				},
-				quantity: 5,
-				requestedBy: {
-					name: 'John Doe',
-				},
-				requestDate: '2023-06-15',
-				approvedDate: "2023-06-15",
-				status: 'rejected',
-
-			},
-			{
-				_id: '2',
-				reqItem: {
-					itemId: '1002',
-					name: 'Item 2',
-				},
-				quantity: 3,
-				requestedBy: {
-					name: 'Jane Smith',
-				},
-				requestDate: '2023-06-16',
-				approvedDate: "2023-06-16",
-				status: 'rejected',
-
-			},
-			{
-				_id: '3',
-				reqItem: {
-					itemId: '1003',
-					name: 'Item 3',
-				},
-				quantity: 2,
-				requestedBy: {
-					name: 'Michael Johnson',
-				},
-				requestDate: '2023-06-17',
-				approvedDate: "2023-06-17",
-				status: 'rejected',
-
-			},
-			{
-				_id: '4',
-				reqItem: {
-					itemId: '1004',
-					name: 'Item 4',
-				},
-				quantity: 1,
-				requestedBy: {
-					name: 'Emily Davis',
-				},
-				requestDate: '2023-06-18',
-				approvedDate: "2023-06-18",
-				status: 'rejected',
-
-			},
-			{
-				_id: '5',
-				reqItem: {
-					itemId: '1005',
-					name: 'Item 5',
-				},
-				quantity: 4,
-				requestedBy: {
-					name: 'Robert Wilson',
-				},
-				requestDate: '2023-06-19',
-				approvedDate: "2023-06-19",
-				status: 'rejected',
-
-			}
-		]
-	};
-
 
 	const getStatusColorClass = (status) => {
 		switch (status) {
@@ -520,6 +71,40 @@ const Requests = () => {
 		}
 	};
 
+	const handleApproveReq = (requestId) => {
+		http
+			.put(`/item/requests/approve`, { ids: [requestId] })
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request approved successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const handleRejectReq = (requestId) => {
+		http
+			.put(`/item/requests/reject`, { ids: [requestId] })
+			.then((res) => {
+				Swal.fire({
+					title: "Success!",
+					text: "Request rejected successfully",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
+				getUserRequests();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	const handleApprove = () => {
 		if (selectedRequests.length === 0) {
 			Swal.fire({
@@ -539,6 +124,8 @@ const Requests = () => {
 					icon: "success",
 					confirmButtonText: "OK",
 				});
+				setSelectedRequests([]);
+				setIsAllSelected(false);
 				getUserRequests();
 			})
 			.catch((err) => {
@@ -565,6 +152,8 @@ const Requests = () => {
 					icon: "success",
 					confirmButtonText: "OK",
 				});
+				setSelectedRequests([]);
+				setIsAllSelected(false);
 				getUserRequests();
 			})
 			.catch((err) => {
@@ -653,7 +242,6 @@ const Requests = () => {
 							onClick={() => handleReject()}>
 							Reject Requests
 						</button>
-
 					</div>
 
 					<div className="w-full overflow-x-auto">
@@ -720,14 +308,12 @@ const Requests = () => {
 												<div className="flex justify-end mt-4">
 													<button
 														className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded mr-2"
-														onClick={handleApprove}
-													>
+														onClick={() => handleApproveReq(request._id)}>
 														Approve
 													</button>
 													<button
 														className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
-														onClick={handleReject}
-													>
+														onClick={() => handleRejectReq(request._id)}>
 														Reject
 													</button>
 												</div>
