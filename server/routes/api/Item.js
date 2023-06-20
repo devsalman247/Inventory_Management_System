@@ -14,6 +14,7 @@ const {
 	ApproveRequest,
 	RejectRequest,
 	RejectRequests,
+	ApproveRequests,
 	ItemReturnRequest,
 	ItemIssue,
 	ItemGetAllIssued,
@@ -37,10 +38,11 @@ router.post("/", ItemCreate);
 router.post("/request", verifyToken, ItemRequest);
 router.post("/return/:id", verifyToken, ItemReturnRequest);
 router.post("/request/cancel/:id", verifyToken, CancelRequest);
-router.post("/request/approve/:id", verifyToken, ApproveRequest);
-router.post("/request/reject/:id", verifyToken, RejectRequest);
+// router.post("/request/approve/:id", verifyToken, ApproveRequest);
+// router.post("/request/reject/:id", verifyToken, RejectRequest);
 router.put("/requests/reject", verifyToken, RejectRequests);
-router.put("/:id", isAdmin, ItemUpdate);
+router.put("/requests/approve", verifyToken, ApproveRequests);
+router.put("/:id", verifyToken, ItemUpdate);
 router.delete("/:id", isAdmin, ItemDelete);
 
 export default router;

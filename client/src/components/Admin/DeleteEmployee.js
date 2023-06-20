@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
+import noImage from "../../images/noImage.png";
 
 const DeleteEmployee = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
@@ -94,19 +95,19 @@ const DeleteEmployee = () => {
 	}, []);
 
 	return (
-		<div className="w-full h-full bg-[#F7F7F7] flex flex-col">
+		<div className="flex flex-col flex-grow relative">
 			<Navbar />
-			<div className="flex h-full w-full">
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
 				<Sidebar />
 				{/* Main Content */}
-				<div className="flex flex-col items-center flex-grow">
-					<div className="flex justify-between w-full lg:px-12">
-						<div className="mt-4">
+				<div className="flex flex-col items-center w-full">
+					<div className="flex justify-start flex-col md:flex-row md:justify-between w-full max-w-screen pl-8 pr-4 md:px-12">
+						<div className="w-full mt-4">
 							<h1 className=" mt-8 font-semibold text-xl">Delete Employee</h1>
 							<p className="">Dashboard</p>
 						</div>
 
-						<div className="flex mb-8 ">
+						<div className="flex flex-col justify-start md:flex-row mb-8">
 							<input
 								type="text"
 								placeholder="Employee Name"
@@ -119,7 +120,7 @@ const DeleteEmployee = () => {
 							<select
 								name="designation"
 								id="designation"
-								className="py-4 p-2 outline-none mt-8 ml-4 bg-white"
+								className="py-4 p-2 outline-none mt-8 md:ml-4 bg-white"
 								onChange={(e) => {
 									setDesignation(e.target.value);
 								}}>
@@ -129,32 +130,32 @@ const DeleteEmployee = () => {
 								<option value="Lecturer">Lecturer</option>
 							</select>
 
-							<button className="bg-[#00B4F4] text-white py-4 px-8 mt-8 ml-4 rounded-lg" onClick={searchUser}>
+							<button className="bg-[#00B4F4] text-white py-4 px-8 mt-8 md:ml-4 rounded-lg" onClick={searchUser}>
 								Search
 							</button>
 						</div>
 					</div>
 
 					{/* Filters */}
-					<div className="flex items-center mt-8 w-full">
+					<div className="flex flex-col gap-2 items-start md:flex-row md:items-center mt-8 w-full pl-8 md:ml-0">
 						{/* Add Filters font awesome icon */}
-						<i className="fas fa-filter text-[#00B4F4] text-2xl ml-12"></i>
+						<i className="fas fa-filter text-[#00B4F4] text-2xl ml-2 md:ml-12"></i>
 						<div className="filter1 flex items-center">
 							<input type="checkbox" className="ml-4" value={"Professor"} />
 							<p className="ml-2">Professor</p>
 						</div>
 
-						<div className="flex items-center ml-8">
+						<div className="flex items-center md:ml-8">
 							<input type="checkbox" className="ml-4" value={"Assistant Professor"} />
 							<p className="ml-2">Assistant Professor</p>
 						</div>
 
-						<div className="filter3 flex items-center ml-8">
+						<div className="filter3 flex items-center md:ml-8">
 							<input type="checkbox" className="ml-4" value={"Lecturer"} />
 							<p className="ml-2">Lecturer</p>
 						</div>
 						<button
-							className="bg-[#00B4F4] text-white py-2 px-4 ml-12 rounded-lg"
+							className="bg-[#00B4F4] text-white py-2 px-4 ml-2 md:ml-12 rounded-lg"
 							onClick={() => {
 								filterUsers();
 							}}>
@@ -163,11 +164,11 @@ const DeleteEmployee = () => {
 					</div>
 
 					{/* Display data in the form of table*/}
-					<div className="flex flex-col mt-8 w-full pl-12">
+					<div className="flex flex-col mt-8 pl-8 pr-4 overflow-x-auto w-full md:pl-12">
 						<table className="bg-white shadow-md rounded-lg w-[80%]">
 							<thead className="bg-[#00B4F4] text-white text-center ">
 								<tr className="text-left">
-									<th className="px-4 py-3">Name</th>
+									<th className="px-4 py-3">User</th>
 									<th className="px-4 py-3">Designation</th>
 									<th className="px-4 py-3">Email</th>
 									<th className="px-4 py-3">Action</th>
@@ -179,7 +180,16 @@ const DeleteEmployee = () => {
 										? users.map((user) => {
 												return (
 													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">{user.email}</td>
 														<td className="px-4 py-3">
@@ -197,7 +207,16 @@ const DeleteEmployee = () => {
 										: filteredUsers.map((user) => {
 												return (
 													<tr className="text-left">
-														<td className="px-4 py-3">{user.name}</td>
+														<td className="px-4 py-3 flex items-center gap-3">
+															<div className="w-6 h-6 sm:w-8 sm:h-8 border border-gray-500 rounded-full overflow-hidden text-center">
+																<img
+																	src={user.profileImage ? user.profileImage : noImage}
+																	alt=""
+																	className="object-cover w-full h-full"
+																/>
+															</div>
+															<div className="self-start">{user.name}</div>
+														</td>
 														<td className="px-4 py-3">{user.designation}</td>
 														<td className="px-4 py-3">
 															<button

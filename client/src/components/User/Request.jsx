@@ -115,25 +115,25 @@ const Request = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow w-full">
 			<Navbar />
-			<div className="flex h-full">
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
 				<Sidebar />
-				<div className="px-10 mt-10 flex-grow">
+				<div className="px-10 mt-10 w-full">
 					<div className="mb-4">
 						<h2 className="text-lg font-semibold mb-4">Request New Item</h2>
 						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
-							<table className="w-full">
+							<table className="w-full flex sm:table">
 								<thead>
-									<tr>
-										<th className="py-2 px-4 border-b">Item</th>
-										<th className="py-2 px-4 border-b">Quantity</th>
-										<th className="py-2 px-4 border-b">Stock Available</th>
+									<tr className="flex flex-col sm:table-row">
+										<th className="py-4 md:py-2 px-4 md:border-b">Item</th>
+										<th className="py-4 md:py-2 px-4 md:border-b">Quantity</th>
+										<th className="py-4 md:py-2 px-4 md:border-b">Stock Available</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td className="py-2 px-4 border-b text-center">
+									<tr className="flex flex-col h-full sm:table-row">
+										<td className="py-2 px-4 md:border-b text-center">
 											<select
 												value={JSON.stringify(selectedItem)}
 												onChange={handleItemChange}
@@ -146,7 +146,7 @@ const Request = () => {
 												))}
 											</select>
 										</td>
-										<td className="py-2 px-4 border-b text-center">
+										<td className="py-2 px-4 md:border-b text-center">
 											<input
 												type="number"
 												value={selectedQuantity}
@@ -154,57 +154,63 @@ const Request = () => {
 												className="py-2 px-2 text-center w-[8rem] border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 											/>
 										</td>
-										<td className="py-2 px-4 border-b text-center">{selectedItem ? selectedItem.stock : "0"}</td>
+										<td className="py-2 px-4 flex items-center justify-center sm:table-cell flex-grow md:border-b text-center">
+											{selectedItem ? selectedItem.stock : "0"}
+										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 
-					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 mb-2 relative left-3/4 transform -translate-x-1/2 ml-48 disabled:opacity-50"
-						disabled={!selectedItem || !selectedQuantity || selectedQuantity > selectedItem?.stock}
-						onClick={handleRequest}>
-						Send Request
-					</button>
+					<div className="flex justify-end">
+						<button
+							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-2 mb-2 relative disabled:opacity-50"
+							disabled={!selectedItem || !selectedQuantity || selectedQuantity > selectedItem?.stock}
+							onClick={handleRequest}>
+							Send Request
+						</button>
+					</div>
 
 					{/* Second Table */}
 					<div>
 						<h2 className="text-lg font-semibold mb-4">Requested Items</h2>
 						<div className="bg-white border border-gray-300 rounded-md shadow-md p-4">
 							{requestedItems.length > 0 ? (
-								<table className="w-full">
-									<thead>
-										<tr>
-											<th className="py-2 px-4 border-b">Item ID</th>
-											<th className="py-2 px-4 border-b">Item Name</th>
-											<th className="py-2 px-4 border-b">Quantity</th>
-											<th className="py-2 px-4 border-b">Requested Date</th>
-											<th className="py-2 px-4 border-b">Status</th>
-											<th className="py-2 px-4 border-b">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										{paginatedItems.map((item) => (
-											<tr key={item._id}>
-												<td className="py-2 px-4 border-b text-center">{item.reqItem.itemId}</td>
-												<td className="py-2 px-4 border-b text-center">{item.reqItem.name}</td>
-												<td className="py-2 px-4 border-b text-center">{item.quantity}</td>
-												<td className="py-2 px-4 border-b text-center">
-													{new Date(item.requestDate).toISOString().substring(0, 10)}
-												</td>
-												<td className="py-2 px-4 border-b text-center">{item.status}</td>
-												<td className="py-2 px-4 border-b text-center">
-													<button
-														className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
-														onClick={() => cancelRequest(item._id)}>
-														Cancel
-													</button>
-												</td>
+								<div className="w-full overflow-x-auto">
+									<table className="w-full">
+										<thead>
+											<tr>
+												<th className="py-2 px-4 border-b">Item ID</th>
+												<th className="py-2 px-4 border-b">Item Name</th>
+												<th className="py-2 px-4 border-b">Quantity</th>
+												<th className="py-2 px-4 border-b">Requested Date</th>
+												<th className="py-2 px-4 border-b">Status</th>
+												<th className="py-2 px-4 border-b">Action</th>
 											</tr>
-										))}
-									</tbody>
-								</table>
+										</thead>
+										<tbody>
+											{paginatedItems.map((item) => (
+												<tr key={item._id}>
+													<td className="py-2 px-4 border-b text-center">{item.reqItem.itemId}</td>
+													<td className="py-2 px-4 border-b text-center">{item.reqItem.name}</td>
+													<td className="py-2 px-4 border-b text-center">{item.quantity}</td>
+													<td className="py-2 px-4 border-b text-center">
+														{new Date(item.requestDate).toISOString().substring(0, 10)}
+													</td>
+													<td className="py-2 px-4 border-b text-center">{item.status}</td>
+													<td className="py-2 px-4 border-b text-center">
+														<button
+															className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
+															onClick={() => cancelRequest(item._id)}>
+															Cancel
+														</button>
+													</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
 							) : (
 								<p>No pending requests to show here.</p>
 							)}

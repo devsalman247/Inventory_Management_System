@@ -1,11 +1,31 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
+import noImage from "../../images/noImage.png";
+import { FaUserCircle } from "react-icons/fa";
 
 const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });
+	const [selectedImage, setSelectedImage] = useState(null);
+
+	const handleProfileImageChange = (e) => {
+		let file = e.target.files[0];
+		let formData = new FormData();
+		formData.append("file", file);
+
+		http
+			.post("/upload", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			})
+			.then((res) => {
+				setSelectedImage(res.data.url);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	const showMessage = (message, type) => {
 		Swal.fire({
@@ -43,7 +63,7 @@ const AddEmployee = () => {
 			return;
 		} else {
 			http
-				.post(`/user/add`, employee.current)
+				.post(`/user/add`, { ...employee.current, profileImage: selectedImage })
 				.then((res) => {
 					if (res.status === 200) {
 						console.log(res.data.data);
@@ -61,16 +81,15 @@ const AddEmployee = () => {
 		}
 	};
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col flex-grow relative">
 			<Navbar />
-
-			<div className="w-full flex h-full">
+			<div className="flex w-full sm:flex-grow h-full sm:h-auto">
 				<Sidebar />
 
 				{/* Add Employee */}
-				<div className="flex justify-center flex-grow">
+				<div className="flex justify-center flex-grow px-4 py-4">
 					<form
-						className="flex flex-col self-start mt-8 lg:px-8 lg:py-6 w-full bg-slate-200 rounded-md shadow-md
+						className="flex flex-col self-start mt-8 px-4 py-4 lg:px-8 lg:py-6 w-full bg-slate-200 rounded-md shadow-md
         sm:w-3/4 md:w-3/4 lg:w-[750px]">
 						{/* Full Name */}
 						<label htmlFor="firstname" className="w-full px-4 pb-2 font-semibold">
@@ -118,6 +137,26 @@ const AddEmployee = () => {
 							<option value="Assistant Professor">Assistant Professor</option>
 							<option value="Lecturer">Lecturer</option>
 						</select>
+
+						<div className="px-4 py-2">
+							<label htmlFor="profileImage" className="block text-sm font-medium text-gray-700">
+								Profile Image:
+							</label>
+							<div className="flex items-center">
+								<input
+									type="file"
+									id="profileImage"
+									accept="image/*"
+									onChange={handleProfileImageChange}
+									className="mt-1 mr-2"
+								/>
+								{selectedImage ? (
+									<img src={selectedImage} alt="Profile Preview" className="rounded-full w-12 h-12 object-cover" />
+								) : (
+									<FaUserCircle className="rounded-full w-8 h-8 object-cover" />
+								)}
+							</div>
+						</div>
 
 						{/* Submit Button */}
 						<button

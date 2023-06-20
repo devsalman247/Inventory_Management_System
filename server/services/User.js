@@ -1,13 +1,14 @@
 import User from "../models/User.js";
 import Request from "../models/Request.js";
 
-const addUser = (name, email, password, designation) => {
+const addUser = (name, email, password, designation, profileImage) => {
 	try {
 		const user = new User({
 			name,
 			email,
 			password,
 			designation,
+			profileImage,
 			requests: [],
 		});
 		user.hash = password;
@@ -69,7 +70,7 @@ const getUserRequests = (user) => {
 			const pendingApproval = requests.filter((request) => request.return.status === "pending-approval");
 			requests.sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate));
 			return user.role === "store-keeper"
-				? { pending, approved, rejected, requests, pendingApproval }
+				? { pending, approved, rejected, requests, cancelled, pendingApproval }
 				: { pending, approved, rejected, cancelled, requests };
 		})
 		.catch((err) => {

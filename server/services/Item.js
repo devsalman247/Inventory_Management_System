@@ -38,10 +38,33 @@ const createItem = async (item) => {
 };
 
 const updateItem = (id, item) => {
-	return Item.findByIdAndUpdate(id, item, { new: true })
-		.then((item) => {
-			if (!item) throw "Item not found";
-			return item;
+	return Item.findById(id)
+		.then((existingItem) => {
+			if (!existingItem) throw "Item not found";
+
+			const stockDifference = item.stock - existingItem.stock;
+			const stockInQuantity = stockDifference > 0 ? stockDifference : 0;
+			const stockOutQuantity = stockDifference < 0 ? Math.abs(stockDifference) : 0;
+
+			const updatedItem = {
+				stock: item.stock,
+				name: item.name,
+				isReturnAble: item.isReturnAble,
+				$push: {
+					stockIn: {
+						$each: stockInQuantity > 0 ? [{ type: "added", quantity: stockInQuantity, date: Date.now() }] : [],
+					},
+					stockOut: {
+						$each: stockOutQuantity > 0 ? [{ type: "removed", quantity: stockOutQuantity, date: Date.now() }] : [],
+					},
+				},
+			};
+
+			return Item.findByIdAndUpdate(id, updatedItem, { new: true });
+		})
+		.then((updatedItem) => {
+			if (!updatedItem) throw "Item not found";
+			return updatedItem;
 		})
 		.catch((err) => {
 			console.log(err);
@@ -65,7 +88,16 @@ const getAllItems = () => {
 	return Item.find()
 		.then((items) => {
 			if (!items) return [];
-			return items;
+			const newItems = items.map((item) => {
+				const stockIn = item.stockIn.reduce((acc, curr) => {
+					return acc + curr.quantity;
+				}, 0);
+				const stockOut = item.stockOut.reduce((acc, curr) => {
+					return acc + curr.quantity;
+				}, 0);
+				return { ...item._doc, stockIn, stockOut };
+			});
+			return newItems;
 		})
 		.catch((err) => {
 			console.log(err);
@@ -184,6 +216,38 @@ const rejectRequests = (ids) => {
 	return Request.updateMany({ _id: { $in: ids } }, { $set: { status: "rejected" } });
 };
 
+const approveRequests = async (ids) => {
+	try {
+		await Request.updateMany({ _id: { $in: ids } }, { $set: { status: "approved", approvedDate: Date.now() } });
+
+		const approvedRequests = await Request.find({ _id: { $in: ids } });
+
+		// Update the stockOut history for each item
+		await Promise.all(
+			approvedRequests.map(async (request) => {
+				const { reqItem, quantity } = request;
+				await Item.updateOne(
+					{ _id: reqItem._id },
+					{
+						$set: { stock: reqItem.stock - quantity },
+						$push: {
+							stockOut: {
+								type: "assigned",
+								quantity,
+								date: Date.now(),
+							},
+						},
+					}
+				);
+			})
+		);
+		return true;
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
+
 // Issued Items Service
 const issueItem = async (item, reqId) => {
 	try {
@@ -261,6 +325,7 @@ const ItemService = {
 	approveRequest,
 	rejectRequest,
 	rejectRequests,
+	approveRequests,
 	returnItemRequest,
 	// Issued Items Service
 	issueItem,

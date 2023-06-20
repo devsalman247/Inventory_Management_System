@@ -95,15 +95,15 @@ function Login() {
 
 	return (
 		// main container
-		<div className="bg-[#F7F7F7] min-h-screen flex flex-col items-center justify-center">
+		<div className="bg-[#F7F7F7] min-h-screen flex flex-col items-center justify-center px-4">
 			<div className="flex flex-col items-center justify-center mb-6">
 				<img src={logo} className="w-40" alt="logo" />
 				<h1 className="text-2xl font-semibold mb-2">Login</h1>
 				<p className="mb-1 text-slate-600">Access to our dashboard</p>
 			</div>
 			{/* Div For Login Form */}
-			<div className="shadow-md login_form w-full sm:w-96 md:w-[500px] lg:w-[600px] h-[350px] mt-2 mb-4 flex flex-col items-center justify-center bg-white">
-				<div className="form w-full flex flex-col items-start justify-center px-8">
+			<div className="shadow-md login_form w-full sm:w-96 md:w-[500px] lg:w-1/4 lg:py-16 py-4 mt-2 mb-4 flex flex-col items-center justify-center bg-white">
+				<div className="form w-full flex flex-col items-start justify-center px-8 sm:pl-16 sm:gap-1">
 					<label htmlFor="email" className="mb-2">
 						Email Address
 					</label>
@@ -131,27 +131,13 @@ function Login() {
 						/>
 						<span
 							className="password_span absolute top-[50%] right-[10px] -translate-y-1/2 cursor-pointer text-slate-600"
-							onClick={showPassword}
-						>
+							onClick={showPassword}>
 							<i className={`fas ${passIcon}`}></i>
 						</span>
 					</div>
-					<button
-						className="mt-4 bg-blue-500 text-white rounded-md px-8 py-2 font-semibold"
-						onClick={handleLogin}
-					>
+					<button className="mt-4 bg-blue-500 text-white rounded-md px-8 py-2 font-semibold" onClick={handleLogin}>
 						Login
 					</button>
-					{/* don't have an account */}
-					<p className="mt-4 text-slate-600">
-						Don't have an account?{" "}
-						<span
-							className="text-blue-500 font-semibold cursor-pointer"
-							onClick={() => navigateTo("/signup")}
-						>
-							Sign Up
-						</span>
-					</p>
 				</div>
 			</div>
 		</div>

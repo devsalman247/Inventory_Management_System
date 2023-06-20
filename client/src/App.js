@@ -26,6 +26,7 @@ function App() {
 	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [loggedInUser, setLoggedInUser] = useState(null);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	useEffect(() => {
 		if (localStorage.getItem("token")) {
@@ -59,8 +60,9 @@ function App() {
 
 	return (
 		// main container
-		<div className="bg-[#F7F7F7] main_container w-screen h-screen">
-			<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }}>
+		<div className="bg-[#F7F7F7] main_container min-h-screen w-full flex flex-col">
+			<AuthContext.Provider
+				value={{ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, isSidebarOpen, setIsSidebarOpen }}>
 				<Routes>
 					<Route path="/" element={<Login />} />
 

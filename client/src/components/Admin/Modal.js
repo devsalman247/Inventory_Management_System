@@ -1,12 +1,32 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import http from "../../api";
+import noImage from "../../images/noImage.png";
+import { FaUserCircle } from "react-icons/fa";
 
-function Modal({ setShowModal, users, userId }) {
+function Modal({ setShowModal, users, userId, fetchUsers }) {
 	const [inputValue, setInputValue] = useState("");
 	const [emailValue, setEmailValue] = useState("");
 	const [passwordValue, setPasswordValue] = useState("");
 	const [designationValue, setDesignationValue] = useState("");
+	const [selectedImage, setSelectedImage] = useState(null);
+
+	const handleProfileImageChange = (e) => {
+		let file = e.target.files[0];
+		let formData = new FormData();
+		formData.append("file", file);
+
+		http
+			.post("/upload", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			})
+			.then((res) => {
+				setSelectedImage(res.data.url);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	const onCancle = () => {
 		setShowModal(false);
@@ -41,6 +61,7 @@ function Modal({ setShowModal, users, userId }) {
 				if (res.status === 200) {
 					console.log(res.data.data);
 					showMessage("User has been updated successfully!", "success");
+					fetchUsers();
 				}
 			})
 			.catch((err) => {
@@ -59,17 +80,15 @@ function Modal({ setShowModal, users, userId }) {
 		setEmailValue(user.email);
 		setPasswordValue(user.password);
 		setDesignationValue(user.designation);
+		setSelectedImage(user.profileImage);
 	}, [userId, users]);
 
 	return (
 		<div
-			className="modal-overlay   bg-slate-300 rounded-md absolute left-72 top-[82px] shadow-lg
-        border-2 border-gray-300
-        transition-all duration-800 ease-in-out
-        
-        ">
+			className="modal-overlay bg-slate-300 rounded-md w-[90%] sm:w-1/2 absolute left-5 sm:left-1/4 top-[82px] shadow-lg
+        border-2 border-gray-300 transition-all duration-800 ease-in-out">
 			<div className="modal-content">
-				<form className="w-[1020px] h-[550px] flex flex-col">
+				<form className="flex flex-col py-4">
 					{/* Full Name */}
 					<input
 						type="text"
@@ -133,19 +152,36 @@ function Modal({ setShowModal, users, userId }) {
 						<option value="Assistant Professor">Assistant Professor</option>
 						<option value="Lecturer">Lecturer</option>
 					</select>
+					<div className="px-8 py-2 pt-4">
+						<label htmlFor="profileImage" className="block text-sm font-medium text-gray-700">
+							Profile Image:
+						</label>
+						<div className="flex items-center">
+							<input
+								type="file"
+								id="profileImage"
+								accept="image/*"
+								onChange={handleProfileImageChange}
+								className="mt-1 mr-2"
+							/>
+							{selectedImage ? (
+								<img src={selectedImage} alt="Profile Preview" className="rounded-full w-12 h-12 object-cover" />
+							) : (
+								<FaUserCircle className="rounded-full w-8 h-8 object-cover" />
+							)}
+						</div>
+					</div>
 					<button
 						onClick={(e) => updateEmployee(e)}
 						type="submit"
 						className="py-4 p-2 outline-none mt-12 
-                        bg-slate-300
-                        text-black 
-                        border-2 border-gray-400
                         rounded-md
                         ml-8
                         mr-8
-                        hover:bg-blue-400
+                        bg-blue-400
                         transition-all duration-300 ease-in-out
-                        hover:text-white
+                        text-white
+						hover:opacity-75
                         ">
 						Update
 					</button>
