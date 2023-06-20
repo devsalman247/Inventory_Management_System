@@ -4,15 +4,11 @@ import Sidebar from "./Sidebar";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 
 const Requests = () => {
 	const [userRequests, setUserRequests] = useState({
 		pending: [],
-		approved: [],
-		rejected: [],
 		pendingApproval: [],
 		requests: [],
 	});
@@ -598,8 +594,6 @@ const Requests = () => {
 				});
 				setUserRequests({
 					pending: pendingRequests,
-					approved: res.data.data.approved,
-					rejected: res.data.data.rejected,
 					pendingApproval: pendingApprovalRequests,
 					requests: res.data.data.requests,
 				});
@@ -612,83 +606,6 @@ const Requests = () => {
 	useEffect(() => {
 		getUserRequests();
 	}, []);
-
-	const generatePDF = () => {
-		// Create a new jsPDF instance
-		const doc = new jsPDF();
-
-		// Set the document title
-		doc.setProperties({
-			title: 'Request Log History',
-		});
-
-		// Add the "Inventory Management System" title
-		doc.setFont('helvetica', 'bold');
-		doc.setFontSize(16);
-		doc.text('Inventory Management System', 15, 15);
-
-		// Define the table headers
-		const headers = [
-			'Item Name',
-			'Item Quantity',
-			'Requestor Name',
-			'Request Date',
-			'Issued Date',
-			'Status',
-		];
-
-		// Get the selected requests
-		const selectedRequests = Requests[selectedFilter];
-
-		// Verify selectedRequests has valid data
-		if (selectedRequests && selectedRequests.length > 0) {
-			// Define the table rows
-			const rows = selectedRequests.map((request) => [
-				request.reqItem.name || '', // Item Name (fallback to empty string if undefined)
-				request.quantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
-				request.requestedBy.name || '', // Requestor Name (fallback to empty string if undefined)
-				request.requestDate || '', // Request Date (fallback to empty string if undefined)
-				request.approvedDate || '', // Issued Date (fallback to empty string if undefined)
-				request.status || '', // Status (fallback to empty string if undefined)
-			]);
-
-			// Set the table column styles
-			const columnStyles = {
-				0: { cellWidth: 35 },
-				1: { cellWidth: 25 },
-				2: { cellWidth: 35 },
-				3: { cellWidth: 35 },
-				4: { cellWidth: 35 },
-				5: { cellWidth: 25 },
-			};
-
-			// Add the table using AutoTable plugin
-			autoTable(doc, {
-				startY: 25, // Adjust the starting Y position for the table
-				head: [headers],
-				body: rows,
-				theme: 'grid',
-				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
-				alternateRowStyles: { fillColor: [220, 237, 200] },
-				columnStyles: columnStyles,
-				tableLineColor: [75, 179, 106], // Green border color
-			});
-
-			// Add the "Report Generated Date" at the top right corner
-			const currentDate = new Date();
-			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
-			const topMargin = 14;
-			const rightMargin = 10;
-			doc.setFont('helvetica', 'normal');
-			doc.setFontSize(10);
-			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
-				align: 'right',
-			});
-		}
-
-		// Save the PDF document
-		doc.save('request-log-history.pdf');
-	};
 
 	return (
 		<div className="flex flex-col flex-grow">
@@ -735,13 +652,6 @@ const Requests = () => {
 							className="px-2 sm:px-4 py-2 w-32 sm:w-auto bg-red-500 hover:bg-red-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
 							onClick={() => handleReject()}>
 							Reject Requests
-						</button>
-
-						<button
-							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-							onClick={generatePDF}
-						>
-							Download PDF
 						</button>
 
 					</div>

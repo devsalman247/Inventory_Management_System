@@ -5,6 +5,8 @@ import userData from "./data.json";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const Dashboard = () => {
 	const [userRequests, setUserRequests] = useState({
@@ -15,6 +17,7 @@ const Dashboard = () => {
 		cancelled: [],
 	});
 	const [selectedFilter, setSelectedFilter] = useState("requests");
+	const [selectedPdfFilter, setSelectedPdfFilter] = useState("requests");
 	const [chartType, setChartType] = useState("stockIn");
 	const [itemName, setItemName] = useState("");
 	const [itemId, setItemId] = useState("");
@@ -131,6 +134,87 @@ const Dashboard = () => {
 			});
 	};
 
+	const generatePDF = () => {
+		// Create a new jsPDF instance
+		const doc = new jsPDF();
+
+		// Set the document title
+		doc.setProperties({
+			title: 'Request Log History',
+		});
+
+		// Add the "Inventory Management System" title
+		doc.setFont('helvetica', 'bold');
+		doc.setFontSize(16);
+		doc.text('Inventory Management System', 15, 15);
+
+		// Define the table headers
+		const headers = [
+			'Item Name',
+			'Item Quantity',
+			'Requestor Name',
+			'Request Date',
+			'Issued Date',
+			'Status',
+		];
+
+		// Get the selected requests
+		const selectedRequests = userRequests[selectedPdfFilter];
+
+		// Verify selectedRequests has valid data
+		if (selectedRequests && selectedRequests.length > 0) {
+			// Define the table rows
+			const rows = selectedRequests.map((request) => [
+				request.reqItem.name || '', // Item Name (fallback to empty string if undefined)
+				request.quantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
+				request.requestedBy.name || '', // Requestor Name (fallback to empty string if undefined)
+				request.requestDate ? (new Date(request.requestDate).toISOString().substring(0, 10)) : 'N/A', // Request Date (fallback to empty string if undefined)
+				request.approvedDate ? (new Date(request.approvedDate).toISOString().substring(0, 10)) : 'N/A', // Issued Date (fallback to empty string if undefined)
+				request.status || '', // Status (fallback to empty string if undefined)
+			]);
+
+			// Set the table column styles
+			const columnStyles = {
+				0: { cellWidth: 35 },
+				1: { cellWidth: 25 },
+				2: { cellWidth: 35 },
+				3: { cellWidth: 35 },
+				4: { cellWidth: 35 },
+				5: { cellWidth: 25 },
+			};
+
+			// Add the table using AutoTable plugin
+			autoTable(doc, {
+				startY: 25, // Adjust the starting Y position for the table
+				head: [headers],
+				body: rows,
+				theme: 'grid',
+				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+				alternateRowStyles: { fillColor: [220, 237, 200] },
+				columnStyles: columnStyles,
+				tableLineColor: [75, 179, 106], // Green border color
+			});
+
+			// Add the "Report Generated Date" at the top right corner
+			const currentDate = new Date();
+			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+			const topMargin = 14;
+			const rightMargin = 10;
+			doc.setFont('helvetica', 'normal');
+			doc.setFontSize(10);
+			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
+				align: 'right',
+			});
+		}
+
+		// Save the PDF document
+		doc.save('request-log-history.pdf');
+	};
+
+	const handleFilterChange = (e) => {
+		setSelectedPdfFilter(e.target.value);
+	};
+
 	useEffect(() => {
 		getUserRequests();
 	}, []);
@@ -195,11 +279,35 @@ const Dashboard = () => {
 									onClick={() => setSelectedFilter("cancelled")}>
 									<div className="flex flex-col">
 										<span className="text-sm text-gray-500">Cancelled</span>
-										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
+										<span className="text-2xl font-semibold">{userRequests.cancelled.length}</span>
 									</div>
 								</div>
+
+
 							</div>
 						</div>
+					</div>
+
+					<div className="mb-4 px-2 sm:px-6 flex justify-end">
+						<select
+							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+							value={selectedPdfFilter}
+							onChange={handleFilterChange}
+						>
+							<option value="requests">All Requests</option>
+							<option value="approved">Approved</option>
+							<option value="pending">Pending</option>
+							<option value="rejected">Rejected</option>
+							<option value="cancelled">Cancelled</option>
+						</select>
+						<button
+							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 "
+
+							disabled={userRequests[selectedPdfFilter].length === 0}
+							onClick={generatePDF}
+						>
+							Download PDF
+						</button>
 					</div>
 
 					<div className="w-full overflow-x-auto">

@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
-import jsPDF from "jspdf";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
 import { AuthContext } from "../../context_store";
-
-// Register fonts
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const Dashboard = () => {
 	const { isSidebarOpen, setIsSidebarOpen } = useContext(AuthContext);
@@ -23,6 +19,7 @@ const Dashboard = () => {
 		requests: [],
 	});
 	const [selectedFilter, setSelectedFilter] = useState("requests");
+	const [selectedPdfFilter, setSelectedPdfFilter] = useState("requests");
 
 	const getStatusColorClass = (status) => {
 		switch (status) {
@@ -61,70 +58,6 @@ const Dashboard = () => {
 		// Add more request objects as needed
 	];
 
-	const handleDownloadPDF = () => {
-		// Create a new jsPDF instance
-		const doc = new jsPDF();
-
-		// Set the document title
-		doc.setProperties({
-			title: 'Inventory Report',
-		});
-
-		// Add the "Inventory Report" title
-		doc.setFont('helvetica', 'bold');
-		doc.setFontSize(18);
-		doc.setTextColor('blue'); // Set the heading color to blue
-		doc.text('Inventory Report', 15, 15);
-		doc.setTextColor(0); // Reset text color to default
-
-		// Define the table headers
-		const headers = ['Item ID', 'Item Name', 'Quantity', 'Status', 'Allocated Date', 'Return Date'];
-
-		// Get the user requests for the selected filter
-		const userRequests = Requests; // Replace "Requests" with your actual data source
-		const selectedFilter = ''; // Replace with your selected filter value
-
-		// Verify userRequests[selectedFilter] has valid data
-		if (userRequests[selectedFilter] && userRequests[selectedFilter].length > 0) {
-			// Define the table rows
-			const rows = userRequests[selectedFilter].map((item) => {
-				const { reqItem, quantity, status, approvedDate, returnData } = item;
-				const { itemId, name } = reqItem;
-				const allocatedDate = approvedDate ? new Date(approvedDate).toISOString().substring(0, 10) : 'N/A';
-				const returnDate = returnData?.returnedDate
-					? new Date(returnData.returnedDate).toISOString().substring(0, 10)
-					: 'N/A';
-
-				return [itemId, name, quantity, status, allocatedDate, returnDate];
-			});
-
-			// Set the table column styles
-			const columnStyles = {
-				0: { cellWidth: 'auto' },
-				1: { cellWidth: '*' },
-				2: { cellWidth: '*' },
-				3: { cellWidth: '*' },
-				4: { cellWidth: '*' },
-				5: { cellWidth: '*' },
-			};
-
-			// Add the table using AutoTable plugin
-			doc.autoTable({
-				head: [headers],
-				body: rows,
-				startY: 25, // Adjust the starting Y position for the table
-				theme: 'grid',
-				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
-				alternateRowStyles: { fillColor: [220, 237, 200] },
-				columnStyles: columnStyles,
-			});
-		}
-
-		// Save the PDF document
-		doc.save('inventory_report.pdf');
-	};
-
-
 	const itemsPerPage = 5;
 	const totalPages = Math.ceil(userRequests.requests.length / itemsPerPage);
 	const [currentPage, setCurrentPage] = useState(0);
@@ -161,6 +94,87 @@ const Dashboard = () => {
 			.catch((err) => {
 				console.log(err);
 			});
+	};
+
+	const generatePDF = () => {
+		// Create a new jsPDF instance
+		const doc = new jsPDF();
+
+		// Set the document title
+		doc.setProperties({
+			title: 'Request Log History',
+		});
+
+		// Add the "Inventory Management System" title
+		doc.setFont('helvetica', 'bold');
+		doc.setFontSize(16);
+		doc.text('Inventory Management System', 15, 15);
+
+		// Define the table headers
+		const headers = [
+			'Item Name',
+			'Item Quantity',
+			'Requestor Name',
+			'Request Date',
+			'Issued Date',
+			'Status',
+		];
+
+		// Get the selected requests
+		const selectedRequests = userRequests[selectedPdfFilter];
+
+		// Verify selectedRequests has valid data
+		if (selectedRequests && selectedRequests.length > 0) {
+			// Define the table rows
+			const rows = selectedRequests.map((request) => [
+				request.reqItem.name || '', // Item Name (fallback to empty string if undefined)
+				request.quantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
+				request.requestedBy.name || '', // Requestor Name (fallback to empty string if undefined)
+				request.requestDate ? (new Date(request.requestDate).toISOString().substring(0, 10)) : 'N/A', // Request Date (fallback to empty string if undefined)
+				request.approvedDate ? (new Date(request.approvedDate).toISOString().substring(0, 10)) : 'N/A', // Issued Date (fallback to empty string if undefined)
+				request.status || '', // Status (fallback to empty string if undefined)
+			]);
+
+			// Set the table column styles
+			const columnStyles = {
+				0: { cellWidth: 35 },
+				1: { cellWidth: 25 },
+				2: { cellWidth: 35 },
+				3: { cellWidth: 35 },
+				4: { cellWidth: 35 },
+				5: { cellWidth: 25 },
+			};
+
+			// Add the table using AutoTable plugin
+			autoTable(doc, {
+				startY: 25, // Adjust the starting Y position for the table
+				head: [headers],
+				body: rows,
+				theme: 'grid',
+				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+				alternateRowStyles: { fillColor: [220, 237, 200] },
+				columnStyles: columnStyles,
+				tableLineColor: [75, 179, 106], // Green border color
+			});
+
+			// Add the "Report Generated Date" at the top right corner
+			const currentDate = new Date();
+			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+			const topMargin = 14;
+			const rightMargin = 10;
+			doc.setFont('helvetica', 'normal');
+			doc.setFontSize(10);
+			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
+				align: 'right',
+			});
+		}
+
+		// Save the PDF document
+		doc.save('request-log-history.pdf');
+	};
+
+	const handleFilterChange = (e) => {
+		setSelectedPdfFilter(e.target.value);
 	};
 
 	useEffect(() => {
@@ -234,15 +248,26 @@ const Dashboard = () => {
 						</div>
 					</div>
 					{/* </div> */}
-					<div className="flex justify-between mb-4">
-						<h2 className="text-2xl font-semibold">All Items</h2>
-						<div className="flex justify-end w-2/5">
-							<button
-								className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded inline-block"
-								onClick={handleDownloadPDF}>
-								Download PDF
-							</button>
-						</div>
+					<div className="mb-4 flex justify-end">
+						<select
+							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md border-r-[10px] border-blue-500 hover:border-blue-700"
+							value={selectedPdfFilter}
+							onChange={handleFilterChange}
+						>
+							<option value="requests">All Requests</option>
+							<option value="approved">Approved</option>
+							<option value="pending">Pending</option>
+							<option value="rejected">Rejected</option>
+							<option value="cancelled">Cancelled</option>
+						</select>
+						<button
+							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md disabled:opacity-50 "
+
+							disabled={userRequests[selectedPdfFilter].length === 0}
+							onClick={generatePDF}
+						>
+							Download PDF
+						</button>
 					</div>
 					<div className="w-full overflow-x-auto">
 						<table className="w-full bg-white border border-gray-300">
