@@ -35,53 +35,95 @@ const Dashboard = () => {
 		}
 	};
 
-	// Register fonts
-	pdfMake.vfs = pdfFonts.pdfMake.vfs;
+	const Requests = [
+		{
+			reqItem: {
+				itemId: '1',
+				name: 'Item 1',
+			},
+			quantity: 10,
+			status: 'Approved',
+			approvedDate: '2023-06-18',
+			returnData: {
+				returnedDate: '2023-06-25',
+			},
+		},
+		{
+			reqItem: {
+				itemId: '2',
+				name: 'Item 2',
+			},
+			quantity: 5,
+			status: 'Pending',
+			approvedDate: null,
+			returnData: null,
+		},
+		// Add more request objects as needed
+	];
 
 	const handleDownloadPDF = () => {
-		const documentDefinition = {
-			content: [
-				{
-					text: "Inventory Report",
-					style: "heading",
-				},
-				{
-					layout: "lightHorizontalLines",
-					table: {
-						headerRows: 1,
-						widths: ["auto", "*", "*", "*", "*", "*"],
-						body: [
-							["Item ID", "Item Name", "Quantity", "Status", "Allocated Date", "Return Date"],
-							...userRequests[selectedFilter].map((item) => {
-								const { reqItem, quantity, status, approvedDate, returnData } = item;
-								const { itemId, name } = reqItem;
-								const allocatedDate = approvedDate ? new Date(approvedDate).toISOString().substring(0, 10) : "N/A";
-								const returnDate = returnData?.returnedDate
-									? new Date(returnData.returnedDate).toISOString().substring(0, 10)
-									: "N/A";
+		// Create a new jsPDF instance
+		const doc = new jsPDF();
 
-								return [itemId, name, quantity, status, allocatedDate, returnDate];
-							}),
-						],
-					},
-				},
-			],
-			styles: {
-				heading: {
-					fontSize: 18,
-					bold: true,
-					color: "blue", // Set the heading color to blue
-					margin: [0, 0, 0, 10], // Add margin bottom to separate from table
-				},
-			},
-			defaultStyle: {
-				fillColor: "#ffffff", // Set background color to white
-				fontSize: 12,
-			},
-		};
+		// Set the document title
+		doc.setProperties({
+			title: 'Inventory Report',
+		});
 
-		pdfMake.createPdf(documentDefinition).download("inventory_report.pdf");
+		// Add the "Inventory Report" title
+		doc.setFont('helvetica', 'bold');
+		doc.setFontSize(18);
+		doc.setTextColor('blue'); // Set the heading color to blue
+		doc.text('Inventory Report', 15, 15);
+		doc.setTextColor(0); // Reset text color to default
+
+		// Define the table headers
+		const headers = ['Item ID', 'Item Name', 'Quantity', 'Status', 'Allocated Date', 'Return Date'];
+
+		// Get the user requests for the selected filter
+		const userRequests = Requests; // Replace "Requests" with your actual data source
+		const selectedFilter = ''; // Replace with your selected filter value
+
+		// Verify userRequests[selectedFilter] has valid data
+		if (userRequests[selectedFilter] && userRequests[selectedFilter].length > 0) {
+			// Define the table rows
+			const rows = userRequests[selectedFilter].map((item) => {
+				const { reqItem, quantity, status, approvedDate, returnData } = item;
+				const { itemId, name } = reqItem;
+				const allocatedDate = approvedDate ? new Date(approvedDate).toISOString().substring(0, 10) : 'N/A';
+				const returnDate = returnData?.returnedDate
+					? new Date(returnData.returnedDate).toISOString().substring(0, 10)
+					: 'N/A';
+
+				return [itemId, name, quantity, status, allocatedDate, returnDate];
+			});
+
+			// Set the table column styles
+			const columnStyles = {
+				0: { cellWidth: 'auto' },
+				1: { cellWidth: '*' },
+				2: { cellWidth: '*' },
+				3: { cellWidth: '*' },
+				4: { cellWidth: '*' },
+				5: { cellWidth: '*' },
+			};
+
+			// Add the table using AutoTable plugin
+			doc.autoTable({
+				head: [headers],
+				body: rows,
+				startY: 25, // Adjust the starting Y position for the table
+				theme: 'grid',
+				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+				alternateRowStyles: { fillColor: [220, 237, 200] },
+				columnStyles: columnStyles,
+			});
+		}
+
+		// Save the PDF document
+		doc.save('inventory_report.pdf');
 	};
+
 
 	const itemsPerPage = 5;
 	const totalPages = Math.ceil(userRequests.requests.length / itemsPerPage);

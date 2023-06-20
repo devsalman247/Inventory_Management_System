@@ -5,6 +5,10 @@ import http from "../../api";
 import { environment } from "../../constants";
 import Swal from "sweetalert2";
 
+// import usericon from react icons
+import { FaUserCircle } from "react-icons/fa";
+
+
 const Storekeeper = () => {
 	const [profile, setProfile] = useState({
 		id: "",
@@ -135,11 +139,7 @@ const Storekeeper = () => {
 								{profile.profileImage ? (
 									<img src={profile.profileImage} alt="Profile Preview" className="rounded-full w-8 h-8 object-cover" />
 								) : (
-									<img
-										src="default-user-icon.png" // Replace with your default user icon or any other image URL
-										alt="Default User Icon"
-										className="rounded-full w-8 h-8 object-cover"
-									/>
+										<FaUserCircle className="rounded-full w-8 h-8 object-cover" />
 								)}
 							</div>
 						</div>

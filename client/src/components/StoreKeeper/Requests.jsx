@@ -4,8 +4,8 @@ import Sidebar from "./Sidebar";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
-import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 
 const Requests = () => {
@@ -16,7 +16,7 @@ const Requests = () => {
 		pendingApproval: [],
 		requests: [],
 	});
-	const [selectedFilter, setSelectedFilter] = useState("pending");
+	const [selectedFilter, setSelectedFilter] = useState("requests");
 	const [selectedRequests, setSelectedRequests] = useState([]);
 	const [isAllSelected, setIsAllSelected] = useState(false);
 
@@ -26,51 +26,443 @@ const Requests = () => {
 				_id: '1',
 				reqItem: {
 					itemId: '1001',
-					name: 'Item 1'
+					name: 'Item 1',
 				},
 				quantity: 5,
 				requestedBy: {
-					name: 'John Doe'
+					name: 'John Doe',
 				},
-				requestDate: '2023-06-19T10:00:00.000Z',
-				approvedDate: null,
-				return: {
-					returnedDate: null,
-					status: 'pending'
-				},
-				isSelected: false
+				requestDate: '2023-06-15',
+				approvedDate: '2023-06-19',
+				status: 'pending',
 			},
-			// Add more pending requests as needed
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2',
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith',
+				},
+				requestDate: '2023-06-16',
+				approvedDate: '2023-06-20',
+				status: 'pending',
+			},
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-17',
+				approvedDate: '2023-06-21',
+				status: 'pending',
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-18',
+				approvedDate: '2023-06-22',
+				status: 'pending',
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Robert Wilson',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: '2023-06-23',
+				status: 'pending',
+			},
 		],
+
 		approved: [
 			{
 				_id: '2',
 				reqItem: {
 					itemId: '1002',
-					name: 'Item 2'
+					name: 'Item 2',
 				},
 				quantity: 3,
 				requestedBy: {
-					name: 'Jane Smith'
+					name: 'Jane Smith',
 				},
-				requestDate: '2023-06-18T14:30:00.000Z',
-				approvedDate: '2023-06-18T15:00:00.000Z',
-				return: {
-					returnedDate: '2023-06-23T09:15:00.000Z',
-					status: 'returned'
-				},
-				isSelected: false
+				requestDate: '2023-06-18',
+				approvedDate: '2023-06-18',
+				status: 'approved',
 			},
-			// Add more approved requests as needed
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'John Doe',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: '2023-06-19',
+				status: 'approved',
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-20',
+				approvedDate: '2023-06-20',
+				status: 'approved',
+
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-21',
+				approvedDate: '2023-06-21',
+				status: 'approved',
+			},
+			{
+				_id: '6',
+				reqItem: {
+					itemId: '1006',
+					name: 'Item 6',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Sarah Wilson',
+				},
+				requestDate: '2023-06-22',
+				approvedDate: '2023-06-22',
+				status: 'approved',
+			},
 		],
+
 		rejected: [
-			// Add rejected requests if applicable
+			{
+				_id: '1',
+				reqItem: {
+					itemId: '1001',
+					name: 'Item 1',
+				},
+				quantity: 5,
+				requestedBy: {
+					name: 'John Doe',
+				},
+				requestDate: '2023-06-15',
+				approvedDate: "2023-06-15",
+				status: 'rejected',
+
+			},
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2',
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith',
+				},
+				requestDate: '2023-06-16',
+				approvedDate: "2023-06-16",
+				status: 'rejected',
+
+			},
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-17',
+				approvedDate: "2023-06-17",
+				status: 'rejected',
+
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-18',
+				approvedDate: "2023-06-18",
+				status: 'rejected',
+
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Robert Wilson',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: "2023-06-19",
+				status: 'rejected',
+
+			},
 		],
-		pendingApproval: [
-			// Add pending approval requests if applicable
-		],
+
 		requests: [
-			// Add all requests (including pending, approved, and rejected) if needed
+			{
+				_id: '1',
+				reqItem: {
+					itemId: '1001',
+					name: 'Item 1',
+				},
+				quantity: 5,
+				requestedBy: {
+					name: 'John Doe',
+				},
+				requestDate: '2023-06-15',
+				approvedDate: '2023-06-19',
+				status: 'pending',
+			},
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2',
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith',
+				},
+				requestDate: '2023-06-16',
+				approvedDate: '2023-06-20',
+				status: 'pending',
+			},
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-17',
+				approvedDate: '2023-06-21',
+				status: 'pending',
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-18',
+				approvedDate: '2023-06-22',
+				status: 'pending',
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Robert Wilson',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: '2023-06-23',
+				status: 'pending',
+			},
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2',
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith',
+				},
+				requestDate: '2023-06-18',
+				approvedDate: '2023-06-18',
+				status: 'approved',
+			},
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'John Doe',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: '2023-06-19',
+				status: 'approved',
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-20',
+				approvedDate: '2023-06-20',
+				status: 'approved',
+
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-21',
+				approvedDate: '2023-06-21',
+				status: 'approved',
+			},
+			{
+				_id: '6',
+				reqItem: {
+					itemId: '1006',
+					name: 'Item 6',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Sarah Wilson',
+				},
+				requestDate: '2023-06-22',
+				approvedDate: '2023-06-22',
+				status: 'approved',
+			},
+			{
+				_id: '1',
+				reqItem: {
+					itemId: '1001',
+					name: 'Item 1',
+				},
+				quantity: 5,
+				requestedBy: {
+					name: 'John Doe',
+				},
+				requestDate: '2023-06-15',
+				approvedDate: "2023-06-15",
+				status: 'rejected',
+
+			},
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2',
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith',
+				},
+				requestDate: '2023-06-16',
+				approvedDate: "2023-06-16",
+				status: 'rejected',
+
+			},
+			{
+				_id: '3',
+				reqItem: {
+					itemId: '1003',
+					name: 'Item 3',
+				},
+				quantity: 2,
+				requestedBy: {
+					name: 'Michael Johnson',
+				},
+				requestDate: '2023-06-17',
+				approvedDate: "2023-06-17",
+				status: 'rejected',
+
+			},
+			{
+				_id: '4',
+				reqItem: {
+					itemId: '1004',
+					name: 'Item 4',
+				},
+				quantity: 1,
+				requestedBy: {
+					name: 'Emily Davis',
+				},
+				requestDate: '2023-06-18',
+				approvedDate: "2023-06-18",
+				status: 'rejected',
+
+			},
+			{
+				_id: '5',
+				reqItem: {
+					itemId: '1005',
+					name: 'Item 5',
+				},
+				quantity: 4,
+				requestedBy: {
+					name: 'Robert Wilson',
+				},
+				requestDate: '2023-06-19',
+				approvedDate: "2023-06-19",
+				status: 'rejected',
+
+			}
 		]
 	};
 
@@ -220,30 +612,82 @@ const Requests = () => {
 		getUserRequests();
 	}, []);
 
-	
-
 	const generatePDF = () => {
 		// Create a new jsPDF instance
 		const doc = new jsPDF();
 
 		// Set the document title
 		doc.setProperties({
-			title: 'Request Log History'
+			title: 'Request Log History',
 		});
 
-		// Iterate over the userRequests array and add each request to the PDF document
-		Requests[selectedFilter].forEach((request, index) => {
-			const y = 15 + (index * 10);
-			doc.text(request.reqItem.name, 15, y);
-			// requester name
-			doc.text(request.quantity.toString(), 50, y);
+		// Add the "Inventory Management System" title
+		doc.setFont('helvetica', 'bold');
+		doc.setFontSize(16);
+		doc.text('Inventory Management System', 15, 15);
 
-		});
+		// Define the table headers
+		const headers = [
+			'Item Name',
+			'Item Quantity',
+			'Requestor Name',
+			'Request Date',
+			'Issued Date',
+			'Status',
+		];
+
+		// Get the selected requests
+		const selectedRequests = Requests[selectedFilter];
+
+		// Verify selectedRequests has valid data
+		if (selectedRequests && selectedRequests.length > 0) {
+			// Define the table rows
+			const rows = selectedRequests.map((request) => [
+				request.reqItem.name || '', // Item Name (fallback to empty string if undefined)
+				request.quantity.toString() || '', // Item Quantity (fallback to empty string if undefined)
+				request.requestedBy.name || '', // Requestor Name (fallback to empty string if undefined)
+				request.requestDate || '', // Request Date (fallback to empty string if undefined)
+				request.approvedDate || '', // Issued Date (fallback to empty string if undefined)
+				request.status || '', // Status (fallback to empty string if undefined)
+			]);
+
+			// Set the table column styles
+			const columnStyles = {
+				0: { cellWidth: 35 },
+				1: { cellWidth: 25 },
+				2: { cellWidth: 35 },
+				3: { cellWidth: 35 },
+				4: { cellWidth: 35 },
+				5: { cellWidth: 25 },
+			};
+
+			// Add the table using AutoTable plugin
+			autoTable(doc, {
+				startY: 25, // Adjust the starting Y position for the table
+				head: [headers],
+				body: rows,
+				theme: 'grid',
+				headStyles: { fillColor: [52, 152, 219], textColor: 255 },
+				alternateRowStyles: { fillColor: [220, 237, 200] },
+				columnStyles: columnStyles,
+				tableLineColor: [75, 179, 106], // Green border color
+			});
+
+			// Add the "Report Generated Date" at the top right corner
+			const currentDate = new Date();
+			const formattedDate = `Date: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+			const topMargin = 14;
+			const rightMargin = 10;
+			doc.setFont('helvetica', 'normal');
+			doc.setFontSize(10);
+			doc.text(formattedDate, doc.internal.pageSize.getWidth() - rightMargin, topMargin, {
+				align: 'right',
+			});
+		}
 
 		// Save the PDF document
 		doc.save('request-log-history.pdf');
 	};
-
 
 	return (
 		<div className="flex flex-col flex-grow">

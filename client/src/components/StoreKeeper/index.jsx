@@ -12,6 +12,7 @@ const Dashboard = () => {
 		approved: [],
 		rejected: [],
 		requests: [],
+		cancelled: [],
 	});
 	const [selectedFilter, setSelectedFilter] = useState("requests");
 	const [chartType, setChartType] = useState("stockIn");
@@ -185,12 +186,24 @@ const Dashboard = () => {
 										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
 									</div>
 								</div>
+
+								{/* cancelled */}
+								<div
+									className={`bg-white rounded shadow p-4 w-[10rem] min-w-[150px] cursor-pointer ${
+										selectedFilter === "cancelled" ? "border-2 border-blue-600" : ""
+									}`}
+									onClick={() => setSelectedFilter("cancelled")}>
+									<div className="flex flex-col">
+										<span className="text-sm text-gray-500">Cancelled</span>
+										<span className="text-2xl font-semibold">{userRequests.rejected.length}</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 
 					<div className="w-full overflow-x-auto">
-						<table className="w-[1120px] bg-white border border-gray-300 text-left">
+						<table className="w-[1020px] bg-white border border-gray-300 text-left">
 							<thead>
 								<tr className="bg-blue-500 text-white">
 									<th className="py-2 px-4 border-b text-center">Item ID</th>

@@ -41,7 +41,7 @@ export const Sidebar = () => {
 					</li>
 
 					{/* Update User */}
-					<li
+					{/* <li
 						className="mt-10 cursor-pointer"
 						onClick={() => {
 							navigate("/admin/update-employee");
@@ -49,10 +49,10 @@ export const Sidebar = () => {
 						}}>
 						<i className="fas fa-user-edit mr-4"></i>
 						<span> Update User</span>
-					</li>
+					</li> */}
 
 					{/* Delete User */}
-					<li
+					{/* <li
 						className="mt-10 cursor-pointer"
 						onClick={() => {
 							navigate("/admin/delete-employee");
@@ -60,7 +60,7 @@ export const Sidebar = () => {
 						}}>
 						<i className="fas fa-user-minus mr-4"></i>
 						<span> Delete User</span>
-					</li>
+					</li> */}
 
 					{/* Store keeper */}
 					<li
