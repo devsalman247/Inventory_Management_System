@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import http from "../../api";
 import noImage from "../../images/noImage.png";
+import { FaUserCircle } from "react-icons/fa";
 
-function Modal({ setShowModal, users, userId }) {
+function Modal({ setShowModal, users, userId, fetchUsers }) {
 	const [inputValue, setInputValue] = useState("");
 	const [emailValue, setEmailValue] = useState("");
 	const [passwordValue, setPasswordValue] = useState("");
@@ -60,6 +61,7 @@ function Modal({ setShowModal, users, userId }) {
 				if (res.status === 200) {
 					console.log(res.data.data);
 					showMessage("User has been updated successfully!", "success");
+					fetchUsers();
 				}
 			})
 			.catch((err) => {
@@ -165,11 +167,7 @@ function Modal({ setShowModal, users, userId }) {
 							{selectedImage ? (
 								<img src={selectedImage} alt="Profile Preview" className="rounded-full w-12 h-12 object-cover" />
 							) : (
-								<img
-									src={noImage} // Replace with your default user icon or any other image URL
-									alt="Default User Icon"
-									className="rounded-full w-12 h-12 object-cover border border-gray-500"
-								/>
+								<FaUserCircle className="rounded-full w-8 h-8 object-cover" />
 							)}
 						</div>
 					</div>

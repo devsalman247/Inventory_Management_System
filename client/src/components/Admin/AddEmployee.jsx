@@ -4,6 +4,7 @@ import { Sidebar } from "./Sidebar";
 import Swal from "sweetalert2";
 import http from "../../api";
 import noImage from "../../images/noImage.png";
+import { FaUserCircle } from "react-icons/fa";
 
 const AddEmployee = () => {
 	const employee = useRef({ name: "", email: "", password: "", designation: "Professor" });
@@ -152,11 +153,7 @@ const AddEmployee = () => {
 								{selectedImage ? (
 									<img src={selectedImage} alt="Profile Preview" className="rounded-full w-12 h-12 object-cover" />
 								) : (
-									<img
-										src={noImage} // Replace with your default user icon or any other image URL
-										alt="Default User Icon"
-										className="rounded-full w-12 h-12 object-cover border border-gray-500"
-									/>
+									<FaUserCircle className="rounded-full w-8 h-8 object-cover" />
 								)}
 							</div>
 						</div>
