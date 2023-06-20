@@ -3,6 +3,7 @@ import { Navbar } from "../Admin/Navbar";
 import Sidebar from "./Sidebar";
 
 const VendorDetails = () => {
+	const [vendorName, setVendorName] = useState("");
 	// Sample vendor details data
 	const [vendorDetailsData, setVendorDetailsData] = useState([
 		{
@@ -63,13 +64,45 @@ const VendorDetails = () => {
 		setVendorDetailsData(updatedVendorDetails);
 	};
 
+
+
 	return (
 		<div className="flex flex-col flex-grow">
 			<Navbar />
 			<div className="flex flex-grow">
 				<Sidebar />
 				<div className="flex flex-col w-full p-8">
+
+					{/* Search Component */}
+					<div
+					className="mb-8"
+					>
+						<div className="flex flex-col sm:flex-row sm:justify-between mb-4">
+							<div className="flex items-center">
+								<input
+									type="text"
+									className="px-4 py-2 border border-gray-300 rounded-md mr-4"
+									placeholder="Search by vendor name"
+									value={vendorName}
+									onChange={(e) => setVendorName(e.target.value)}
+								/>
+								<button
+									className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+								>
+									Search
+								</button>
+							</div>
+						</div>
+					</div>
 					<h2 className="text-2xl font-bold mb-4">Vendor Details</h2>
+					<button
+						className="
+						absolute
+						right-8
+						px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+					>
+						Download PDF
+					</button>
 					<div className="overflow-x-auto w-full">
 						<table className="bg-white border w-full border-gray-300">
 							<thead>

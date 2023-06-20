@@ -4,6 +4,9 @@ import Sidebar from "./Sidebar";
 import ReactPaginate from "react-paginate";
 import http from "../../api";
 import Swal from "sweetalert2";
+import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
+
 
 const Requests = () => {
 	const [userRequests, setUserRequests] = useState({
@@ -16,6 +19,61 @@ const Requests = () => {
 	const [selectedFilter, setSelectedFilter] = useState("pending");
 	const [selectedRequests, setSelectedRequests] = useState([]);
 	const [isAllSelected, setIsAllSelected] = useState(false);
+
+	const Requests = {
+		pending: [
+			{
+				_id: '1',
+				reqItem: {
+					itemId: '1001',
+					name: 'Item 1'
+				},
+				quantity: 5,
+				requestedBy: {
+					name: 'John Doe'
+				},
+				requestDate: '2023-06-19T10:00:00.000Z',
+				approvedDate: null,
+				return: {
+					returnedDate: null,
+					status: 'pending'
+				},
+				isSelected: false
+			},
+			// Add more pending requests as needed
+		],
+		approved: [
+			{
+				_id: '2',
+				reqItem: {
+					itemId: '1002',
+					name: 'Item 2'
+				},
+				quantity: 3,
+				requestedBy: {
+					name: 'Jane Smith'
+				},
+				requestDate: '2023-06-18T14:30:00.000Z',
+				approvedDate: '2023-06-18T15:00:00.000Z',
+				return: {
+					returnedDate: '2023-06-23T09:15:00.000Z',
+					status: 'returned'
+				},
+				isSelected: false
+			},
+			// Add more approved requests as needed
+		],
+		rejected: [
+			// Add rejected requests if applicable
+		],
+		pendingApproval: [
+			// Add pending approval requests if applicable
+		],
+		requests: [
+			// Add all requests (including pending, approved, and rejected) if needed
+		]
+	};
+
 
 	const getStatusColorClass = (status) => {
 		switch (status) {
@@ -162,6 +220,31 @@ const Requests = () => {
 		getUserRequests();
 	}, []);
 
+	
+
+	const generatePDF = () => {
+		// Create a new jsPDF instance
+		const doc = new jsPDF();
+
+		// Set the document title
+		doc.setProperties({
+			title: 'Request Log History'
+		});
+
+		// Iterate over the userRequests array and add each request to the PDF document
+		Requests[selectedFilter].forEach((request, index) => {
+			const y = 15 + (index * 10);
+			doc.text(request.reqItem.name, 15, y);
+			// requester name
+			doc.text(request.quantity.toString(), 50, y);
+
+		});
+
+		// Save the PDF document
+		doc.save('request-log-history.pdf');
+	};
+
+
 	return (
 		<div className="flex flex-col flex-grow">
 			<Navbar />
@@ -208,6 +291,14 @@ const Requests = () => {
 							onClick={() => handleReject()}>
 							Reject Requests
 						</button>
+
+						<button
+							className="px-2 sm:px-4 py-2 w-32 ml-2 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+							onClick={generatePDF}
+						>
+							Download PDF
+						</button>
+
 					</div>
 
 					<div className="w-full overflow-x-auto">
@@ -254,22 +345,37 @@ const Requests = () => {
 											<td className="py-4 px-4 border-b text-left pl-6">
 												{new Date(request.requestDate).toISOString().substring(0, 10)}
 											</td>
-											<td className="py-4 px-4 border-b text-left pl-10">
+											<td className="py-4 px-4 border-b text-left">
 												{request.approvedDate ? new Date(request.approvedDate).toISOString().substring(0, 10) : "N/A"}
 											</td>
-											<td className="py-4 px-4 border-b text-left pl-10">
+											<td className="py-4 px-4 border-b text-left ">
 												{request.return.returnedDate
 													? new Date(request.return.returnedDate).toISOString().substring(0, 10)
 													: "N/A"}
 											</td>
 											<td className="py-4 px-4 border-b text-left">
-												{request.return.status === "pending-approval" ? (
+												{/* {request.return.status === "pending-approval" ? (
 													<div className="ml-4">Pending Return Approval</div>
 												) : (
 													<div className="pl-16">
 														{request.status.charAt(0).toUpperCase() + request.status.slice(1)}
 													</div>
-												)}
+												)} */}
+
+												<div className="flex justify-end mt-4">
+													<button
+														className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded mr-2"
+														onClick={handleApprove}
+													>
+														Approve
+													</button>
+													<button
+														className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
+														onClick={handleReject}
+													>
+														Reject
+													</button>
+												</div>
 											</td>
 										</tr>
 									))}
