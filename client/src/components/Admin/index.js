@@ -6,7 +6,6 @@ import noImage from "../../images/noImage.png";
 import Modal from "./Modal";
 import Swal from "sweetalert2";
 
-
 const Dashboard = () => {
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [searchItem, setSearchItem] = useState("");
@@ -56,7 +55,6 @@ const Dashboard = () => {
 			})
 			.catch((err) => console.log(err));
 	};
-
 
 	const showMessage = (message, type) => {
 		Swal.fire({
@@ -228,7 +226,6 @@ const Dashboard = () => {
 																Delete
 															</button>
 														</td>
-														
 													</tr>
 												);
 										  })
@@ -252,7 +249,7 @@ const Dashboard = () => {
 										  }))}
 							</tbody>
 						</table>
-						{showModal && <Modal setShowModal={setShowModal} users={users} userId={userId} />}
+						{showModal && <Modal setShowModal={setShowModal} users={users} userId={userId} fetchUsers={fetchUsers} />}
 					</div>
 				</div>
 			</div>
