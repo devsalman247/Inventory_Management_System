@@ -345,6 +345,16 @@ const VendorDetails = () => {
 						onClick={generatePDF}>
 						Download PDF
 					</button>
+					{/* Create new vendor */}
+					<button
+						className="
+						absolute
+						right-48
+						px-2 sm:px-4 py-2 w-32 sm:w-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+						onClick={generatePDF}
+					>
+						Create New Vendor
+					</button>
 					<div className="overflow-x-auto w-full">
 						<table className="bg-white border w-full border-gray-300">
 							<thead>
@@ -355,6 +365,8 @@ const VendorDetails = () => {
 									<th className="py-2 px-4 border-b">Total Price</th>
 									<th className="py-2 px-4 border-b">Issued Date</th>
 									<th className="py-2 px-4 border-b">Return Date</th>
+									{/* Action for update or delete */}
+									<th className="py-2 px-4 border-b">Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -366,8 +378,23 @@ const VendorDetails = () => {
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
-												<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
-											</tr>
+											<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
+											<td className="py-2 px-4 border-b text-center">
+												<button
+													className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+													onClick={() => setIsEditModalOpen(true)}
+												>
+													Update
+												</button>
+												<button
+													className="px-4 py-2 ml-4 bg-red-500 hover:bg-red-700 text-white rounded-md"
+													onClick={() => setSelectedVendorDetail(vendorDetail)}
+												>
+													Delete
+												</button>
+											</td>
+
+										</tr>
 									  ))
 									: selectedVendor.map((vendorDetail) => (
 											<tr key={vendorDetail.id}>

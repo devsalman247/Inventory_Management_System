@@ -14,12 +14,14 @@ import {
 	UpdateEmployee,
 	DeleteEmployee,
 	VendorDetails,
+	VendorCreateVendor,
 } from "./components";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext, purgeAuth, setAuth } from "./context_store";
 import http from "./api";
 import Storekeeper from "./components/Admin/Storekeeper";
+import CreateVendor from "./components/StoreKeeper";
 
 function App() {
 	const location = useLocation();
@@ -94,6 +96,7 @@ function App() {
 							<Route path="/store/inventory" element={<Inventory />} />
 							<Route path="/store/requests" element={<RequestsStore />} />
 							<Route path="/store/vendorDetails" element={<VendorDetails />} />
+							<Route path="/store/createVendor" element={<VendorCreateVendor />} />
 						</>
 					)}
 

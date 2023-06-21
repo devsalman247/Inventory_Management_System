@@ -57,6 +57,18 @@ const Sidebar = () => {
 						<i className="fas fa-box-open mr-4"></i>
 						<span>Vendor Details</span>
 					</li>
+
+					{/* New Vendor*/}
+					<li
+						className="mt-10 cursor-pointer"
+						onClick={() => {
+							navigate("/store/createVendor");
+							if (isSidebarOpen) setIsSidebarOpen(false);
+						}}>
+						<i className="fas fa-box-open mr-4"></i>
+						<span>Create New Vendor</span>
+					</li>
+
 				</ul>
 			</div>
 		</div>

@@ -14,6 +14,7 @@ export { default as Store } from "./StoreKeeper";
 export { default as Inventory } from "./StoreKeeper/Inventory";
 export { default as RequestsStore } from "./StoreKeeper/Requests";
 export { default as VendorDetails } from "./StoreKeeper/VendorDetails"
+export { default as VendorCreateVendor } from "./StoreKeeper/CreateVendor";
 
 
 export { default as AddEmployee } from "./Admin/AddEmployee";
