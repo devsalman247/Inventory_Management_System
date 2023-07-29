@@ -1,8 +1,8 @@
 import Item from "../models/Items.js";
 import User from "../models/User.js";
 import Request from "../models/Request.js";
-import IssuedItem from "../models/IssuedItem.js";
-import updateItems from "../utils/updateItems.js";
+// import IssuedItem from "../models/IssuedItem.js";
+// import updateItems from "../utils/updateItems.js";
 
 // Items Service
 const createItem = async (item) => {

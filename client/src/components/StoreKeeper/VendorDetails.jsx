@@ -346,7 +346,7 @@ const VendorDetails = () => {
 						Download PDF
 					</button>
 					{/* Create new vendor */}
-					<button
+					{/* <button
 						className="
 						absolute
 						right-48
@@ -354,7 +354,7 @@ const VendorDetails = () => {
 						onClick={generatePDF}
 					>
 						Create New Vendor
-					</button>
+					</button> */}
 					<div className="overflow-x-auto w-full">
 						<table className="bg-white border w-full border-gray-300">
 							<thead>
@@ -378,23 +378,20 @@ const VendorDetails = () => {
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.itemQuantity}</td>
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.totalPrice}</td>
 												<td className="py-2 px-4 border-b text-center">{vendorDetail.issuedDate}</td>
-											<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
-											<td className="py-2 px-4 border-b text-center">
-												<button
-													className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-													onClick={() => setIsEditModalOpen(true)}
-												>
-													Update
-												</button>
-												<button
-													className="px-4 py-2 ml-4 bg-red-500 hover:bg-red-700 text-white rounded-md"
-													onClick={() => setSelectedVendorDetail(vendorDetail)}
-												>
-													Delete
-												</button>
-											</td>
-
-										</tr>
+												<td className="py-2 px-4 border-b text-center">{vendorDetail.returnDate}</td>
+												<td className="py-2 px-4 border-b text-center">
+													<button
+														className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+														onClick={() => setIsEditModalOpen(true)}>
+														Update
+													</button>
+													<button
+														className="px-4 py-2 ml-4 bg-red-500 hover:bg-red-700 text-white rounded-md"
+														onClick={() => setSelectedVendorDetail(vendorDetail)}>
+														Delete
+													</button>
+												</td>
+											</tr>
 									  ))
 									: selectedVendor.map((vendorDetail) => (
 											<tr key={vendorDetail.id}>
